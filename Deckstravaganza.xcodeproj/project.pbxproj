@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		22EE8C541BAEFD230072E63A /* CardGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EE8C531BAEFD230072E63A /* CardGame.swift */; settings = {ASSET_TAGS = (); }; };
 		D54C89791BAD9527007AEB7E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C89781BAD9527007AEB7E /* AppDelegate.swift */; };
 		D54C897B1BAD9527007AEB7E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C897A1BAD9527007AEB7E /* ViewController.swift */; };
 		D54C897E1BAD9527007AEB7E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D54C897C1BAD9527007AEB7E /* Main.storyboard */; };
@@ -34,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		22EE8C531BAEFD230072E63A /* CardGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardGame.swift; sourceTree = "<group>"; };
 		D54C89751BAD9527007AEB7E /* Deckstravaganza.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Deckstravaganza.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D54C89781BAD9527007AEB7E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D54C897A1BAD9527007AEB7E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 				D54C897F1BAD9527007AEB7E /* Assets.xcassets */,
 				D54C89811BAD9527007AEB7E /* LaunchScreen.storyboard */,
 				D54C89841BAD9527007AEB7E /* Info.plist */,
+				22EE8C531BAEFD230072E63A /* CardGame.swift */,
 			);
 			path = Deckstravaganza;
 			sourceTree = "<group>";
@@ -187,6 +190,7 @@
 		D54C896D1BAD9526007AEB7E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0710;
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "University of Florida";
 				TargetAttributes = {
@@ -260,6 +264,7 @@
 			files = (
 				D54C897B1BAD9527007AEB7E /* ViewController.swift in Sources */,
 				D54C89791BAD9527007AEB7E /* AppDelegate.swift in Sources */,
+				22EE8C541BAEFD230072E63A /* CardGame.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -484,6 +489,7 @@
 				D54C899F1BAD9527007AEB7E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D54C89A01BAD9527007AEB7E /* Build configuration list for PBXNativeTarget "DeckstravaganzaTests" */ = {
 			isa = XCConfigurationList;
@@ -492,6 +498,7 @@
 				D54C89A21BAD9527007AEB7E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D54C89A31BAD9527007AEB7E /* Build configuration list for PBXNativeTarget "DeckstravaganzaUITests" */ = {
 			isa = XCConfigurationList;
@@ -500,6 +507,7 @@
 				D54C89A51BAD9527007AEB7E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

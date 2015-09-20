@@ -14,6 +14,7 @@
 		D54C89831BAD9527007AEB7E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D54C89811BAD9527007AEB7E /* LaunchScreen.storyboard */; };
 		D54C898E1BAD9527007AEB7E /* DeckstravaganzaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C898D1BAD9527007AEB7E /* DeckstravaganzaTests.swift */; };
 		D54C89991BAD9527007AEB7E /* DeckstravaganzaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C89981BAD9527007AEB7E /* DeckstravaganzaUITests.swift */; };
+		D56CC3CA1BAF019900E6A9BC /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56CC3C91BAF019900E6A9BC /* Card.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		D54C89941BAD9527007AEB7E /* DeckstravaganzaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DeckstravaganzaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D54C89981BAD9527007AEB7E /* DeckstravaganzaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckstravaganzaUITests.swift; sourceTree = "<group>"; };
 		D54C899A1BAD9527007AEB7E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D56CC3C91BAF019900E6A9BC /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				D54C89781BAD9527007AEB7E /* AppDelegate.swift */,
+				D56CC3C91BAF019900E6A9BC /* Card.swift */,
 				D54C897A1BAD9527007AEB7E /* ViewController.swift */,
 				D54C897C1BAD9527007AEB7E /* Main.storyboard */,
 				D54C897F1BAD9527007AEB7E /* Assets.xcassets */,
@@ -259,6 +262,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D54C897B1BAD9527007AEB7E /* ViewController.swift in Sources */,
+				D56CC3CA1BAF019900E6A9BC /* Card.swift in Sources */,
 				D54C89791BAD9527007AEB7E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -484,6 +488,7 @@
 				D54C899F1BAD9527007AEB7E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D54C89A01BAD9527007AEB7E /* Build configuration list for PBXNativeTarget "DeckstravaganzaTests" */ = {
 			isa = XCConfigurationList;
@@ -492,6 +497,7 @@
 				D54C89A21BAD9527007AEB7E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D54C89A31BAD9527007AEB7E /* Build configuration list for PBXNativeTarget "DeckstravaganzaUITests" */ = {
 			isa = XCConfigurationList;
@@ -500,6 +506,7 @@
 				D54C89A51BAD9527007AEB7E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

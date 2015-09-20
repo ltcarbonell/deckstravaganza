@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		22EE8C541BAEFD230072E63A /* CardGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EE8C531BAEFD230072E63A /* CardGame.swift */; settings = {ASSET_TAGS = (); }; };
+		22EE8C561BAF098A0072E63A /* Solitare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EE8C551BAF098A0072E63A /* Solitare.swift */; settings = {ASSET_TAGS = (); }; };
 		D54C89791BAD9527007AEB7E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C89781BAD9527007AEB7E /* AppDelegate.swift */; };
 		D54C897B1BAD9527007AEB7E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C897A1BAD9527007AEB7E /* ViewController.swift */; };
 		D54C897E1BAD9527007AEB7E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D54C897C1BAD9527007AEB7E /* Main.storyboard */; };
@@ -36,6 +37,7 @@
 
 /* Begin PBXFileReference section */
 		22EE8C531BAEFD230072E63A /* CardGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardGame.swift; sourceTree = "<group>"; };
+		22EE8C551BAF098A0072E63A /* Solitare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Solitare.swift; sourceTree = "<group>"; };
 		D54C89751BAD9527007AEB7E /* Deckstravaganza.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Deckstravaganza.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D54C89781BAD9527007AEB7E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D54C897A1BAD9527007AEB7E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				D54C89811BAD9527007AEB7E /* LaunchScreen.storyboard */,
 				D54C89841BAD9527007AEB7E /* Info.plist */,
 				22EE8C531BAEFD230072E63A /* CardGame.swift */,
+				22EE8C551BAF098A0072E63A /* Solitare.swift */,
 			);
 			path = Deckstravaganza;
 			sourceTree = "<group>";
@@ -262,6 +265,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22EE8C561BAF098A0072E63A /* Solitare.swift in Sources */,
 				D54C897B1BAD9527007AEB7E /* ViewController.swift in Sources */,
 				D54C89791BAD9527007AEB7E /* AppDelegate.swift in Sources */,
 				22EE8C541BAEFD230072E63A /* CardGame.swift in Sources */,

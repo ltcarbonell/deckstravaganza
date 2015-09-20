@@ -17,14 +17,18 @@ protocol CardGame {
 }
 
 protocol CardGameDelegate {
+    // deals out the cards at the start of each round and/or turn depending on the game
     func deal(Game: CardGame)
     
-    func beginGame(Game: CardGame)
-    func endGame(Game: CardGame)
+    // these are used to keep track of the status of the game
+    func gameDidStart(Game: CardGame)
+    func gameDidEnd(Game: CardGame)
     func isWinner(Game: CardGame)
     
-    func beginRound(Game: CardGame)
-    func endRound(Game: CardGame)
+    // used to keep track of the rounds
+    func roundDidStart(Game: CardGame)
+    func roundDidEnd(Game: CardGame)
     
+    // keeps score for the player
     func increaseScore(Game: CardGame)
 }

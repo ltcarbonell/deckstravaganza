@@ -15,6 +15,7 @@
 		D54C898E1BAD9527007AEB7E /* DeckstravaganzaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C898D1BAD9527007AEB7E /* DeckstravaganzaTests.swift */; };
 		D54C89991BAD9527007AEB7E /* DeckstravaganzaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C89981BAD9527007AEB7E /* DeckstravaganzaUITests.swift */; };
 		D56CC3CA1BAF019900E6A9BC /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56CC3C91BAF019900E6A9BC /* Card.swift */; settings = {ASSET_TAGS = (); }; };
+		D56CC3CC1BAF135200E6A9BC /* Pile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56CC3CB1BAF135200E6A9BC /* Pile.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		D54C89981BAD9527007AEB7E /* DeckstravaganzaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckstravaganzaUITests.swift; sourceTree = "<group>"; };
 		D54C899A1BAD9527007AEB7E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D56CC3C91BAF019900E6A9BC /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		D56CC3CB1BAF135200E6A9BC /* Pile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pile.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 			children = (
 				D54C89781BAD9527007AEB7E /* AppDelegate.swift */,
 				D56CC3C91BAF019900E6A9BC /* Card.swift */,
+				D56CC3CB1BAF135200E6A9BC /* Pile.swift */,
 				D54C897A1BAD9527007AEB7E /* ViewController.swift */,
 				D54C897C1BAD9527007AEB7E /* Main.storyboard */,
 				D54C897F1BAD9527007AEB7E /* Assets.xcassets */,
@@ -264,6 +267,7 @@
 				D54C897B1BAD9527007AEB7E /* ViewController.swift in Sources */,
 				D56CC3CA1BAF019900E6A9BC /* Card.swift in Sources */,
 				D54C89791BAD9527007AEB7E /* AppDelegate.swift in Sources */,
+				D56CC3CC1BAF135200E6A9BC /* Pile.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,7 +9,7 @@
 import Foundation
 
 class Pile {
-    private var pile : [Card];
+    var pile : [Card];
     
     init() {
         pile = [Card]();
@@ -38,7 +38,7 @@ class Pile {
     * Return the card at index.  If index is out of bounds, nil is returned.
     *
     * @param index : Int - the index of the card to return in the pile
-    * @return Card
+    * @return Card? - the card at index
     */
     func cardAt(index : Int) -> Card? {
         if(index >= 0 && index < pile.count) {
@@ -55,6 +55,13 @@ class Pile {
     */
     func isEmpty() -> Bool {
         return pile.isEmpty;
+    }
+    
+    /**
+    * Remove all cards from the pile.
+    */
+    func removeAllCards() {
+        pile.removeAll();
     }
     
     /**

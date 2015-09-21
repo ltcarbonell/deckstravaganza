@@ -63,7 +63,7 @@ class Card {
     /**
     * Return this card's suit.
     *
-    * @return CardSuit
+    * @return CardSuit - this card's suit
     */
     func getSuit() -> CardSuit {
         return self.suit;
@@ -72,7 +72,7 @@ class Card {
     /**
     * Return this card's rank.
     *
-    * @return CardRank
+    * @return CardRank - this card's rank
     */
     func getRank() -> CardRank {
         return self.rank;
@@ -81,7 +81,7 @@ class Card {
     /**
     * Return this card's color.
     *
-    * @return CardColor
+    * @return CardColor - this card's color
     */
     func getColor() -> CardColor {
         return self.color;
@@ -91,7 +91,7 @@ class Card {
     * Return true if and only if this card matches the specified card's rank.
     *
     * @param card : Card - The card with which to compare this card.
-    * @return Bool
+    * @return Bool - true if both cards have the same rank
     */
     func hasSameRankAs(card : Card) -> Bool {
         return (self.rank == card.getRank());
@@ -101,7 +101,7 @@ class Card {
     * Return true if and only if this card matches the specified card's suit.
     *
     * @param card : Card - The card with which to compare this card.
-    * @return Bool
+    * @return Bool - true if both cards have the same suit
     */
     func hasSameSuitAs(card : Card) -> Bool {
         return (self.suit == card.getSuit());
@@ -111,7 +111,7 @@ class Card {
     * Return true if and only if this card matches the specified card's color.
     *
     * @param card : Card - The card with which to compare this card.
-    * @return Bool
+    * @return Bool - true if both cards have the same color
     */
     func hasSameColorAs(card : Card) -> Bool {
         return (self.color == card.getColor());
@@ -121,7 +121,7 @@ class Card {
     * Return true if and only if this card does not match the specified card's color.
     *
     * @param card : Card - The card with which to compare this card.
-    * @return Bool
+    * @return Bool - true if this card has the opposite color of the specified card
     */
     func hasOppositeColorThan(card : Card) -> Bool {
         return (self.color != card.getColor());
@@ -132,7 +132,7 @@ class Card {
     *
     * @param card : Card - The card with which to compare this card.
     * @param acesLow : Bool - True if Aces should be considered low.
-    * @return Bool
+    * @return Bool - true if this card has a higher rank than the specified card
     */
     func isHigherThan(card : Card, acesLow : Bool) -> Bool {
         if(acesLow || (!acesLow && self.rank != .Ace && card.getRank() != .Ace)) {
@@ -153,7 +153,7 @@ class Card {
     *
     * @param card : Card - The card with which to compare this card.
     * @param acesLow : Bool - True if Aces should be considered low.
-    * @return Bool
+    * @return Bool - true if this card has a lower rank than the specified card
     */
     func isLowerThan(card : Card, acesLow : Bool) -> Bool {
         if(acesLow || (!acesLow && self.rank != .Ace && card.getRank() != .Ace)) {
@@ -177,7 +177,7 @@ class Card {
     *
     * @param card : Card - The card with which to compare this card.
     * @param acesLow : Bool - True if Aces should be considered low.
-    * @return Bool
+    * @return Bool - true if this card is equal to the specified card
     */
     func isEqualTo(card : Card, ignoreSuit : Bool = true) -> Bool {
         if(ignoreSuit) {

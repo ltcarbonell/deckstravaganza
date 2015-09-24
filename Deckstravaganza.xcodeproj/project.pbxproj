@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		227912941BB47EF9006C6C60 /* CardGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227912931BB47EF9006C6C60 /* CardGame.swift */; settings = {ASSET_TAGS = (); }; };
+		227912961BB47F5C006C6C60 /* Solitare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227912951BB47F5C006C6C60 /* Solitare.swift */; settings = {ASSET_TAGS = (); }; };
 		D54C89791BAD9527007AEB7E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C89781BAD9527007AEB7E /* AppDelegate.swift */; };
 		D54C897B1BAD9527007AEB7E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C897A1BAD9527007AEB7E /* ViewController.swift */; };
 		D54C897E1BAD9527007AEB7E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D54C897C1BAD9527007AEB7E /* Main.storyboard */; };
@@ -38,6 +40,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		227912931BB47EF9006C6C60 /* CardGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardGame.swift; sourceTree = "<group>"; };
+		227912951BB47F5C006C6C60 /* Solitare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Solitare.swift; sourceTree = "<group>"; };
 		D54C89751BAD9527007AEB7E /* Deckstravaganza.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Deckstravaganza.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D54C89781BAD9527007AEB7E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D54C897A1BAD9527007AEB7E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -107,6 +111,8 @@
 			children = (
 				D54C89781BAD9527007AEB7E /* AppDelegate.swift */,
 				D56CC3C91BAF019900E6A9BC /* Card.swift */,
+				227912931BB47EF9006C6C60 /* CardGame.swift */,
+				227912951BB47F5C006C6C60 /* Solitare.swift */,
 				D56CC3CB1BAF135200E6A9BC /* Pile.swift */,
 				D56CC3CF1BB03E8200E6A9BC /* QueuePile.swift */,
 				D56CC3CD1BB037E000E6A9BC /* StackPile.swift */,
@@ -272,7 +278,9 @@
 			files = (
 				D54C897B1BAD9527007AEB7E /* ViewController.swift in Sources */,
 				D56CC3D01BB03E8200E6A9BC /* QueuePile.swift in Sources */,
+				227912941BB47EF9006C6C60 /* CardGame.swift in Sources */,
 				D56CC3CA1BAF019900E6A9BC /* Card.swift in Sources */,
+				227912961BB47F5C006C6C60 /* Solitare.swift in Sources */,
 				D54C89791BAD9527007AEB7E /* AppDelegate.swift in Sources */,
 				D56CC3CC1BAF135200E6A9BC /* Pile.swift in Sources */,
 				D56CC3CE1BB037E000E6A9BC /* StackPile.swift in Sources */,

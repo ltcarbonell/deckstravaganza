@@ -14,11 +14,11 @@ class Solitare: CardGame {
     var deck: Deck
     
     // Properties of solitare
-    var wastePile: StackPile        // where the three cards are placed that you can chose from
-    var foundations: [StackPile]    // where you have to place A -> King by suit
-    var tableus: [StackPile]        // The piles of cards you can add onto
+    var wastePile = StackPile()        // where the three cards are placed that you can chose from
+    var foundations = [StackPile]()    // where you have to place A -> King by suit
+    var tableus = [StackPile]()        // The piles of cards you can add onto
     
-    var players = ["Player 1": 0]   // only one player... hence SOLITARE
+    var players = [Player(userName: "Player 1", score: 0) ]  // only one player... hence SOLITARE
     
     let gameDelegate = SolitareDelegate()
     
@@ -26,6 +26,7 @@ class Solitare: CardGame {
     init() {
         // deals the cards out for the first and only time
         // calls from solitare delagate
+        self.deck = Deck()
         gameDelegate.deal(self)
         
     }
@@ -40,47 +41,58 @@ class Solitare: CardGame {
 
 class SolitareDelegate: CardGameDelegate {
     var numberOfTurns = 0
+    typealias cardGameType = Solitare
     func deal(Game: Solitare) {
+        var newCard: Card
+        
         
         // calls a brand new, newly shuffled deck
-        Game.deck = Deck.newDeck()
+        Game.deck.newDeck()
         
         // creates empty stacks for all three piles
-        Game.wastePile = StackPile()
-        Game.foundations = [StackPile]()
-        Game.tableus = [StackPile]()
+        Game.wastePile.removeAllCards()
+        for foundation in Game.foundations {
+            foundation.removeAllCards()
+        }
+        for tableu in Game.tableus {
+            tableu.removeAllCards()
+        }
         
         // places the cards into the tableus 1->7
         for var i = 1; i < 7; i++ {
             for var j = 0; j < i; j++ {
-                Game.deck.pop = Game.foundations[i].push
+                newCard = Game.deck.pull()!
+                Game.foundations[i].push(newCard)
             }
         }
     }
     
     
     // these are used to keep track of the status of the game
-    func gameDidStart(Game: CardGame) {
-        
+    func gameDidStart(Game: Solitare) {
+        print(" ")
     }
-    func gameDidEnd(Game: CardGame) {
-        
+    
+    func gameDidEnd(Game: Solitare) {
+        print("  ")
+
     }
-    func isWinner(Game: CardGame) {
-        
+    func isWinner(Game: Solitare) {
+        print("  ")
     }
     
     // used to keep track of the rounds
-    func roundDidStart(Game: CardGame) {
-        
+    func roundDidStart(Game: Solitare) {
+        print("  ")
     }
-    func roundDidEnd(Game: CardGame) {
-        
+    
+    func roundDidEnd(Game: Solitare) {
+        print("  ")
     }
     
     // keeps score for the player
-    func increaseScore(Game: CardGame) {
-        
+    func increaseScore(Game: Solitare) {
+        print("  ")
     }
 
 }

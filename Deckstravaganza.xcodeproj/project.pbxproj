@@ -88,6 +88,35 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		228A7AB01BB9D4E700226653 /* Solitare */ = {
+			isa = PBXGroup;
+			children = (
+				227912951BB47F5C006C6C60 /* Solitare.swift */,
+			);
+			name = Solitare;
+			sourceTree = "<group>";
+		};
+		228A7AB11BB9D50500226653 /* Card Bases */ = {
+			isa = PBXGroup;
+			children = (
+				D56CC3C91BAF019900E6A9BC /* Card.swift */,
+				D5DC306F1BB97702001C4F58 /* Deck.swift */,
+				D56CC3CB1BAF135200E6A9BC /* Pile.swift */,
+				D56CC3CF1BB03E8200E6A9BC /* QueuePile.swift */,
+				D56CC3CD1BB037E000E6A9BC /* StackPile.swift */,
+			);
+			name = "Card Bases";
+			sourceTree = "<group>";
+		};
+		228A7AB31BB9D58B00226653 /* Games */ = {
+			isa = PBXGroup;
+			children = (
+				228A7AB01BB9D4E700226653 /* Solitare */,
+				227912931BB47EF9006C6C60 /* CardGame.swift */,
+			);
+			name = Games;
+			sourceTree = "<group>";
+		};
 		D54C896C1BAD9526007AEB7E = {
 			isa = PBXGroup;
 			children = (
@@ -111,15 +140,10 @@
 		D54C89771BAD9527007AEB7E /* Deckstravaganza */ = {
 			isa = PBXGroup;
 			children = (
-				D54C89781BAD9527007AEB7E /* AppDelegate.swift */,
-				D56CC3C91BAF019900E6A9BC /* Card.swift */,
-				227912931BB47EF9006C6C60 /* CardGame.swift */,
-				227912951BB47F5C006C6C60 /* Solitare.swift */,
-				D5DC306F1BB97702001C4F58 /* Deck.swift */,
-				D56CC3CB1BAF135200E6A9BC /* Pile.swift */,
-				D56CC3CF1BB03E8200E6A9BC /* QueuePile.swift */,
-				D56CC3CD1BB037E000E6A9BC /* StackPile.swift */,
+				228A7AB31BB9D58B00226653 /* Games */,
+				228A7AB11BB9D50500226653 /* Card Bases */,
 				D54C897A1BAD9527007AEB7E /* ViewController.swift */,
+				D54C89781BAD9527007AEB7E /* AppDelegate.swift */,
 				D54C897C1BAD9527007AEB7E /* Main.storyboard */,
 				D54C897F1BAD9527007AEB7E /* Assets.xcassets */,
 				D54C89811BAD9527007AEB7E /* LaunchScreen.storyboard */,

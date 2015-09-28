@@ -15,6 +15,8 @@ class Card {
         case Diamonds = 2;
         case Hearts =   3;
         case Spades =   4;
+        
+        static let numberOfSuits = 4;
     }
     
     // Enumeration of legal card ranks and rank value.
@@ -32,6 +34,10 @@ class Card {
         case Jack =   11;
         case Queen =  12;
         case King =   13;
+        
+        case Joker =  14;
+        
+        static let numberOfRanks = 13;
     }
     
     // Enumeration of legal card colors.

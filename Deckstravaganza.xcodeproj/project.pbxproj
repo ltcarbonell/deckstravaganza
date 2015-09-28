@@ -20,6 +20,7 @@
 		D56CC3CC1BAF135200E6A9BC /* Pile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56CC3CB1BAF135200E6A9BC /* Pile.swift */; settings = {ASSET_TAGS = (); }; };
 		D56CC3CE1BB037E000E6A9BC /* StackPile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56CC3CD1BB037E000E6A9BC /* StackPile.swift */; settings = {ASSET_TAGS = (); }; };
 		D56CC3D01BB03E8200E6A9BC /* QueuePile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56CC3CF1BB03E8200E6A9BC /* QueuePile.swift */; settings = {ASSET_TAGS = (); }; };
+		D5DC30701BB97702001C4F58 /* Deck.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DC306F1BB97702001C4F58 /* Deck.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		D56CC3CB1BAF135200E6A9BC /* Pile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pile.swift; sourceTree = "<group>"; };
 		D56CC3CD1BB037E000E6A9BC /* StackPile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackPile.swift; sourceTree = "<group>"; };
 		D56CC3CF1BB03E8200E6A9BC /* QueuePile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueuePile.swift; sourceTree = "<group>"; };
+		D5DC306F1BB97702001C4F58 /* Deck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Deck.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,7 @@
 				D56CC3C91BAF019900E6A9BC /* Card.swift */,
 				227912931BB47EF9006C6C60 /* CardGame.swift */,
 				227912951BB47F5C006C6C60 /* Solitare.swift */,
+				D5DC306F1BB97702001C4F58 /* Deck.swift */,
 				D56CC3CB1BAF135200E6A9BC /* Pile.swift */,
 				D56CC3CF1BB03E8200E6A9BC /* QueuePile.swift */,
 				D56CC3CD1BB037E000E6A9BC /* StackPile.swift */,
@@ -276,6 +279,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5DC30701BB97702001C4F58 /* Deck.swift in Sources */,
 				D54C897B1BAD9527007AEB7E /* ViewController.swift in Sources */,
 				D56CC3D01BB03E8200E6A9BC /* QueuePile.swift in Sources */,
 				227912941BB47EF9006C6C60 /* CardGame.swift in Sources */,

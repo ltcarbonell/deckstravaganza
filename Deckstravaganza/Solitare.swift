@@ -14,9 +14,9 @@ class Solitare: CardGame {
     var deck: Deck
     
     // Properties of solitare
-    var wastePile: stackPile        // where the three cards are placed that you can chose from
-    var foundations: [stackPile]    // where you have to place A -> King by suit
-    var tableus: [stackPile]        // The piles of cards you can add onto
+    var wastePile: StackPile        // where the three cards are placed that you can chose from
+    var foundations: [StackPile]    // where you have to place A -> King by suit
+    var tableus: [StackPile]        // The piles of cards you can add onto
     
     var players = ["Player 1": 0]   // only one player... hence SOLITARE
     
@@ -27,6 +27,7 @@ class Solitare: CardGame {
         // deals the cards out for the first and only time
         // calls from solitare delagate
         gameDelegate.deal(self)
+        
     }
     
     // Methods
@@ -39,45 +40,47 @@ class Solitare: CardGame {
 
 class SolitareDelegate: CardGameDelegate {
     var numberOfTurns = 0
-    func deal(Game: CardGame) {
+    func deal(Game: Solitare) {
         
         // calls a brand new, newly shuffled deck
-        Solitare.deck = Deck.newDeck()
+        Game.deck = Deck.newDeck()
         
-        // creates empty stacks dor all three piles
-        Solitare.wastePile = stackPile()
-        Solitare.foundations = [stackPile]()
-        Solitare.tableus = [stackPile]()
+        // creates empty stacks for all three piles
+        Game.wastePile = StackPile()
+        Game.foundations = [StackPile]()
+        Game.tableus = [StackPile]()
         
         // places the cards into the tableus 1->7
         for var i = 1; i < 7; i++ {
             for var j = 0; j < i; j++ {
-                Solitare.deck.pop = Solitare.foundations[i].push
+                Game.deck.pop = Game.foundations[i].push
             }
         }
     }
     
+    
+    // these are used to keep track of the status of the game
     func gameDidStart(Game: CardGame) {
         
     }
-    
     func gameDidEnd(Game: CardGame) {
         
     }
-    
     func isWinner(Game: CardGame) {
         
     }
     
+    // used to keep track of the rounds
     func roundDidStart(Game: CardGame) {
         
     }
-    
     func roundDidEnd(Game: CardGame) {
         
     }
     
+    // keeps score for the player
     func increaseScore(Game: CardGame) {
         
     }
+
 }

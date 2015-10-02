@@ -15,6 +15,7 @@ struct RummyMeld {
 
 class Rummy: CardGame {
     var deck = Deck();
+    var targetScore = 500;
     
     var wastePile =     StackPile(),
         playersHands =  [StackPile](),
@@ -28,34 +29,68 @@ class Rummy: CardGame {
 }
 
 class RummyDelegate: CardGameDelegate {
-    typealias T = Rummy;
+    typealias CardGameType = Rummy;
     
-    func deal(Game: T) {
+    let smallGameHand = 10;
+    let mediumGameHand = 7;
+    let largeGameHand = 6;
+    
+    func deal(Game: CardGameType) {
+        if(Game.playersHands.count == 0) {
+            for(var playerIndex = 0; playerIndex < Game.playersHands.count; playerIndex++) {
+                Game.playersHands.append(StackPile());
+            }
+        }
+        
+        let handSize : Int;
+        
+        switch(Game.players.count) {
+            case 2:
+                handSize = smallGameHand;
+            case 3, 4:
+                handSize = mediumGameHand;
+            case 5, 6:
+                handSize = largeGameHand;
+            default:
+                handSize = 0;
+                print("Error: Number of players incorrect.");
+        }
+        
+        for(var cardIndex = 0; cardIndex < handSize; cardIndex++) {
+            for(var playerIndex = 0; playerIndex < Game.playersHands.count && !Game.deck.isEmpty(); playerIndex++) {
+                Game.playersHands[playerIndex].push(Game.deck.pull()!);
+            }
+        }
+        
         print("Dealt");
     }
     
-    func gameDidStart(Game: T) {
+    func gameDidStart(Game: CardGameType) {
         print("Game started");
     }
     
-    func gameDidEnd(Game: T) {
+    func gameDidEnd(Game: CardGameType) {
         print("Game ended");
     }
     
-    func isWinner(Game: T) {
+    func isWinner(Game: CardGameType) -> Bool {
         print("Winner!");
     }
     
-    func roundDidStart(Game: T) {
+    func roundDidStart(Game: CardGameType) {
         print("Round started");
     }
     
-    func roundDidEnd(Game: T) {
+    func roundDidEnd(Game: CardGameType) {
         print("Round ended");
     }
     
-    func increaseScore(Game: T) {
+    func increaseScore(Game: CardGameType) {
         print("Score increased");
+    }
+    
+    func turnDidEnd(Game: CardGameType) {
+        // Current player's turn is player++%(number of players).
     }
 }
 

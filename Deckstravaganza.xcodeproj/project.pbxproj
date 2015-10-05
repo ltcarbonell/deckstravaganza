@@ -24,6 +24,7 @@
 		D56CC3CE1BB037E000E6A9BC /* StackPile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56CC3CD1BB037E000E6A9BC /* StackPile.swift */; settings = {ASSET_TAGS = (); }; };
 		D56CC3D01BB03E8200E6A9BC /* QueuePile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56CC3CF1BB03E8200E6A9BC /* QueuePile.swift */; settings = {ASSET_TAGS = (); }; };
 		D5DC30701BB97702001C4F58 /* Deck.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DC306F1BB97702001C4F58 /* Deck.swift */; settings = {ASSET_TAGS = (); }; };
+		D5DC30B01BB99308001C4F58 /* Rummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DC30AF1BB99308001C4F58 /* Rummy.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,7 @@
 		D56CC3CD1BB037E000E6A9BC /* StackPile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackPile.swift; sourceTree = "<group>"; };
 		D56CC3CF1BB03E8200E6A9BC /* QueuePile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueuePile.swift; sourceTree = "<group>"; };
 		D5DC306F1BB97702001C4F58 /* Deck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Deck.swift; sourceTree = "<group>"; };
+		D5DC30AF1BB99308001C4F58 /* Rummy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rummy.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,8 +152,15 @@
 		D54C89771BAD9527007AEB7E /* Deckstravaganza */ = {
 			isa = PBXGroup;
 			children = (
-				228A7AB31BB9D58B00226653 /* Games */,
-				228A7AB11BB9D50500226653 /* Card Bases */,
+				D54C89781BAD9527007AEB7E /* AppDelegate.swift */,
+				D56CC3C91BAF019900E6A9BC /* Card.swift */,
+				227912931BB47EF9006C6C60 /* CardGame.swift */,
+				227912951BB47F5C006C6C60 /* Solitare.swift */,
+				D5DC30AF1BB99308001C4F58 /* Rummy.swift */,
+				D5DC306F1BB97702001C4F58 /* Deck.swift */,
+				D56CC3CB1BAF135200E6A9BC /* Pile.swift */,
+				D56CC3CF1BB03E8200E6A9BC /* QueuePile.swift */,
+				D56CC3CD1BB037E000E6A9BC /* StackPile.swift */,
 				D54C897A1BAD9527007AEB7E /* ViewController.swift */,
 				D54C89781BAD9527007AEB7E /* AppDelegate.swift */,
 				D54C897C1BAD9527007AEB7E /* Main.storyboard */,
@@ -321,6 +330,7 @@
 				227912941BB47EF9006C6C60 /* CardGame.swift in Sources */,
 				D56CC3CA1BAF019900E6A9BC /* Card.swift in Sources */,
 				227912961BB47F5C006C6C60 /* Solitare.swift in Sources */,
+				D5DC30B01BB99308001C4F58 /* Rummy.swift in Sources */,
 				D54C89791BAD9527007AEB7E /* AppDelegate.swift in Sources */,
 				D56CC3CC1BAF135200E6A9BC /* Pile.swift in Sources */,
 				D56CC3CE1BB037E000E6A9BC /* StackPile.swift in Sources */,

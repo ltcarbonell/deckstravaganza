@@ -26,6 +26,10 @@ class Rummy: CardGame {
     func play() {
         print("Playing");
     }
+    
+    func setPlayers() {
+        print("Setting players");
+    }
 }
 
 class RummyDelegate: CardGameDelegate {
@@ -75,6 +79,7 @@ class RummyDelegate: CardGameDelegate {
     
     func isWinner(Game: CardGameType) -> Bool {
         print("Winner!");
+        return true;
     }
     
     func roundDidStart(Game: CardGameType) {

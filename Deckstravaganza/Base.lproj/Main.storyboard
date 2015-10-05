@@ -32,11 +32,30 @@
                     </view>
                     <connections>
                         <outlet property="Description" destination="8RC-uV-K19" id="qcD-jL-mkX"/>
+                        <segue destination="J8P-7t-iag" kind="show" identifier="testSegue" id="zVY-da-3eP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TRI-wC-87v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="608" y="709"/>
+        </scene>
+        <!--Game Scene View Controller-->
+        <scene sceneID="8xI-ch-gWH">
+            <objects>
+                <viewController id="J8P-7t-iag" customClass="GameSceneViewController" customModule="Deckstravaganza" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="paN-8f-giB"/>
+                        <viewControllerLayoutGuide type="bottom" id="GJ8-gH-gJX"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="TBw-2q-TPl" customClass="SKView">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4rz-6E-bI6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1108" y="817"/>
         </scene>
         <!--Main Menu-->
         <scene sceneID="RMR-lx-QV3">

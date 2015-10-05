@@ -63,6 +63,7 @@ class MasterViewController: UITableViewController {
         
         self.menuItems.append(Menu(name: "New Game", description: "Start a new game"))
         self.menuItems.append(Menu(name: "Continue", description: "Continue a previous game"))
+        self.menuItems.append(Menu(name: "Test", description: "Testing"))
     }
     
     

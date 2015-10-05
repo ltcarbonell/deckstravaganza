@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		227912941BB47EF9006C6C60 /* CardGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227912931BB47EF9006C6C60 /* CardGame.swift */; settings = {ASSET_TAGS = (); }; };
 		227912961BB47F5C006C6C60 /* Solitare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227912951BB47F5C006C6C60 /* Solitare.swift */; settings = {ASSET_TAGS = (); }; };
+		229EB7B81BBB78E400ECE5B5 /* SpriteKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 229EB7B71BBB78E400ECE5B5 /* SpriteKit.framework */; };
+		229EB7BA1BBB7A0D00ECE5B5 /* GameSceneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 229EB7B91BBB7A0D00ECE5B5 /* GameSceneViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		229EB7BC1BBB7AB100ECE5B5 /* SolitareScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 229EB7BB1BBB7AB100ECE5B5 /* SolitareScene.swift */; settings = {ASSET_TAGS = (); }; };
 		D54C89791BAD9527007AEB7E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C89781BAD9527007AEB7E /* AppDelegate.swift */; };
 		D54C897B1BAD9527007AEB7E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C897A1BAD9527007AEB7E /* ViewController.swift */; };
 		D54C897E1BAD9527007AEB7E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D54C897C1BAD9527007AEB7E /* Main.storyboard */; };
@@ -43,6 +46,9 @@
 /* Begin PBXFileReference section */
 		227912931BB47EF9006C6C60 /* CardGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardGame.swift; sourceTree = "<group>"; };
 		227912951BB47F5C006C6C60 /* Solitare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Solitare.swift; sourceTree = "<group>"; };
+		229EB7B71BBB78E400ECE5B5 /* SpriteKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpriteKit.framework; path = System/Library/Frameworks/SpriteKit.framework; sourceTree = SDKROOT; };
+		229EB7B91BBB7A0D00ECE5B5 /* GameSceneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSceneViewController.swift; sourceTree = "<group>"; };
+		229EB7BB1BBB7AB100ECE5B5 /* SolitareScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SolitareScene.swift; sourceTree = "<group>"; };
 		D54C89751BAD9527007AEB7E /* Deckstravaganza.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Deckstravaganza.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D54C89781BAD9527007AEB7E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D54C897A1BAD9527007AEB7E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -68,6 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				229EB7B81BBB78E400ECE5B5 /* SpriteKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				227912951BB47F5C006C6C60 /* Solitare.swift */,
+				229EB7BB1BBB7AB100ECE5B5 /* SolitareScene.swift */,
 			);
 			name = Solitare;
 			sourceTree = "<group>";
@@ -111,6 +119,7 @@
 		228A7AB31BB9D58B00226653 /* Games */ = {
 			isa = PBXGroup;
 			children = (
+				229EB7B91BBB7A0D00ECE5B5 /* GameSceneViewController.swift */,
 				228A7AB01BB9D4E700226653 /* Solitare */,
 				227912931BB47EF9006C6C60 /* CardGame.swift */,
 			);
@@ -124,6 +133,7 @@
 				D54C898C1BAD9527007AEB7E /* DeckstravaganzaTests */,
 				D54C89971BAD9527007AEB7E /* DeckstravaganzaUITests */,
 				D54C89761BAD9527007AEB7E /* Products */,
+				229EB7B71BBB78E400ECE5B5 /* SpriteKit.framework */,
 			);
 			sourceTree = "<group>";
 		};
@@ -306,6 +316,8 @@
 				D5DC30701BB97702001C4F58 /* Deck.swift in Sources */,
 				D54C897B1BAD9527007AEB7E /* ViewController.swift in Sources */,
 				D56CC3D01BB03E8200E6A9BC /* QueuePile.swift in Sources */,
+				229EB7BA1BBB7A0D00ECE5B5 /* GameSceneViewController.swift in Sources */,
+				229EB7BC1BBB7AB100ECE5B5 /* SolitareScene.swift in Sources */,
 				227912941BB47EF9006C6C60 /* CardGame.swift in Sources */,
 				D56CC3CA1BAF019900E6A9BC /* Card.swift in Sources */,
 				227912961BB47F5C006C6C60 /* Solitare.swift in Sources */,

@@ -26,9 +26,9 @@ class GameSceneViewController: UIViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
-        let solitareScene:SolitareScene = SolitareScene(size: CGSizeMake(768, 1024))
+        let solitaireScene:SolitaireScene = SolitaireScene(size: CGSizeMake(768, 1024))
         let spriteView:SKView = self.view as! SKView
-        spriteView.presentScene(solitareScene)
+        spriteView.presentScene(solitaireScene)
     }
 
     /*

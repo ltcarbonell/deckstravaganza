@@ -23,6 +23,8 @@ class Rummy: CardGame {
     
     var players = [Player]();
     
+    var adjustableSettings = [AdjustableSetting]();
+    
     func play() {
         print("Playing");
     }

@@ -13,7 +13,11 @@ class Solitare: CardGame {
     
     //Properties from protocol of card game
     var deck: Deck
+    var players = [Player]()
     var diff: Difficulty
+    
+    var adjustableSettings = [AdjustableSetting(settingName: "Difficulty Level", formType: FormType.DropDown, dataType: DataType.String, options: ["Easy", "Hard"])]
+    
     enum Difficulty : Int {
         case Easy = 1;
         case Hard = 3;
@@ -23,7 +27,7 @@ class Solitare: CardGame {
     var wastePile = StackPile()        // where the three cards are placed that you can chose from
     var foundations = [StackPile](count: 4, repeatedValue: StackPile())    // where you have to place A -> King by suit
     var tableus = [StackPile](count: 7, repeatedValue: StackPile())        // The piles of cards you can add onto
-    var players = [Player]()
+    
     
     let gameDelegate = SolitareDelegate()
     

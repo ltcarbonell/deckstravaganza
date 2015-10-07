@@ -55,6 +55,7 @@
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <nil key="simulatedTopBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4rz-6E-bI6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

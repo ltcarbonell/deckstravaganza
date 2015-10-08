@@ -1,5 +1,5 @@
 //
-//  Solitare.swift
+//  Solitaire.swift
 //  Deckstravaganza
 //
 //  Created by LT Carbonell on 9/20/15.
@@ -9,29 +9,33 @@
 import Foundation
 import SpriteKit
 
-class Solitare: CardGame {
+class Solitaire: CardGame {
     
     //Properties from protocol of card game
     var deck: Deck
+    var players = [Player]()
     var diff: Difficulty
+    
+    var adjustableSettings = [AdjustableSetting(settingName: "Difficulty Level", formType: FormType.DropDown, dataType: DataType.String, options: ["Easy", "Hard"])]
+    
     enum Difficulty : Int {
         case Easy = 1;
         case Hard = 3;
     }
     
-    // Properties of solitare
+    // Properties of Solitaire
     var wastePile = StackPile()        // where the three cards are placed that you can chose from
     var foundations = [StackPile](count: 4, repeatedValue: StackPile())    // where you have to place A -> King by suit
     var tableus = [StackPile](count: 7, repeatedValue: StackPile())        // The piles of cards you can add onto
-    var players = [Player]()
     
-    let gameDelegate = SolitareDelegate()
+    
+    let gameDelegate = SolitaireDelegate()
     
     // initializer
     init() {
         self.diff = .Easy
         // deals the cards out for the first and only time
-        // calls from solitare delagate
+        // calls from Solitaire delagate
         self.deck = Deck()
         self.setPlayers()
         gameDelegate.deal(self)
@@ -55,7 +59,7 @@ class Solitare: CardGame {
     }
     
     func setPlayers() {
-        self.players = [Player(userName: "Player 1", score: 0, playerNumber: 1)]  // only one player... hence SOLITARE
+        self.players = [Player(userName: "Player 1", score: 0, playerNumber: 1)]  // only one player... hence Solitaire
     }
     
     /*func turn() {
@@ -186,11 +190,11 @@ class Solitare: CardGame {
     }*/
 }
 
-class SolitareDelegate: CardGameDelegate {
+class SolitaireDelegate: CardGameDelegate {
     var numberOfRounds = 0
-    typealias cardGameType = Solitare
+    typealias cardGameType = Solitaire
     
-    func deal(Game: Solitare) {
+    func deal(Game: Solitaire) {
         var newCard: Card
         // calls a brand new, newly shuffled deck
         Game.deck.newDeck()
@@ -216,20 +220,20 @@ class SolitareDelegate: CardGameDelegate {
     
     
     // these are used to keep track of the status of the game
-    func gameDidStart(Game: Solitare) {
+    func gameDidStart(Game: Solitaire) {
         numberOfRounds = 0
-        if Game is Solitare {
-            print("We are playing solitare")
+        if Game is Solitaire {
+            print("We are playing Solitaire")
             
         }
     }
     
-    func gameDidEnd(Game: Solitare) {
+    func gameDidEnd(Game: Solitaire) {
         print("The game ended in \(numberOfRounds) rounds.")
         print("\(Game.players[0].userName) has a score of \(Game.players[0].score)")
         
     }
-    func isWinner(Game: Solitare) -> Bool {
+    func isWinner(Game: Solitaire) -> Bool {
         //        if Game.foundations[0].numberOfCards() == 13 && Game.foundations[1].numberOfCards() == 13  && Game.foundations[2].numberOfCards() == 13 && Game.foundations[3].numberOfCards() == 13 {
         //            return true
         //        } else {
@@ -243,17 +247,17 @@ class SolitareDelegate: CardGameDelegate {
     }
     
     // used to keep track of the rounds which are when all players take their turn
-    func roundDidStart(Game: Solitare) {
+    func roundDidStart(Game: Solitaire) {
         print("Round number \(numberOfRounds) is starting.")
     }
     
     //
-    func roundDidEnd(Game: Solitare) {
+    func roundDidEnd(Game: Solitaire) {
         print("Round number \(numberOfRounds) is ending.")
     }
     
     // keeps score for the player
-    func increaseScore(Game: Solitare) {
+    func increaseScore(Game: Solitaire) {
         Game.players[0].score++
     }
     

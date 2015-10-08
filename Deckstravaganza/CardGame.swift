@@ -14,6 +14,29 @@ struct Player {
     var playerNumber: Int
 }
 
+enum FormType : Int {
+    case DropDown = 1
+    case Slider = 2
+    case Switch = 3
+    
+    static let numberOfFormTypes = 3
+}
+
+enum DataType : Int {
+    case Int = 1
+    case Bool = 2
+    case String = 3
+    
+    static let numberOfDataTypes = 3
+}
+
+struct AdjustableSetting {
+    var settingName: String
+    var formType: FormType
+    var dataType: DataType
+    var options: [String]
+}
+
 
 
 protocol CardGame {
@@ -25,6 +48,8 @@ protocol CardGame {
     func play()
     // sets the players with point values and names
     func setPlayers()
+    
+    var adjustableSettings: [AdjustableSetting] { get set }
 }
 
 protocol CardGameDelegate {

@@ -1,5 +1,5 @@
 //
-//  SolitareScene.swift
+//  SolitaireScene.swift
 //  Deckstravaganza
 //
 //  Created by LT Carbonell on 9/29/15.
@@ -9,9 +9,9 @@
 import SpriteKit
 
 
-class SolitareScene: SKScene {
-    let solitareGame = Solitare()
-    let gameDelegate = SolitareDelegate()
+class SolitaireScene: SKScene {
+    let SolitaireGame = Solitaire()
+    let gameDelegate = SolitaireDelegate()
     
     var cardSize = CGSize(width: 0, height: 0)
     
@@ -19,6 +19,8 @@ class SolitareScene: SKScene {
     var wastePileLocation = CGPoint(x: 0, y: 0)
     var foundationLocations = [CGPoint](count: 4, repeatedValue: CGPointMake(0, 0))
     var tableuLocations = [CGPoint](count: 7, repeatedValue: CGPointMake(0, 0))
+    
+    let cardBackTexture = SKTexture(imageNamed: "cardBack")
     
     
     override func didMoveToView(view: SKView) {
@@ -36,41 +38,41 @@ class SolitareScene: SKScene {
         
         
         deal()
-        gameDelegate.gameDidStart(solitareGame)
-        while !gameDelegate.isWinner(solitareGame) {
-            gameDelegate.roundDidStart(solitareGame)
+        gameDelegate.gameDidStart(SolitaireGame)
+        while !gameDelegate.isWinner(SolitaireGame) {
+            gameDelegate.roundDidStart(SolitaireGame)
             // take a turn
             //turn()
-            gameDelegate.roundDidEnd(solitareGame)
+            gameDelegate.roundDidEnd(SolitaireGame)
             gameDelegate.numberOfRounds++
-            gameDelegate.increaseScore(solitareGame)
+            gameDelegate.increaseScore(SolitaireGame)
         }
-        gameDelegate.gameDidEnd(solitareGame)
+        gameDelegate.gameDidEnd(SolitaireGame)
         
     }
     
     func deal() {
-        gameDelegate.deal(solitareGame)
+        gameDelegate.deal(SolitaireGame)
         
-        let deckSprite = SKSpriteNode(imageNamed: "")
+        let deckSprite = SKSpriteNode(texture: cardBackTexture)
         deckSprite.size = cardSize
         deckSprite.position = deckLocation
         self.addChild(deckSprite)
         
-        let wastePileSprite = SKSpriteNode(imageNamed: "")
+        let wastePileSprite = SKSpriteNode(texture: cardBackTexture)
         wastePileSprite.size = cardSize
         wastePileSprite.position = wastePileLocation
         self.addChild(wastePileSprite)
 
         for var i = 0; i < foundationLocations.count; i++ {
-            let foundationSprite = SKSpriteNode(imageNamed: "")
+            let foundationSprite = SKSpriteNode(texture: cardBackTexture)
             foundationSprite.size = cardSize
             foundationSprite.position = foundationLocations[i]
             self.addChild(foundationSprite)
         }
         for var i = 0; i < tableuLocations.count; i++ {
             for var j = 0; j <= i; j++ {
-                let tableuSprite = SKSpriteNode(imageNamed: "")
+                let tableuSprite = SKSpriteNode(texture: cardBackTexture)
                 tableuSprite.size = cardSize
                 tableuSprite.position = tableuLocations[i]
                 self.addChild(tableuSprite)

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SpriteKit
 
 class DetailViewController: UIViewController {
 
@@ -53,10 +54,10 @@ class DetailViewController: UIViewController {
     func buttonAction(sender:UIButton!)
     {
         print("Button tapped")
+        performSegueWithIdentifier("testSegue", sender: nil)
     }
-    
 }
-    
+
     
     /*
     // MARK: - Navigation

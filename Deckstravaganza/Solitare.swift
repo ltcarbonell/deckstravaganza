@@ -24,9 +24,27 @@ class Solitaire: CardGame {
     }
     
     // Properties of Solitaire
-    var wastePile = StackPile()        // where the three cards are placed that you can chose from
-    var foundations = [StackPile](count: 4, repeatedValue: StackPile())    // where you have to place A -> King by suit
-    var tableus = [StackPile](count: 7, repeatedValue: StackPile())        // The piles of cards you can add onto
+    var wastePile: StackPile        // where the three cards are placed that you can chose from
+    
+    
+    // where you have to place A -> King by suit
+    var foundations:[StackPile]
+    var foundation1: StackPile
+    var foundation2: StackPile
+    var foundation3: StackPile
+    var foundation4: StackPile
+    
+    // The piles of cards you can add onto
+    var tableus: [StackPile]
+    var tableu1: StackPile
+    var tableu2: StackPile
+    var tableu3: StackPile
+    var tableu4: StackPile
+    var tableu5: StackPile
+    var tableu6: StackPile
+    var tableu7: StackPile
+    
+    
     
     
     let gameDelegate = SolitaireDelegate()
@@ -36,9 +54,36 @@ class Solitaire: CardGame {
         self.diff = .Easy
         // deals the cards out for the first and only time
         // calls from Solitaire delagate
-        self.deck = Deck()
+        self.deck = Deck(isTopAtFirstCard: true)
+        self.deck.name = "Deck"
+        
+        self.wastePile = StackPile()
+        self.wastePile.name = "WastePile"
+        
+        self.foundation1 = StackPile()
+        self.foundation2 = StackPile()
+        self.foundation3 = StackPile()
+        self.foundation4 = StackPile()
+        self.foundations = [self.foundation1, self.foundation2, self.foundation3, self.foundation4]
+        for foundation in self.foundations {
+            foundation.name = "Foundation"
+        }
+        
+        self.tableu1 = StackPile()
+        self.tableu2 = StackPile()
+        self.tableu3 = StackPile()
+        self.tableu4 = StackPile()
+        self.tableu5 = StackPile()
+        self.tableu6 = StackPile()
+        self.tableu7 = StackPile()
+        self.tableus = [self.tableu1, self.tableu2, self.tableu3, self.tableu4, self.tableu5, self.tableu6, self.tableu7]
+        for tableu in self.tableus {
+            tableu.name = "Tableu"
+        }
+        
+        
         self.setPlayers()
-        gameDelegate.deal(self)
+        //gameDelegate.deal(self)
     }
     
     // Methods
@@ -60,6 +105,10 @@ class Solitaire: CardGame {
     
     func setPlayers() {
         self.players = [Player(userName: "Player 1", score: 0, playerNumber: 1)]  // only one player... hence Solitaire
+    }
+    
+    func moveCard(fromPile: StackPile, toPile: StackPile) {
+        
     }
     
     /*func turn() {
@@ -104,14 +153,14 @@ class Solitaire: CardGame {
             // Invalid
             print("invalid move try again")
         }
-    }
+    }*/
     
     func checkMove(previousPile: StackPile, newPile: StackPile) -> Bool {
         // get where the card is coming from
         // see where it is going
         
         // if coming from wastePile and going to tableu, has to be one less and opposite color as tableu.top or king and empty space
-        if previousPile == wastePile && tableus.contains(newPile) {
+        if previousPile.name == wastePile.name && newPile.name == tableus[0].name {
             // if the tableu it is going to is empty, it must be a king of any suit
             if newPile.isEmpty() {
                 if previousPile.topCard()!.getRank() == .King {
@@ -129,7 +178,7 @@ class Solitaire: CardGame {
         }
             
         // if coming from wastePile and going to foundation, has to be one more and same suit
-        else if previousPile == wastePile && foundations.contains(newPile) {
+        else if previousPile.name == wastePile.name && newPile.name == foundations[0].name {
             // checks if foundation is empty, if so it must be an ace that goes to the foundation
             if newPile.isEmpty() {
                 if previousPile.topCard()!.getRank() == .Ace {
@@ -147,7 +196,7 @@ class Solitaire: CardGame {
         }
         
         // if coming from tableu to foundation, has to be one more and same suit
-        else if tableus.contains(previousPile) && foundations.contains(newPile) {
+        else if previousPile.name == tableus[0].name && newPile.name == foundations[0].name {
             // checks if foundation is empty, if so it must be an ace that goes to the foundation
             if newPile.isEmpty() {
                 if previousPile.topCard()!.getRank() == .Ace {
@@ -165,7 +214,7 @@ class Solitaire: CardGame {
         }
         
         // if coming from foundation to tableu has to be one less and opposite color
-        else if foundations.contains(previousPile) && tableus.contains(newPile) {
+        else if foundations[0].name == previousPile.name && tableus[0].name == newPile.name {
             // if the tableu it is going to is empty, it must be a king of any suit
             if newPile.isEmpty() {
                 if previousPile.topCard()!.getRank() == .King {
@@ -182,12 +231,15 @@ class Solitaire: CardGame {
             }
         }
         // if coming from tableu to different tableu, has to be one less and opposite color as tableu.top or king and empty space
-        else if tableus.contains(previousPile) && tableus.contains(newPile) {
+        else if tableus[0].name == previousPile.name && tableus[0].name == newPile.name {
             // HAVE TO BE ABLE TO MOVE MULTIPLE CARDS AT ONE TIME
             // NOTE: Ask Calvin which method (if any) implements that
-            
+            return true
         }
-    }*/
+        else {
+            return false
+        }
+    }
 }
 
 class SolitaireDelegate: CardGameDelegate {
@@ -211,11 +263,11 @@ class SolitaireDelegate: CardGameDelegate {
         
         // places the cards into the tableus 1->7
         for var i = 0; i < 7; i++ {
-            for var j = 0; j < i; j++ {
+            for var j = 0; j < i+1; j++ {
                 newCard = Game.deck.pull()!
                 Game.tableus[i].push(newCard)
             }
-        }         
+        }
     }
     
     

@@ -109,9 +109,9 @@
 			isa = PBXGroup;
 			children = (
 				D5A0C80D1BC2E46900CE8A60 /* GameSceneViewController.swift */,
-				D5A0C80E1BC2E46900CE8A60 /* SolitareScene.swift */,
 				227912931BB47EF9006C6C60 /* CardGame.swift */,
 				227912951BB47F5C006C6C60 /* Solitare.swift */,
+				D5A0C80E1BC2E46900CE8A60 /* SolitareScene.swift */,
 				D5DC30AF1BB99308001C4F58 /* Rummy.swift */,
 			);
 			name = "Game Elements";

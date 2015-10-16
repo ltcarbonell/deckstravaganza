@@ -10,6 +10,7 @@ import Foundation
 
 class Pile {
     var pile : [Card];
+    var name: String?
     
     init() {
         pile = [Card]();

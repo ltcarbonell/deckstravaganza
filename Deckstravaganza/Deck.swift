@@ -34,7 +34,7 @@ class Deck: StackPile {
         newDeck();
     }
     
-    init(deckFront : DeckFronts, deckBack : DeckBacks) {
+    init(deckFront : DeckFronts = .Default, deckBack : DeckBacks = .Default) {
         frontType = deckFront;
         backType = deckBack;
         
@@ -52,7 +52,7 @@ class Deck: StackPile {
         newDeck();
     }
     
-    init(isTopAtFirstCard : Bool, deckFront : DeckFronts, deckBack : DeckBacks) {
+    init(isTopAtFirstCard : Bool, deckFront : DeckFronts = .Default, deckBack : DeckBacks = .Default) {
         frontType = deckFront;
         backType = deckBack;
         

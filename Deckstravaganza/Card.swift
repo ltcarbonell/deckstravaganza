@@ -196,10 +196,10 @@ class Card {
     /**
     * Returns the face of this card.
     *
-    * @param deckChoice : DeckFronts (default .Default) - the deck front being used by this deck to which this card belongs
+    * @param deckChoice : DeckFronts - the deck front being used by this deck to which this card belongs
     * @return UIImage? - the face of this card if found
     */
-    func getCardFace(deckChoice : Deck.DeckFronts = .Default) -> UIImage? {
+    func getCardFace(deckChoice : Deck.DeckFronts) -> UIImage? {
         let cardRank : String;
         let cardSuit : String;
         var cardOption : Deck.DeckFronts = deckChoice;
@@ -241,10 +241,10 @@ class Card {
     /**
     * Returns the back of this card.
     *
-    * @param deckChoice : DeckBacks (default .Default) - the deck back being used by the deck to which this card belongs
+    * @param deckChoice : DeckBacks - the deck back being used by the deck to which this card belongs
     * @return UIImage? - the back of this card if found
     */
-    func getCardBack(deckChoice : Deck.DeckBacks = .Default) -> UIImage? {
+    func getCardBack(deckChoice : Deck.DeckBacks) -> UIImage? {
         let imageName = "back_" + deckChoice.rawValue;
         
         return UIImage(named: imageName);

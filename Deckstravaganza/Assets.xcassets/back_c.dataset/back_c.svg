@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="222.229px" height="310.812px" viewBox="0 0 222.229 310.812" enable-background="new 0 0 222.229 310.812"
+	 xml:space="preserve">
+<pattern  x="-194.814" y="-239.854" width="2592" height="1728" patternUnits="userSpaceOnUse" id="pattern25903-263" viewBox="0 -1728 2592 1728" overflow="visible">
+	<g>
+		<polygon fill="none" points="0,0 2592,0 2592,-1728 0,-1728 		"/>
+	</g>
+</pattern>
+<pattern  x="-194.814" y="-239.854" width="2592" height="1728" patternUnits="userSpaceOnUse" id="pattern25905-599" viewBox="0 -1728 2592 1728" overflow="visible">
+	<g>
+		<polygon fill="none" points="0,0 2592,0 2592,-1728 0,-1728 		"/>
+	</g>
+</pattern>
+<g id="g25889" transform="translate(-563.67813,1064.75)">
+	<path id="rect25891" fill="#FFFFFF" stroke="#010101" d="M574.153-1064.706H775.12c5.871,0,10.63,4.759,10.63,10.63v289.551
+		c0,5.871-4.759,10.63-10.63,10.63H574.153c-5.871,0-10.63-4.759-10.63-10.63v-289.551
+		C563.523-1059.947,568.282-1064.706,574.153-1064.706z"/>
+	
+		<rect id="rect25893" x="576.111" y="-1052.623" fill="none" stroke="#010101" stroke-width="4.9524" stroke-linecap="round" width="197.052" height="286.645"/>
+	
+		<pattern  id="rect25895_1_" xlink:href="#pattern25903-263" patternTransform="matrix(6.7529 0 0 -6.7529 45063.3047 -68871.1406)">
+	</pattern>
+	
+		<rect id="rect25895" x="580.498" y="-1048.754" fill="url(#rect25895_1_)" stroke="#010101" stroke-linecap="round" width="188.276" height="278.906"/>
+	<path id="rect25897" fill="#FFFFFF" stroke="#010101" d="M574.153-1064.706H775.12c5.871,0,10.63,4.759,10.63,10.63v289.551
+		c0,5.871-4.759,10.63-10.63,10.63H574.153c-5.871,0-10.63-4.759-10.63-10.63v-289.551
+		C563.523-1059.947,568.282-1064.706,574.153-1064.706z"/>
+	
+		<rect id="rect25899" x="576.111" y="-1052.623" fill="#010101" stroke="#010101" stroke-width="4.9524" stroke-linecap="round" width="197.052" height="286.645"/>
+	
+		<pattern  id="rect25901_1_" xlink:href="#pattern25905-599" patternTransform="matrix(5.7428 0 0 -5.7428 37785.9297 -59744.5547)">
+	</pattern>
+	
+		<rect id="rect25901" x="580.498" y="-1048.754" fill="url(#rect25901_1_)" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" width="188.276" height="278.906"/>
+</g>
+</svg>

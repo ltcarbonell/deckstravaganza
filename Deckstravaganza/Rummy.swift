@@ -14,7 +14,7 @@ struct RummyMeld {
 }
 
 class Rummy: CardGame {
-    var deck = Deck();
+    var deck = Deck(deckFront: Deck.DeckFronts.Default, deckBack: Deck.DeckBacks.Default)
     var targetScore = 500;
     
     var wastePile =     StackPile(),

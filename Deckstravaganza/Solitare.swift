@@ -54,7 +54,7 @@ class Solitaire: CardGame {
         self.diff = .Easy
         // deals the cards out for the first and only time
         // calls from Solitaire delagate
-        self.deck = Deck(isTopAtFirstCard: true)
+        self.deck = Deck(isTopAtFirstCard: true, deckFront: Deck.DeckFronts.Deck2, deckBack: Deck.DeckBacks.Default)
         self.deck.name = "Deck"
         
         self.wastePile = StackPile()

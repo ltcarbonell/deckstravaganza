@@ -9,11 +9,11 @@
 import Foundation
 import SpriteKit
 
+
 class CardSprite: SKSpriteNode {
     let frontTexture: SKTexture
     let backTexture: SKTexture
     var faceUp: Bool
-    
     
     let solitaireScene = SolitaireScene(size: CGSizeMake(768, 1024))
     var toLocation: CGPoint?
@@ -25,8 +25,12 @@ class CardSprite: SKSpriteNode {
     }
     
     init(card: Card) {
-        self.backTexture = SKTexture(imageNamed: "cardBack")
-        self.frontTexture = SKTexture(imageNamed: "card\(card.getSuit())\(card.getRank())")
+        //self.frontTexture = SKTexture(image: card.getCardFace(Deck.DeckFronts.Default)!)
+        //self.backTexture = SKTexture(image: card.getCardBack(Deck.DeckBacks.Default)!)
+        backTexture = SKTexture(image: (card.getCardBack(solitaireScene.SolitaireGame.deck.backType))!)
+        frontTexture = SKTexture(imageNamed: "dsflshf")
+        print(card.getCardFace(solitaireScene.SolitaireGame.deck.frontType))
+        
         self.faceUp = false
         
         super.init(texture: backTexture, color: UIColor.blackColor(), size: backTexture.size())

@@ -6,7 +6,8 @@
   "data" : [
     {
       "idiom" : "universal",
-      "filename" : "back_a.svg"
+      "filename" : "back_a.svg",
+      "universal-type-identifier" : "svg"
     }
   ]
 }

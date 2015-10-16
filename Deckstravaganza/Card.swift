@@ -6,7 +6,7 @@
 //  Copyright © 2015 University of Florida. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class Card {
     // Enumeration of legal card suits.
@@ -182,7 +182,7 @@ class Card {
     * suit.
     *
     * @param card : Card - The card with which to compare this card.
-    * @param acesLow : Bool - True if Aces should be considered low.
+    * @param ignoreSuit : Bool (default true) - True if suit should not be considered; false otherwise.
     * @return Bool - true if this card is equal to the specified card
     */
     func isEqualTo(card : Card, ignoreSuit : Bool = true) -> Bool {
@@ -191,5 +191,62 @@ class Card {
         } else {
             return (self.rank == card.getRank() && self.suit == card.getSuit());
         }
+    }
+    
+    /**
+    * Returns the face of this card.
+    *
+    * @param deckChoice : DeckFronts (default .Default) - the deck front being used by this deck to which this card belongs
+    * @return UIImage? - the face of this card if found
+    */
+    func getCardFace(deckChoice : Deck.DeckFronts = .Default) -> UIImage? {
+        let cardRank : String;
+        let cardSuit : String;
+        var cardOption : Deck.DeckFronts = deckChoice;
+        
+        switch(self.suit) {
+            case .Clubs:
+                cardSuit = "clubs";
+            case .Diamonds:
+                cardSuit = "diamonds";
+            case .Hearts:
+                cardSuit = "hearts";
+            case .Spades:
+                cardSuit = "spades";
+        }
+        
+        switch(self.rank) {
+            case .Ace:
+                cardRank = "ace";
+            case .Jack:
+                cardRank = "jack";
+            case .Queen:
+                cardRank = "queen";
+            case .King:
+                cardRank = "king";
+            default:
+                cardRank = String(self.rank.rawValue);
+        }
+        
+        // The only difference between Deck1 and Deck2 are the Kings, Queens, and Jacks.
+        if(self.rank.rawValue <= CardRank.Ten.rawValue && cardOption == Deck.DeckFronts.Deck3) {
+            cardOption = Deck.DeckFronts.Deck2;
+        }
+        
+        let imageName = cardRank + "_" + cardSuit + "_" + cardOption.rawValue;
+
+        return UIImage(named: imageName);
+    }
+    
+    /**
+    * Returns the back of this card.
+    *
+    * @param deckChoice : DeckBacks (default .Default) - the deck back being used by the deck to which this card belongs
+    * @return UIImage? - the back of this card if found
+    */
+    func getCardBack(deckChoice : Deck.DeckBacks = .Default) -> UIImage? {
+        let imageName = "back_" + deckChoice.rawValue;
+        
+        return UIImage(named: imageName);
     }
 }

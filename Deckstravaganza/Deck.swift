@@ -9,22 +9,91 @@
 import Foundation
 
 class Deck: StackPile {
+    enum DeckFronts : String {
+        case Default =   "a";
+        case Deck2 =     "b";
+        case Deck3 =     "2b";
+    }
+    
+    enum DeckBacks : String {
+        case Default =      "a";
+        case SolidBlue =    "b";
+        case SolidBlack =   "c";
+        case PatternBlue =  "d";
+    }
+    
+    var frontType : DeckFronts;
+    var backType : DeckBacks;
+    
     override init() {
+        frontType = .Default;
+        backType = .Default;
+        
+        super.init();
+        
+        newDeck();
+    }
+    
+    init(deckFront : DeckFronts, deckBack : DeckBacks) {
+        frontType = deckFront;
+        backType = deckBack;
+        
         super.init();
         
         newDeck();
     }
     
     override init(isTopAtFirstCard : Bool) {
+        frontType = .Default;
+        backType = .Default;
+        
+        super.init(isTopAtFirstCard: isTopAtFirstCard);
+        
+        newDeck();
+    }
+    
+    init(isTopAtFirstCard : Bool, deckFront : DeckFronts, deckBack : DeckBacks) {
+        frontType = deckFront;
+        backType = deckBack;
+        
         super.init(isTopAtFirstCard: isTopAtFirstCard);
         
         newDeck();
     }
     
     override init(oldPile : StackPile, isTopAtFirstCard : Bool = false) {
+        frontType = .Default;
+        backType = .Default;
+        
         super.init(oldPile: oldPile, isTopAtFirstCard: isTopAtFirstCard);
     }
     
+    init(oldPile : StackPile, deckFront : DeckFronts, deckBack : DeckBacks, isTopAtFirstCard : Bool = false) {
+        frontType = deckFront;
+        backType = deckBack;
+        
+        super.init(oldPile: oldPile, isTopAtFirstCard: isTopAtFirstCard);
+    }
+    
+    /**
+    * Change the deck style chosen.
+    *
+    * @param deckFront : DeckFronts (default nil) - the new DeckFronts style to use.  If nil, the current style remains.
+    * @param deckBack : DeckBacks (default nil) - the new DeckBacks style to use.  If nil, the current style remains.
+    */
+    func changeDeck(deckFront : DeckFronts? = nil, deckBack : DeckBacks? = nil) {
+        if(deckFront != nil) {
+            frontType = deckFront!;
+        }
+        
+        if(deckBack != nil) {
+            backType = deckBack!;
+        }
+    }
+    
+    /**
+    * Creates a new deck and shuffles the cards.
+    */
     func newDeck() {
         self.pile.removeAll();
         

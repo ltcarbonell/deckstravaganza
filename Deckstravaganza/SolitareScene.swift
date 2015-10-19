@@ -27,7 +27,7 @@ class CardSprite: SKSpriteNode {
     init(card: Card) {
         //self.frontTexture = SKTexture(image: card.getCardFace(Deck.DeckFronts.Default)!)
         //self.backTexture = SKTexture(image: card.getCardBack(Deck.DeckBacks.Default)!)
-        backTexture = SKTexture(image: (card.getCardBack(solitaireScene.SolitaireGame.deck.backType))!)
+        backTexture = SKTexture(imageNamed: "cardBack")
         frontTexture = SKTexture(imageNamed: "dsflshf")
         print(card.getCardFace(solitaireScene.SolitaireGame.deck.frontType))
         
@@ -79,6 +79,8 @@ class CardSprite: SKSpriteNode {
             
             let newPile = solitaireScene.CGPointToPile(toLocation!)
             let oldPile = solitaireScene.CGPointToPile(fromLocation!)
+            
+            let snapToSpot = SKAction.moveTo(toLocation!, duration: 0.01)
             let goBack = SKAction.moveTo(fromLocation!, duration: 0.01)
             
             if newPile == nil {
@@ -86,7 +88,9 @@ class CardSprite: SKSpriteNode {
             }
             else if newPile != nil && oldPile != nil {
                 if solitaireScene.SolitaireGame.checkMove(oldPile!, newPile: newPile!) {
+                    self.runAction(snapToSpot)
                     solitaireScene.SolitaireGame.moveCard(oldPile!, toPile: newPile!)
+                    
                 } else {
                     self.runAction(goBack)
                 }
@@ -240,74 +244,4 @@ class SolitaireScene: SKScene {
         }
         
     }
-    
-/********************** Touch Controls ***************************************/
-    /*override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        // clear out to and from locations
-        toLocation = nil
-        fromLocation = nil
-        for touch in touches {
-            //let location = touch.locationInNode(self)
-
-            //let touchedNode = nodeAtPoint(location)
-            // test for where the card was touched
-            //fromLocation = snapToCGPoint(location)
-        }
-        if fromLocation != nil {
-            print(fromLocation!)
-        }
-        
-        
-    }
-    
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        for touch in touches {
-            let location = touch.locationInNode(scene!)
-            let touchedNode = nodeAtPoint(location)
-            touchedNode.position = location
-            /*if fromLocation == deckLocation {
-                // draw a new card
-            } else if tableuLocations.contains(fromLocation!) {
-                // card is taken from the tableu options
-                touchedNode.position = location
-            } else if foundationLocations.contains(fromLocation!) {
-                // card is take from foundation
-                touchedNode.position = location
-            } else if fromLocation == wastePileLocation {
-                // card is taken from the wastepile
-                touchedNode.position = location
-            } else {
-                // invalid location to begin touch
-            }*/
-        }
-    }
-    
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        for touch in touches {
-            /*let location = touch.locationInNode(self)
-            let touchedNode = nodeAtPoint(location)
-            // test for where the card was touched
-            
-            toLocation = snapToCGPoint(location)
-            
-            let newPile = CGPointToStackPile(toLocation!)
-            let oldPile = CGPointToStackPile(fromLocation!)
-            print(newPile?.name, oldPile?.name)
-                
-            if newPile != nil && oldPile != nil {
-                if SolitaireGame.checkMove(oldPile!, newPile: newPile!) {
-                    SolitaireGame.moveCard(oldPile!, toPile: newPile!)
-                } else {
-                    
-                }
-            }
-            
-            
-
-        }
-        if toLocation != nil {
-            print(toLocation!)
-        }
-
-    }*/*/
 }

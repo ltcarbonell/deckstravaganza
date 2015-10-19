@@ -158,9 +158,13 @@ class Solitaire: CardGame {
     func checkMove(previousPile: StackPile, newPile: StackPile) -> Bool {
         // get where the card is coming from
         // see where it is going
-        
+        print("FROM, TO \(previousPile.name, newPile.name)")
+        print(previousPile.numberOfCards(), newPile.numberOfCards())
+        for var i = 0; i < previousPile.numberOfCards(); i++ {
+            print(previousPile.cardAt(i))
+        }
         // if coming from wastePile and going to tableu, has to be one less and opposite color as tableu.top or king and empty space
-        if previousPile.name == wastePile.name && newPile.name == tableus[0].name {
+        /*if previousPile.name == wastePile.name && newPile.name == tableus[0].name {
             // if the tableu it is going to is empty, it must be a king of any suit
             if newPile.isEmpty() {
                 if previousPile.topCard()!.getRank() == .King {
@@ -196,9 +200,11 @@ class Solitaire: CardGame {
         }
         
         // if coming from tableu to foundation, has to be one more and same suit
-        else if previousPile.name == tableus[0].name && newPile.name == foundations[0].name {
+        else*/ if previousPile.name == tableus[0].name && newPile.name == foundations[0].name {
             // checks if foundation is empty, if so it must be an ace that goes to the foundation
+            
             if newPile.isEmpty() {
+            print(previousPile.topCard()?.getRank())
                 if previousPile.topCard()!.getRank() == .Ace {
                     return true
                 } else {
@@ -213,7 +219,7 @@ class Solitaire: CardGame {
             }
         }
         
-        // if coming from foundation to tableu has to be one less and opposite color
+        /*// if coming from foundation to tableu has to be one less and opposite color
         else if foundations[0].name == previousPile.name && tableus[0].name == newPile.name {
             // if the tableu it is going to is empty, it must be a king of any suit
             if newPile.isEmpty() {
@@ -235,9 +241,21 @@ class Solitaire: CardGame {
             // HAVE TO BE ABLE TO MOVE MULTIPLE CARDS AT ONE TIME
             // NOTE: Ask Calvin which method (if any) implements that
             return true
-        }
+        }*/
         else {
             return false
+        }
+    }
+    func printPileNumbers() {
+        print("Deck: \(self.deck.numberOfCards())")
+        print("Waste: \(self.wastePile.numberOfCards())")
+        var Count = 0
+        for tableu in self.tableus {
+            print("Tableu\(Count++): \(tableu.numberOfCards())")
+        }
+        var count = 0
+        for foundation in self.foundations {
+            print("Foundation\(count++): \(foundation.numberOfCards())")
         }
     }
 }
@@ -306,6 +324,7 @@ class SolitaireDelegate: CardGameDelegate {
     //
     func roundDidEnd(Game: Solitaire) {
         print("Round number \(numberOfRounds) is ending.")
+        Game.printPileNumbers()
     }
     
     // keeps score for the player

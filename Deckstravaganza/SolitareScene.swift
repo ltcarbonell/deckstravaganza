@@ -25,12 +25,8 @@ class CardSprite: SKSpriteNode {
     }
     
     init(card: Card) {
-        //self.frontTexture = SKTexture(image: card.getCardFace(Deck.DeckFronts.Default)!)
-        //self.backTexture = SKTexture(image: card.getCardBack(Deck.DeckBacks.Default)!)
-        backTexture = SKTexture(imageNamed: "cardBack")
-        frontTexture = SKTexture(imageNamed: "card\(card.getSuit())\(card.getRank())")
-        //print(card.getCardFace(solitaireScene.SolitaireGame.deck.frontType))
-        print("card\(card.getSuit())\(card.getRank().rawValue)")
+        self.frontTexture = SKTexture(image: card.getCardFace(Deck.DeckFronts.Default)!)
+        self.backTexture = SKTexture(image: card.getCardBack(Deck.DeckBacks.Default)!)
         
         self.faceUp = false
         
@@ -92,7 +88,7 @@ class CardSprite: SKSpriteNode {
             else if newPile != nil && oldPile != nil {
                 self.runAction(snapToSpot)
                 print(oldPile?.numberOfCards(), newPile?.numberOfCards())
-                solitaireScene.gameDelegate.roundDidEnd(solitaireScene.SolitaireGame)
+                //solitaireScene.gameDelegate.roundDidEnd(solitaireScene.SolitaireGame)
                 /*if solitaireScene.SolitaireGame.checkMove(oldPile!, newPile: newPile!) {
                     self.runAction(snapToSpot)
                     print(oldPile?.numberOfCards(), newPile?.numberOfCards())

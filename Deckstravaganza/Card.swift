@@ -233,7 +233,7 @@ class Card {
             cardOption = Deck.DeckFronts.Deck2;
         }
         
-        let imageName = "../" + cardRank + "_" + cardSuit + "_" + cardOption.rawValue;
+        let imageName = cardRank + "_" + cardSuit + "_" + cardOption.rawValue;
         return UIImage(named: imageName);
     }
     

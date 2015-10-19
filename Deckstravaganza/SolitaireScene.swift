@@ -15,7 +15,7 @@ class CardSprite: SKSpriteNode {
     let backTexture: SKTexture
     var faceUp: Bool
     
-    let solitaireScene = SolitaireScene(size: CGSizeMake(768, 1024))
+    var solitaireScene: SolitaireScene
     var toLocation: CGPoint?
     var fromLocation: CGPoint?
     
@@ -24,7 +24,9 @@ class CardSprite: SKSpriteNode {
         fatalError("NSCoding not supported")
     }
     
-    init(card: Card) {
+    init(gameScene: GameSceneViewController, card: Card) {
+        self.solitaireScene = gameScene.solitaireScene
+        
         self.frontTexture = SKTexture(image: card.getCardFace(Deck.DeckFronts.Default)!)
         self.backTexture = SKTexture(image: card.getCardBack(Deck.DeckBacks.Default)!)
         
@@ -76,27 +78,25 @@ class CardSprite: SKSpriteNode {
             
             let newPile = solitaireScene.CGPointToPile(toLocation!)
             let oldPile = solitaireScene.CGPointToPile(fromLocation!)
-            print(solitaireScene.SolitaireGame.deck.numberOfCards())
             
             let snapToSpot = SKAction.moveTo(toLocation!, duration: 0.01)
             let goBack = SKAction.moveTo(fromLocation!, duration: 0.01)
-            
             
             if newPile == nil {
                 self.runAction(goBack)
             }
             else if newPile != nil && oldPile != nil {
                 self.runAction(snapToSpot)
-                print(oldPile?.numberOfCards(), newPile?.numberOfCards())
+                //print(oldPile?.numberOfCards(), newPile?.numberOfCards())
                 //solitaireScene.gameDelegate.roundDidEnd(solitaireScene.SolitaireGame)
-                /*if solitaireScene.SolitaireGame.checkMove(oldPile!, newPile: newPile!) {
+                if solitaireScene.SolitaireGame.checkMove(oldPile!, newPile: newPile!) {
                     self.runAction(snapToSpot)
                     print(oldPile?.numberOfCards(), newPile?.numberOfCards())
                     solitaireScene.SolitaireGame.moveCard(oldPile!, toPile: newPile!)
                     
                 } else {
                     self.runAction(goBack)
-                }*/
+                }
             }
             zPosition--
         }
@@ -106,8 +106,9 @@ class CardSprite: SKSpriteNode {
 
 
 class SolitaireScene: SKScene {
-    let SolitaireGame = Solitaire()
-    let gameDelegate = SolitaireDelegate()
+    let GameScene : GameSceneViewController;
+    let SolitaireGame : Solitaire;
+    let SolitaireGameDelegate : SolitaireDelegate;
 
     var cardSize = CGSize(width: 0, height: 0)
 
@@ -116,7 +117,12 @@ class SolitaireScene: SKScene {
     var foundationLocations = [CGPoint](count: 4, repeatedValue: CGPoint(x: 0, y: 0))
     var tableuLocations = [CGPoint](count: 7, repeatedValue: CGPoint(x: 0, y: 0))
     
-    override init(size: CGSize) {
+    init(gameScene : GameSceneViewController, size: CGSize) {
+        
+        self.GameScene = gameScene;
+        self.SolitaireGame = self.GameScene.solitaireGame!;
+        self.SolitaireGameDelegate = self.GameScene.solitaireGameDelegate!;
+        
         super.init(size: size)
         
         self.cardSize = CGSize(width: self.scene!.size.width/8, height: self.scene!.size.height/4)
@@ -139,16 +145,16 @@ class SolitaireScene: SKScene {
         
         
         self.deal()
-        gameDelegate.gameDidStart(SolitaireGame)
-        while !gameDelegate.isWinner(SolitaireGame) {
-            gameDelegate.roundDidStart(SolitaireGame)
+        SolitaireGameDelegate.gameDidStart(SolitaireGame)
+        while !SolitaireGameDelegate.isWinner(SolitaireGame) {
+            SolitaireGameDelegate.roundDidStart(SolitaireGame)
             // take a turn
             //turn()
-            gameDelegate.roundDidEnd(SolitaireGame)
-            gameDelegate.numberOfRounds++
-            gameDelegate.increaseScore(SolitaireGame)
+            SolitaireGameDelegate.roundDidEnd(SolitaireGame)
+            SolitaireGameDelegate.numberOfRounds++
+            SolitaireGameDelegate.increaseScore(SolitaireGame)
         }
-        gameDelegate.gameDidEnd(SolitaireGame)
+        SolitaireGameDelegate.gameDidEnd(SolitaireGame)
         print(self.SolitaireGame.deck.numberOfCards())
         for tableu in self.SolitaireGame.tableus {
             print(tableu.numberOfCards())
@@ -163,13 +169,13 @@ class SolitaireScene: SKScene {
     }
     
     func deal() {
-        gameDelegate.deal(self.SolitaireGame)
+        SolitaireGameDelegate.deal(self.SolitaireGame)
         var dealtCount = 0
         
         for var i = 0; i < tableuLocations.count; i++ {
             
             for var j = 0; j <= i; j++ {
-                let tableuSprite = CardSprite(card: self.SolitaireGame.tableus[i].cardAt(j)!)
+                let tableuSprite = CardSprite(gameScene: self.GameScene, card: self.SolitaireGame.tableus[i].cardAt(j)!)
                 tableuSprite.size = cardSize
                 tableuSprite.position = tableuLocations[i]
                 dealtCount++
@@ -185,7 +191,7 @@ class SolitaireScene: SKScene {
         
         var count = 0
         while dealtCount < 52 {
-            let deckSprite = CardSprite(card: self.SolitaireGame.deck.cardAt(count++)!)
+            let deckSprite = CardSprite(gameScene: self.GameScene, card: self.SolitaireGame.deck.cardAt(count++)!)
             deckSprite.size = cardSize
             deckSprite.position = deckLocation
             self.addChild(deckSprite)

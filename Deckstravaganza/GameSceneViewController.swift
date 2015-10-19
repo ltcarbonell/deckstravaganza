@@ -8,8 +8,30 @@
 
 import SpriteKit
 
-class GameSceneViewController: UIViewController {
 
+class GameSceneViewController: UIViewController {
+    var solitaireScene : SolitaireScene!;
+    var solitaireGame : Solitaire!;
+    var solitaireGameDelegate : SolitaireDelegate!;
+    
+//    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+//        GameSceneViewController = UIViewController()
+//        super.init()
+//        
+//        self.solitaireScene = SolitaireScene(gameScene: self, size: CGSizeMake(768, 1024))
+//        self.solitaireGame = Solitaire()
+//        self.solitaireGameDelegate = SolitaireDelegate()
+//    }
+//    
+//    convenience override init() {
+//        self.init(nibName: nil, bundle: nil)
+//    }
+//
+//    required init?(coder aDecoder: NSCoder) {
+//        GameSceneViewController = UIViewController()
+//        super.init(coder: aDecoder)
+//    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -26,7 +48,12 @@ class GameSceneViewController: UIViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
-        let solitaireScene:SolitaireScene = SolitaireScene(size: CGSizeMake(768, 1024))
+        //solitaireScene = SolitaireScene(size: CGSizeMake(768, 1024))
+        
+        self.solitaireGame = Solitaire()
+        self.solitaireGameDelegate = SolitaireDelegate()
+        self.solitaireScene = SolitaireScene(gameScene: self, size: CGSizeMake(768, 1024))
+        
         let spriteView:SKView = self.view as! SKView
         spriteView.presentScene(solitaireScene)
     }

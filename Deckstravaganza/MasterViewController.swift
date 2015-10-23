@@ -61,9 +61,11 @@ class MasterViewController: UITableViewController {
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
         
-        self.menuItems.append(Menu(name: "New Game", description: "Start a new game"))
-        self.menuItems.append(Menu(name: "Continue", description: "Continue a previous game"))
         self.menuItems.append(Menu(name: "Test", description: "Testing"))
+        self.menuItems.append(Menu(name: "Continue", description: "Continue a previous game"))
+        self.menuItems.append(Menu(name: "Saved Games", description: "Choose a saved game"))
+        self.menuItems.append(Menu(name: "New", description: "Start a new Game"))
+        
     }
     
     

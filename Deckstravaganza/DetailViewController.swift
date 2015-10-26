@@ -149,7 +149,15 @@ class DetailViewController: UIViewController {
     func testAction(sender:UIButton!)
     {
         print("Button tapped")
-        performSegueWithIdentifier("testSegue", sender: nil)
+        performSegueWithIdentifier("menuToGameSegue", sender: nil)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if(segue.identifier != nil && segue.identifier == "menuToGameSegue") {
+            if let menuSplitViewController = self.splitViewController as? MenuSplitViewController {
+                menuSplitViewController.toggleMasterView();
+            }
+        }
     }
 }
 

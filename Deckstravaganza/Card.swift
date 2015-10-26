@@ -229,7 +229,8 @@ class Card {
         }
         
         // The only difference between Deck1 and Deck2 are the Kings, Queens, and Jacks.
-        if(self.rank.rawValue <= CardRank.Ten.rawValue && cardOption == Deck.DeckFronts.Deck3) {
+        if(self.rank.rawValue <= CardRank.Ten.rawValue && cardOption == Deck.DeckFronts.Deck3 && !(self.rank
+            == .Ace && self.suit == .Spades)) {
             cardOption = Deck.DeckFronts.Deck2;
         }
         

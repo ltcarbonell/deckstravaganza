@@ -11,6 +11,7 @@
 		227912941BB47EF9006C6C60 /* CardGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227912931BB47EF9006C6C60 /* CardGame.swift */; };
 		227912961BB47F5C006C6C60 /* Solitaire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227912951BB47F5C006C6C60 /* Solitaire.swift */; };
 		229EB7B81BBB78E400ECE5B5 /* SpriteKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 229EB7B71BBB78E400ECE5B5 /* SpriteKit.framework */; };
+		D52F99801BDE5F0F008AB55B /* MenuSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52F997F1BDE5F0F008AB55B /* MenuSplitViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		D54C89791BAD9527007AEB7E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C89781BAD9527007AEB7E /* AppDelegate.swift */; };
 		D54C897B1BAD9527007AEB7E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C897A1BAD9527007AEB7E /* ViewController.swift */; };
 		D54C897E1BAD9527007AEB7E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D54C897C1BAD9527007AEB7E /* Main.storyboard */; };
@@ -54,6 +55,7 @@
 		227912931BB47EF9006C6C60 /* CardGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardGame.swift; sourceTree = "<group>"; };
 		227912951BB47F5C006C6C60 /* Solitaire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Solitaire.swift; sourceTree = "<group>"; };
 		229EB7B71BBB78E400ECE5B5 /* SpriteKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpriteKit.framework; path = System/Library/Frameworks/SpriteKit.framework; sourceTree = SDKROOT; };
+		D52F997F1BDE5F0F008AB55B /* MenuSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuSplitViewController.swift; sourceTree = "<group>"; };
 		D54C89751BAD9527007AEB7E /* Deckstravaganza.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Deckstravaganza.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D54C89781BAD9527007AEB7E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D54C897A1BAD9527007AEB7E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 				D54C897A1BAD9527007AEB7E /* ViewController.swift */,
 				D54C89781BAD9527007AEB7E /* AppDelegate.swift */,
 				D54C897C1BAD9527007AEB7E /* Main.storyboard */,
+				D52F997F1BDE5F0F008AB55B /* MenuSplitViewController.swift */,
 				DC5B897B1BC2F2D700F751FB /* GameScene.sks */,
 				DCA2FB811BB9AC71007695E0 /* Menu.swift */,
 				DCA2FB7B1BB993CA007695E0 /* MasterViewController.swift */,
@@ -340,6 +343,7 @@
 				D56CC3CA1BAF019900E6A9BC /* Card.swift in Sources */,
 				227912961BB47F5C006C6C60 /* Solitaire.swift in Sources */,
 				DCA2FB821BB9AC71007695E0 /* Menu.swift in Sources */,
+				D52F99801BDE5F0F008AB55B /* MenuSplitViewController.swift in Sources */,
 				DCA2FB7C1BB993CA007695E0 /* MasterViewController.swift in Sources */,
 				D5DC30B01BB99308001C4F58 /* Rummy.swift in Sources */,
 				D54C89791BAD9527007AEB7E /* AppDelegate.swift in Sources */,

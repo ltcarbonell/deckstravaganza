@@ -16,11 +16,13 @@ class Solitaire: CardGame {
     var players = [Player]()
     var diff: Difficulty
     
+    // properties of the game rules that can be changed
     var adjustableSettings = [AdjustableSetting(settingName: "Difficulty Level", formType: FormType.DropDown, dataType: DataType.String, options: ["Easy", "Hard"])]
     
+    // Difficulty levels possibly in solitaire
     enum Difficulty : Int {
-        case Easy = 1;
-        case Hard = 3;
+        case Easy = 1
+        case Hard = 3
     }
     
     // Properties of Solitaire
@@ -44,9 +46,6 @@ class Solitaire: CardGame {
     var tableu6: StackPile
     var tableu7: StackPile
     
-    
-    
-    
     let gameDelegate = SolitaireDelegate()
     
     // initializer
@@ -54,12 +53,13 @@ class Solitaire: CardGame {
         self.diff = .Easy
         // deals the cards out for the first and only time
         // calls from Solitaire delagate
-        self.deck = Deck(isTopAtFirstCard: true, deckFront: Deck.DeckFronts.Deck2, deckBack: Deck.DeckBacks.Default)
+        self.deck = Deck(deckFront: Deck.DeckFronts.Deck2, deckBack: Deck.DeckBacks.Default)
         self.deck.name = "Deck"
         
         self.wastePile = StackPile()
         self.wastePile.name = "WastePile"
         
+        // initializes the foundations and adds them to array
         self.foundation1 = StackPile()
         self.foundation2 = StackPile()
         self.foundation3 = StackPile()
@@ -68,7 +68,8 @@ class Solitaire: CardGame {
         for foundation in self.foundations {
             foundation.name = "Foundation"
         }
-        
+
+        // initializes the tableu and adds them to array
         self.tableu1 = StackPile()
         self.tableu2 = StackPile()
         self.tableu3 = StackPile()
@@ -80,7 +81,6 @@ class Solitaire: CardGame {
         for tableu in self.tableus {
             tableu.name = "Tableu"
         }
-        
         
         self.setPlayers()
         //gameDelegate.deal(self)
@@ -107,74 +107,37 @@ class Solitaire: CardGame {
         self.players = [Player(userName: "Player 1", score: 0, playerNumber: 1)]  // only one player... hence Solitaire
     }
     
-    func moveCard(fromPile: StackPile, toPile: StackPile) {
+    // Moves the top card of a pile and moves it to the new pile
+    func moveTopCard(fromPile: StackPile, toPile: StackPile) {
+        toPile.push(fromPile.pull()!)
+    }
+    
+    // Moves multiple cards from a pile to a new pile
+    // uses a temporary pile to help moves them
+    func moveGroupedCards(numberOfCardsToMove: Int, fromPile: StackPile, toPile: StackPile) {
+        let tempPile = StackPile()
+        for _ in 0..<numberOfCardsToMove {
+            tempPile.push(fromPile.pull()!)
+        }
+        toPile.addToStackFromFirstCardOf(tempPile)
         
     }
     
-    /*func turn() {
-        // user can either draw from deck or move a card
-        // if choses to draw card
-        if isCardDrawn {
-            // if the deck is empty, add the cards from waste pile back to deck
-            if deck.numberOfCards() == 0 {
-                while wastePile.numberOfCards() > 0 {
-                    deck.push(wastePile.pull()!)
-                }
-            }
-            // check to see if there are enough cards left in the deck to draw
-            if deck.numberOfCards() >= diff.rawValue {
-                if diff == .Easy {
-                    // draw only the top card and put it in the waste pile
-                    wastePile.push(deck.pull()!)
-                    
-                } else { // if diff == .Hard
-                    // draw three cards put it in the waste pile and only have access to the top one (3rd card drawn)
-                    wastePile.push(deck.pull()!)
-                    wastePile.push(deck.pull()!)
-                    wastePile.push(deck.pull()!)
-                }
-            } else { // there are not enough cards to draw, so while the deck isnt empty draw the remaining cards, then after turn put them all back into the deck
-                while deck.numberOfCards() > 0 {
-                    wastePile.push(deck.pull()!)
-                }
-            }
-            
-        } else if isCardMoved { // if card is moved
-            // checkMove() -> if valid allow move to take place
-            let prevPile: StackPile
-            let newPile: StackPile
-            if checkMove(prevPile, newPile) {
-                newPile.push(prevPile.pull()!)
-            } else {
-                turn()
-            }
-            //             -> if invalid, allow user to take a turn again and move all cards back to where they were
-        } else {
-            // Invalid
-            print("invalid move try again")
-        }
-    }*/
-    
-    func checkMove(previousPile: StackPile, newPile: StackPile) -> Bool {
+    func checkMove(card: Card, previousPile: StackPile, newPile: StackPile) -> Bool {
         // get where the card is coming from
         // see where it is going
         print("FROM, TO \(previousPile.name, newPile.name)")
-        /*print(self.deck.numberOfCards(), self.tableu5.numberOfCards())
-        for var i = 0; i < self.deck.numberOfCards(); i++ {
-            print(self.deck.cardAt(i))
-        }*/
-        self.printPileNumbers()
         // if coming from wastePile and going to tableu, has to be one less and opposite color as tableu.top or king and empty space
-        /*if previousPile.name == wastePile.name && newPile.name == tableus[0].name {
+        if previousPile.name == wastePile.name && newPile.name == tableus[0].name {
             // if the tableu it is going to is empty, it must be a king of any suit
             if newPile.isEmpty() {
-                if previousPile.topCard()!.getRank() == .King {
+                if card.getRank() == .King {
                 return true
                 } else {
                     return false
                 }
             } else { // if the tableu is not empty, the top card of the tableu must be 1 more than the rank of the moved card and the opposite color
-                if previousPile.topCard()!.hasOppositeColorThan(newPile.topCard()!) && previousPile.topCard()!.getRank().hashValue == newPile.topCard()!.getRank().hashValue - 1 {
+                if card.hasOppositeColorThan(newPile.topCard()!) && card.getRank().hashValue == newPile.topCard()!.getRank().hashValue - 1 {
                     return true
                 } else {
                     return false
@@ -186,51 +149,47 @@ class Solitaire: CardGame {
         else if previousPile.name == wastePile.name && newPile.name == foundations[0].name {
             // checks if foundation is empty, if so it must be an ace that goes to the foundation
             if newPile.isEmpty() {
-                if previousPile.topCard()!.getRank() == .Ace {
+                if card.getRank() == .Ace {
                     return true
                 } else {
                     return false
                 }
             } else { // if it is not empty is has to be the same suit and one less than the new card
-                if previousPile.topCard()!.hasSameSuitAs(newPile.topCard()!) && previousPile.topCard()!.getRank().hashValue == newPile.topCard()!.getRank().hashValue + 1 {
+                if card.hasSameSuitAs(newPile.topCard()!) && card.getRank().hashValue == newPile.topCard()!.getRank().hashValue + 1 {
                     return true
                 } else {
                     return false
                 }
             }
         }
-        
         // if coming from tableu to foundation, has to be one more and same suit
-        else*/ if previousPile.name == tableus[0].name && newPile.name == foundations[0].name {
+        else if previousPile.name == tableus[0].name && newPile.name == foundations[0].name {
             // checks if foundation is empty, if so it must be an ace that goes to the foundation
-            
             if newPile.isEmpty() {
-            print(previousPile.topCard()?.getRank())
-                if previousPile.topCard()!.getRank() == .Ace {
+                if card.getRank() == .Ace {
                     return true
                 } else {
                     return false
                 }
             } else { // if it is not empty is has to be the same suit and one less than the new card
-                if previousPile.topCard()!.hasSameSuitAs(newPile.topCard()!) && previousPile.topCard()!.getRank().hashValue == newPile.topCard()!.getRank().hashValue + 1 {
+                if card.hasSameSuitAs(newPile.topCard()!) && card.getRank().hashValue == newPile.topCard()!.getRank().hashValue + 1 {
                     return true
                 } else {
                     return false
                 }
             }
         }
-        
-        /*// if coming from foundation to tableu has to be one less and opposite color
+        // if coming from foundation to tableu has to be one less and opposite color
         else if foundations[0].name == previousPile.name && tableus[0].name == newPile.name {
             // if the tableu it is going to is empty, it must be a king of any suit
             if newPile.isEmpty() {
-                if previousPile.topCard()!.getRank() == .King {
+                if card.getRank() == .King {
                     return true
                 } else {
                     return false
                 }
             } else { // if the tableu is not empty, the top card of the tableu must be 1 more than the rank of the moved card and the opposite color
-                if previousPile.topCard()!.hasOppositeColorThan(newPile.topCard()!) && previousPile.topCard()!.getRank().hashValue == newPile.topCard()!.getRank().hashValue - 1 {
+                if card.hasOppositeColorThan(newPile.topCard()!) && card.getRank().hashValue == newPile.topCard()!.getRank().hashValue - 1 {
                     return true
                 } else {
                     return false
@@ -240,13 +199,27 @@ class Solitaire: CardGame {
         // if coming from tableu to different tableu, has to be one less and opposite color as tableu.top or king and empty space
         else if tableus[0].name == previousPile.name && tableus[0].name == newPile.name {
             // HAVE TO BE ABLE TO MOVE MULTIPLE CARDS AT ONE TIME
-            // NOTE: Ask Calvin which method (if any) implements that
-            return true
-        }*/
+            if newPile.isEmpty() {
+                if card.getRank() == .King {
+                    return true
+                } else {
+                    return false
+                }
+            }
+            else {
+                if card.hasOppositeColorThan(newPile.topCard()!) && card.getRank().hashValue == newPile.topCard()!.getRank().hashValue - 1 {
+                    return true
+                } else {
+                    return false
+                }
+            }
+        }
         else {
             return false
         }
     }
+    
+    // helpful methods to check the number of cards in each pile
     func printPileNumbers() {
         print("Deck: \(self.deck.numberOfCards())")
         print("Waste: \(self.wastePile.numberOfCards())")

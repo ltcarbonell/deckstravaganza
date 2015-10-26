@@ -14,24 +14,6 @@ class GameSceneViewController: UIViewController {
     var solitaireGame : Solitaire!;
     var solitaireGameDelegate : SolitaireDelegate!;
     
-//    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-//        GameSceneViewController = UIViewController()
-//        super.init()
-//        
-//        self.solitaireScene = SolitaireScene(gameScene: self, size: CGSizeMake(768, 1024))
-//        self.solitaireGame = Solitaire()
-//        self.solitaireGameDelegate = SolitaireDelegate()
-//    }
-//    
-//    convenience override init() {
-//        self.init(nibName: nil, bundle: nil)
-//    }
-//
-//    required init?(coder aDecoder: NSCoder) {
-//        GameSceneViewController = UIViewController()
-//        super.init(coder: aDecoder)
-//    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 

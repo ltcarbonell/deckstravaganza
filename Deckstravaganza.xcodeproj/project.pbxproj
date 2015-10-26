@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		227912941BB47EF9006C6C60 /* CardGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227912931BB47EF9006C6C60 /* CardGame.swift */; settings = {ASSET_TAGS = (); }; };
-		227912961BB47F5C006C6C60 /* Solitaire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227912951BB47F5C006C6C60 /* Solitaire.swift */; settings = {ASSET_TAGS = (); }; };
+		2220B9A91BD5F08700E9E3F6 /* GameViewControllerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2220B9A81BD5F08700E9E3F6 /* GameViewControllerButton.swift */; };
+		227912941BB47EF9006C6C60 /* CardGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227912931BB47EF9006C6C60 /* CardGame.swift */; };
+		227912961BB47F5C006C6C60 /* Solitaire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227912951BB47F5C006C6C60 /* Solitaire.swift */; };
 		229EB7B81BBB78E400ECE5B5 /* SpriteKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 229EB7B71BBB78E400ECE5B5 /* SpriteKit.framework */; };
 		D54C89791BAD9527007AEB7E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C89781BAD9527007AEB7E /* AppDelegate.swift */; };
 		D54C897B1BAD9527007AEB7E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C897A1BAD9527007AEB7E /* ViewController.swift */; };
@@ -17,18 +18,18 @@
 		D54C89831BAD9527007AEB7E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D54C89811BAD9527007AEB7E /* LaunchScreen.storyboard */; };
 		D54C898E1BAD9527007AEB7E /* DeckstravaganzaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C898D1BAD9527007AEB7E /* DeckstravaganzaTests.swift */; };
 		D54C89991BAD9527007AEB7E /* DeckstravaganzaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C89981BAD9527007AEB7E /* DeckstravaganzaUITests.swift */; };
-		D56CC3CA1BAF019900E6A9BC /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56CC3C91BAF019900E6A9BC /* Card.swift */; settings = {ASSET_TAGS = (); }; };
-		D56CC3CC1BAF135200E6A9BC /* Pile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56CC3CB1BAF135200E6A9BC /* Pile.swift */; settings = {ASSET_TAGS = (); }; };
-		D56CC3CE1BB037E000E6A9BC /* StackPile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56CC3CD1BB037E000E6A9BC /* StackPile.swift */; settings = {ASSET_TAGS = (); }; };
-		D56CC3D01BB03E8200E6A9BC /* QueuePile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56CC3CF1BB03E8200E6A9BC /* QueuePile.swift */; settings = {ASSET_TAGS = (); }; };
-		D5A0C80F1BC2E46900CE8A60 /* GameSceneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A0C80D1BC2E46900CE8A60 /* GameSceneViewController.swift */; settings = {ASSET_TAGS = (); }; };
-		D5A0C8101BC2E46900CE8A60 /* SolitaireScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A0C80E1BC2E46900CE8A60 /* SolitaireScene.swift */; settings = {ASSET_TAGS = (); }; };
-		D5DC30701BB97702001C4F58 /* Deck.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DC306F1BB97702001C4F58 /* Deck.swift */; settings = {ASSET_TAGS = (); }; };
-		D5DC30B01BB99308001C4F58 /* Rummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DC30AF1BB99308001C4F58 /* Rummy.swift */; settings = {ASSET_TAGS = (); }; };
-		DC5B897C1BC2F2D700F751FB /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = DC5B897B1BC2F2D700F751FB /* GameScene.sks */; settings = {ASSET_TAGS = (); }; };
-		DCA2FB7C1BB993CA007695E0 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA2FB7B1BB993CA007695E0 /* MasterViewController.swift */; settings = {ASSET_TAGS = (); }; };
-		DCA2FB7E1BB9957D007695E0 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA2FB7D1BB9957D007695E0 /* DetailViewController.swift */; settings = {ASSET_TAGS = (); }; };
-		DCA2FB821BB9AC71007695E0 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA2FB811BB9AC71007695E0 /* Menu.swift */; settings = {ASSET_TAGS = (); }; };
+		D56CC3CA1BAF019900E6A9BC /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56CC3C91BAF019900E6A9BC /* Card.swift */; };
+		D56CC3CC1BAF135200E6A9BC /* Pile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56CC3CB1BAF135200E6A9BC /* Pile.swift */; };
+		D56CC3CE1BB037E000E6A9BC /* StackPile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56CC3CD1BB037E000E6A9BC /* StackPile.swift */; };
+		D56CC3D01BB03E8200E6A9BC /* QueuePile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56CC3CF1BB03E8200E6A9BC /* QueuePile.swift */; };
+		D5A0C80F1BC2E46900CE8A60 /* GameSceneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A0C80D1BC2E46900CE8A60 /* GameSceneViewController.swift */; };
+		D5A0C8101BC2E46900CE8A60 /* SolitaireScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A0C80E1BC2E46900CE8A60 /* SolitaireScene.swift */; };
+		D5DC30701BB97702001C4F58 /* Deck.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DC306F1BB97702001C4F58 /* Deck.swift */; };
+		D5DC30B01BB99308001C4F58 /* Rummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DC30AF1BB99308001C4F58 /* Rummy.swift */; };
+		DC5B897C1BC2F2D700F751FB /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = DC5B897B1BC2F2D700F751FB /* GameScene.sks */; };
+		DCA2FB7C1BB993CA007695E0 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA2FB7B1BB993CA007695E0 /* MasterViewController.swift */; };
+		DCA2FB7E1BB9957D007695E0 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA2FB7D1BB9957D007695E0 /* DetailViewController.swift */; };
+		DCA2FB821BB9AC71007695E0 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA2FB811BB9AC71007695E0 /* Menu.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2220B9A81BD5F08700E9E3F6 /* GameViewControllerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewControllerButton.swift; sourceTree = "<group>"; };
 		227912931BB47EF9006C6C60 /* CardGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardGame.swift; sourceTree = "<group>"; };
 		227912951BB47F5C006C6C60 /* Solitaire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Solitaire.swift; sourceTree = "<group>"; };
 		229EB7B71BBB78E400ECE5B5 /* SpriteKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpriteKit.framework; path = System/Library/Frameworks/SpriteKit.framework; sourceTree = SDKROOT; };
@@ -108,6 +110,7 @@
 		22180D581BD54053001B3377 /* Solitaire */ = {
 			isa = PBXGroup;
 			children = (
+				2220B9A81BD5F08700E9E3F6 /* GameViewControllerButton.swift */,
 				227912951BB47F5C006C6C60 /* Solitaire.swift */,
 				D5A0C80E1BC2E46900CE8A60 /* SolitaireScene.swift */,
 			);
@@ -262,7 +265,7 @@
 				TargetAttributes = {
 					D54C89741BAD9527007AEB7E = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = KW4T445FBD;
+						DevelopmentTeam = 25NK4A4VUP;
 					};
 					D54C89881BAD9527007AEB7E = {
 						CreatedOnToolsVersion = 7.0;
@@ -343,6 +346,7 @@
 				DCA2FB7E1BB9957D007695E0 /* DetailViewController.swift in Sources */,
 				D56CC3CC1BAF135200E6A9BC /* Pile.swift in Sources */,
 				D56CC3CE1BB037E000E6A9BC /* StackPile.swift in Sources */,
+				2220B9A91BD5F08700E9E3F6 /* GameViewControllerButton.swift in Sources */,
 				D5A0C8101BC2E46900CE8A60 /* SolitaireScene.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -483,10 +487,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Deckstravaganza/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.ufl.Deckstravaganza;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -494,10 +501,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Deckstravaganza/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.ufl.Deckstravaganza;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

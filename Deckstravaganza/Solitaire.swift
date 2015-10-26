@@ -158,12 +158,12 @@ class Solitaire: CardGame {
     func checkMove(previousPile: StackPile, newPile: StackPile) -> Bool {
         // get where the card is coming from
         // see where it is going
-        /*print("FROM, TO \(previousPile.name, newPile.name)")
-        
-        print(Deck.numberOfCards(), tableu5.numberOfCards())
-        for var i = 0; i < Deck.numberOfCards(); i++ {
-            print(Deck.cardAt(i))
+        print("FROM, TO \(previousPile.name, newPile.name)")
+        /*print(self.deck.numberOfCards(), self.tableu5.numberOfCards())
+        for var i = 0; i < self.deck.numberOfCards(); i++ {
+            print(self.deck.cardAt(i))
         }*/
+        self.printPileNumbers()
         // if coming from wastePile and going to tableu, has to be one less and opposite color as tableu.top or king and empty space
         /*if previousPile.name == wastePile.name && newPile.name == tableus[0].name {
             // if the tableu it is going to is empty, it must be a king of any suit
@@ -269,6 +269,7 @@ class SolitaireDelegate: CardGameDelegate {
         var newCard: Card
         // calls a brand new, newly shuffled deck
         Game.deck.newDeck()
+        Game.printPileNumbers()
         
         
         // creates empty stacks for all three piles
@@ -287,6 +288,7 @@ class SolitaireDelegate: CardGameDelegate {
                 Game.tableus[i].push(newCard)
             }
         }
+        Game.printPileNumbers()
     }
     
     

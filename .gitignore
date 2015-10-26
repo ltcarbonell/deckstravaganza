@@ -51,3 +51,6 @@ xcuserdata
 *.moved-aside
 *.xcuserstate
 *.xcscmblueprint
+
+### Apple ###
+.DS_Store

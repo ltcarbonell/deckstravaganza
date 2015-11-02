@@ -24,6 +24,8 @@ class CardConstants {
     
     let DECK_X_FACTOR : CGFloat = 3/4;
     let TOP_ROW_Y_FACTOR : CGFloat = 3/4;
+    
+    let MOVING_Y_ADJUSTMENT : CGFloat = 10;
 }
 
 // Extends from SpriteNode to create a specified card sprite
@@ -136,7 +138,7 @@ class CardSprite: SKSpriteNode {
             let cardNode = nodeFromCard(tempCard);
             let cardPosition : CGPoint;
             
-            if(baseYPosition == solitaireScene.bottomRowYPos) {
+            if(baseYPosition != solitaireScene.topRowYPos) {
                 cardPosition = CGPoint(x: toLocation!.x, y: (CGFloat(baseYPosition) - yPositionDeltas[--count]));
             } else {
                 cardPosition = CGPoint(x: toLocation!.x, y: baseYPosition);
@@ -242,8 +244,7 @@ class CardSprite: SKSpriteNode {
                 
                 for index in 0..<aboveCards.count {
                     let tempCard = nodeFromCard(aboveCards[index]);
-                    let tempCardYOffset = CGFloat(-(cardConstants.CARD_CASCADE_OFFSET * index));
-                    print(tempCardYOffset);
+                    let tempCardYOffset = CGFloat(-(cardConstants.CARD_CASCADE_OFFSET * index)) - (0.5 * solitaireScene.cardSize.height) + cardConstants.MOVING_Y_ADJUSTMENT;
                     
                     tempCard.position.y = location.y + tempCardYOffset;
                     tempCard.position.x = location.x
@@ -265,9 +266,6 @@ class CardSprite: SKSpriteNode {
         // find where the card is going to and where it is coming from
         newPile = solitaireScene.CGPointToPile(toLocation!)
         oldPile = solitaireScene.CGPointToPile(fromLocation!)
-        
-        print(newPile?.name);
-        print(oldPile?.name);
         
         if(touchedHidden) {
             if(flipHidden) {
@@ -308,7 +306,7 @@ class CardSprite: SKSpriteNode {
                         tempCardYPosition = cardBelowNode!.position.y - ((CGFloat(index) + 1) * CGFloat(self.cardConstants.CARD_CASCADE_OFFSET));
                         tempCardZPosition = cardBelowNode!.zPosition + CGFloat(index) + 1;
                     } else {
-                        tempCardYPosition = self.solitaireScene.bottomRowYPos;
+                        tempCardYPosition = self.fromLocation!.y;
                         tempCardZPosition = 0;
                     }
                     
@@ -320,6 +318,8 @@ class CardSprite: SKSpriteNode {
                 }
             }
             
+            print(newPile?.name);
+            print(newPile);
             if newPile == nil {
                 // If the new pile is not a valid position, move back to correct location
                 moveCardsBack();
@@ -330,6 +330,7 @@ class CardSprite: SKSpriteNode {
                         movePile();
                     }
                 } else {
+                    print("invalid");
                     // Invalid move.  Move stack back to original location.
                     moveCardsBack();
                 }

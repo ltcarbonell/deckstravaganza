@@ -50,6 +50,29 @@ class Pile {
     }
     
     /**
+    * Return and remove the card at index.  If index is out of bounds, nil is returned.
+    *
+    * @param index : Int - the index of the card to return in the pile
+    * @return Card? - the card at index
+    */
+    func removeCardAt(index : Int) -> Card? {
+        if(index >= 0 && index < pile.count) {
+            return pile.removeAtIndex(index);
+        } else {
+            return nil;
+        }
+    }
+    
+    /**
+     * Insert the card at end of pile.
+     *
+     * @param card : Card - the card to be inserted into the pile
+     */
+    func addCard(card : Card) {
+        pile.append(card);
+    }
+    
+    /**
     * Return true if and only if the pile is empty.
     *
     * @return Bool

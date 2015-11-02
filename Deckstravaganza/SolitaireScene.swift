@@ -63,8 +63,8 @@ class CardSprite: SKSpriteNode {
     // initializer sets the card value and references the gamescene being used
     init(gameScene: GameSceneViewController, card: Card) {
         self.card = card
-        self.solitaireScene = gameScene.solitaireScene
-        self.solitaireGame = solitaireScene.SolitaireGame
+        self.solitaireScene = gameScene.gameScene! as! SolitaireScene
+        self.solitaireGame = gameScene.game! as! Solitaire
         
         self.frontTexture = SKTexture(image: card.getCardFace(Deck.DeckFronts.Default)!)
         self.backTexture = SKTexture(image: card.getCardBack(Deck.DeckBacks.Default)!)
@@ -370,8 +370,8 @@ class SolitaireScene: SKScene {
     
     init(gameScene : GameSceneViewController, size: CGSize) {
         self.GameScene = gameScene
-        self.SolitaireGame = self.GameScene.solitaireGame!
-        self.SolitaireGameDelegate = self.GameScene.solitaireGameDelegate!
+        self.SolitaireGame = self.GameScene.game! as! Solitaire
+        self.SolitaireGameDelegate = self.GameScene.gameDelegate! as! SolitaireDelegate
         
         super.init(size: size)
         

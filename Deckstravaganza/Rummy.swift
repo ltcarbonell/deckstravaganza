@@ -14,23 +14,38 @@ struct RummyMeld {
 }
 
 class Rummy: CardGame {
-    var deck = Deck(deckFront: Deck.DeckFronts.Default, deckBack: Deck.DeckBacks.Default)
+    /* Rules from http://www.pagat.com/rummy/rummy.html */
+    
+    var deck = Deck(deckFront: Deck.DeckFronts.Deck2, deckBack: Deck.DeckBacks.Default)
     var targetScore = 500;
     
     var wastePile =     StackPile(),
-        playersHands =  [StackPile](),
+        playersHands =  [Pile](),
         melds =         [RummyMeld]();
     
     var players = [Player]();
     
     var adjustableSettings = [AdjustableSetting]();
     
+    init(numberOfPlayers: Int) {
+        self.setPlayers(numberOfPlayers)
+    }
+    
     func play() {
         print("Playing");
     }
     
-    func setPlayers() {
+    func setPlayers(numberOfPlayers: Int) {
         print("Setting players");
+        for playerNumber in 1...numberOfPlayers {
+            self.players.append(Player(userName: "Player \(playerNumber)", score: 0, playerNumber: playerNumber))
+        }
+        for _ in 0..<players.count {
+            self.playersHands.append(Pile())
+        }
+        // DEBUG //
+        print(players.count)
+        print(playersHands.count)
     }
 }
 
@@ -44,10 +59,9 @@ class RummyDelegate: CardGameDelegate {
     func deal(Game: CardGameType) {
         if(Game.playersHands.count == 0) {
             for(var playerIndex = 0; playerIndex < Game.playersHands.count; playerIndex++) {
-                Game.playersHands.append(StackPile());
+                Game.playersHands.append(Pile());
             }
         }
-        
         let handSize : Int;
         
         switch(Game.players.count) {
@@ -64,9 +78,11 @@ class RummyDelegate: CardGameDelegate {
         
         for(var cardIndex = 0; cardIndex < handSize; cardIndex++) {
             for(var playerIndex = 0; playerIndex < Game.playersHands.count && !Game.deck.isEmpty(); playerIndex++) {
-                Game.playersHands[playerIndex].push(Game.deck.pull()!);
+                Game.playersHands[playerIndex].addCard(Game.deck.pull()!);
             }
         }
+        
+        Game.wastePile.push(Game.deck.pull()!)
         
         print("Dealt");
     }

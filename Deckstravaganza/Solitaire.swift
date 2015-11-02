@@ -82,7 +82,7 @@ class Solitaire: CardGame {
             tableu.name = "Tableu"
         }
         
-        self.setPlayers()
+        self.setPlayers(1)
         //gameDelegate.deal(self)
     }
     
@@ -103,7 +103,7 @@ class Solitaire: CardGame {
         gameDelegate.gameDidEnd(self)
     }
     
-    func setPlayers() {
+    func setPlayers(numberOfPlayers: Int) {
         self.players = [Player(userName: "Player 1", score: 0, playerNumber: 1)]  // only one player... hence Solitaire
     }
     

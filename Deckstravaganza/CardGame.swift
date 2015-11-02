@@ -47,14 +47,14 @@ protocol CardGame {
     
     func play()
     // sets the players with point values and names
-    func setPlayers()
+    func setPlayers(numberOfPlayers: Int)
     
     var adjustableSettings: [AdjustableSetting] { get set }
 }
 
 protocol CardGameDelegate {
     
-    typealias CardGameType
+    typealias CardGameType = CardGame
     
     // deals out the cards at the start of each round and/or turn depending on the game
     func deal(Game: CardGameType)

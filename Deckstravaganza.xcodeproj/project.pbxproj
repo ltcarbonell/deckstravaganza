@@ -112,7 +112,6 @@
 		22180D581BD54053001B3377 /* Solitaire */ = {
 			isa = PBXGroup;
 			children = (
-				2220B9A81BD5F08700E9E3F6 /* GameViewControllerButton.swift */,
 				227912951BB47F5C006C6C60 /* Solitaire.swift */,
 				D5A0C80E1BC2E46900CE8A60 /* SolitaireScene.swift */,
 			);
@@ -122,6 +121,7 @@
 		4614236B1BC5E793001327E7 /* Game Elements */ = {
 			isa = PBXGroup;
 			children = (
+				2220B9A81BD5F08700E9E3F6 /* GameViewControllerButton.swift */,
 				D5A0C80D1BC2E46900CE8A60 /* GameSceneViewController.swift */,
 				227912931BB47EF9006C6C60 /* CardGame.swift */,
 				22180D581BD54053001B3377 /* Solitaire */,

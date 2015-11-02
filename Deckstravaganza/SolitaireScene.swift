@@ -108,7 +108,7 @@ class CardSprite: SKSpriteNode {
         var yPositionDeltas : [CGFloat] = [];
         let baseYPosition : CGFloat;
         
-        if(newPile!.topCard() != nil) {
+        if(newPile!.topCard() != nil && toLocation!.y != solitaireScene.topRowYPos) {
             baseYPosition = nodeFromCard(newPile!.topCard()!).position.y - CGFloat(cardConstants.CARD_CASCADE_OFFSET);
         } else if(toLocation!.y == solitaireScene.bottomRowYPos) {
             baseYPosition = solitaireScene.bottomRowYPos;
@@ -281,10 +281,6 @@ class CardSprite: SKSpriteNode {
                 flipHidden = false;
             }
         } else if(!ignoreTouch) {
-            // DEBUG //
-            solitaireScene.SolitaireGame.printPileNumbers()
-            print(self.card.getSuit(),self.card.getRank())
-            
             // Function variables
             let animationDuration = 0.5;
             
@@ -292,28 +288,35 @@ class CardSprite: SKSpriteNode {
             let moveCardsBack = {
                 () -> Void in
                 
-                let cardBelow = self.oldPile?.topCard();
-                let cardBelowNode = self.nodeFromCard(cardBelow!);
                 let cardsAbove = self.getAboveCards(touchedPile!);
+                let cardBelow = self.oldPile?.cardAt(self.oldPile!.numberOfCards() - cardsAbove.count - 1);
+                var cardBelowNode : CardSprite? = nil;
+                
+                if(cardBelow != nil) {
+                    cardBelowNode = self.nodeFromCard(cardBelow!);
+                    
+                    print(cardBelowNode!.name);
+                }
                 
                 for(var index = 0; index < cardsAbove.count; index++) {
                     let tempCardName = "\(cardsAbove[index].getRank())\(cardsAbove[index].getSuit())";
                     let tempCard = self.solitaireScene.childNodeWithName(tempCardName);
+                    let tempCardYPosition : CGFloat;
+                    let tempCardZPosition : CGFloat;
                     
-                    let tempCardZPosition = cardBelowNode.zPosition + CGFloat(index) + 1;
+                    if(cardBelowNode != nil) {
+                        tempCardYPosition = cardBelowNode!.position.y - ((CGFloat(index) + 1) * CGFloat(self.cardConstants.CARD_CASCADE_OFFSET));
+                        tempCardZPosition = cardBelowNode!.zPosition + CGFloat(index) + 1;
+                    } else {
+                        tempCardYPosition = self.solitaireScene.bottomRowYPos;
+                        tempCardZPosition = 0;
+                    }
                     
-                    let tempCardLocation = CGPoint(x: self.fromLocation!.x, y: self.oldYPositions[index]);
-                    
-                    // DEBUG //
-                    print(tempCardZPosition);
-                    print(tempCardLocation);
+                    let tempCardLocation = CGPoint(x: self.fromLocation!.x, y: tempCardYPosition);
                     
                     tempCard!.zPosition = tempCardZPosition;
                     
                     tempCard!.runAction(SKAction.moveTo(tempCardLocation, duration: animationDuration));
-                    
-                    // DEBUG //
-                    print(tempCard?.position);
                 }
             }
             
@@ -321,22 +324,11 @@ class CardSprite: SKSpriteNode {
                 // If the new pile is not a valid position, move back to correct location
                 moveCardsBack();
             } else if newPile != nil && oldPile != nil {
-                // If both piles are valid determine where the card is going to and coming from
-                
-                // DEBUG //
-                print(oldPile!.numberOfCards(), newPile!.numberOfCards())
-                
-                // checks if a valid move
+                // If both piles are valid determine where the card is going to and coming from and check if the move is valid
                 if solitaireGame.checkMove(card, previousPile: oldPile!, newPile: newPile!) {
-                    // DEBUG //
-                    print(self.card.getRank(),self.card.getSuit())
-                    
                     if(toLocation! != fromLocation!) {
                         movePile();
                     }
-                    
-                    // DEBUG //
-                    solitaireGame.printPileNumbers()
                 } else {
                     // Invalid move.  Move stack back to original location.
                     moveCardsBack();
@@ -586,9 +578,6 @@ class SolitaireScene: SKScene {
         for _ in 0..<self.SolitaireGame.wastePile.numberOfCards() {
             self.SolitaireGame.deck.addToStackFromLastCardOf(self.SolitaireGame.wastePile)
         }
-        
-        // DEBUG //
-        self.SolitaireGame.printPileNumbers()
         
         for index in 0..<self.SolitaireGame.deck.numberOfCards() {
             let deckSprite = CardSprite(gameScene: self.GameScene, card: self.SolitaireGame.deck.cardAt(index)!)

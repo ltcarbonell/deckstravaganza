@@ -40,7 +40,7 @@ class GameSceneViewController: UIViewController {
 //        } else if gameName == "Rummy" {
             self.game = Rummy(numberOfPlayers: 2)
             self.gameDelegate = RummyDelegate()
-            self.gameScene = RummyScene(gameScene: self, size: CGSizeMake(768, 1024))
+            self.gameScene = RummyScene(gameScene: self, game: self.game, gameDelegate: self.gameDelegate, size: CGSizeMake(768, 1024))
 //        }
         let spriteView:SKView = self.view as! SKView
         spriteView.presentScene(gameScene)

@@ -2,7 +2,7 @@
 //  Rummy.swift
 //  Deckstravaganza
 //
-//  Created by Cory Armstrong on 9/28/15.
+//  Created by Calvin Moore on 9/28/15.
 //  Copyright © 2015 University of Florida. All rights reserved.
 //
 
@@ -46,6 +46,10 @@ class Rummy: CardGame {
         // DEBUG //
         print(players.count)
         print(playersHands.count)
+    }
+    
+    func getGameOptions() -> [AdjustableSetting] {
+        return []
     }
 }
 

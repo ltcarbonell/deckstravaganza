@@ -60,7 +60,7 @@ class RummyCardSprite: SKSpriteNode {
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch in touches {
-            let location = touch.locationInNode(scene!) // make sure this is scene, not self
+            let location = touch.locationInNode(scene!)
             let touchedNode = nodeAtPoint(location)
             touchedNode.position = location
         }
@@ -85,11 +85,11 @@ class RummyScene: SKScene {
     var wastePileLocation = CGPoint(x: 0, y: 0)
     var handLocations = [[CGPoint(x: 0,y: 0)]]
     
-    init(gameScene : GameSceneViewController, size: CGSize) {
+    init(gameScene : GameSceneViewController, game: Rummy, gameDelegate: RummyDelegate, size: CGSize) {
         
         self.GameScene = gameScene
-        self.RummyGame = self.GameScene.game! // as! Rummy
-        self.RummyGameDelegate = self.GameScene.gameDelegate! // as! RummyDelegate
+        self.RummyGame = game // as! Rummy
+        self.RummyGameDelegate = gameDelegate // as! RummyDelegate
         
         super.init(size: size)
         
@@ -143,7 +143,7 @@ class RummyScene: SKScene {
     }
     
     func deal() {
-        RummyGameDelegate.deal(self.RummyGame)
+        
         
         // First set the location of the players' hands based on the number of players
         for handIndex in 0..<handLocations.count {
@@ -163,23 +163,37 @@ class RummyScene: SKScene {
             self.addChild(deckSprite)
         }
         
+        RummyGameDelegate.deal(self.RummyGame)
+        
         // Create the sprites for the cards that go into the players's hands
         for handIndex in 0..<self.RummyGame.playersHands.count {
             for cardIndex in 0..<self.RummyGame.playersHands[handIndex].numberOfCards() {
-                let handSprite = RummyCardSprite(gameScene: self.GameScene, card: self.RummyGame.playersHands[handIndex].cardAt(cardIndex)!)
-                handSprite.size = cardSize
-                handSprite.position = handLocations[handIndex][cardIndex]
-                handSprite.flipCardOver()
-                self.addChild(handSprite)
+                //let handSprite = RummyCardSprite(gameScene: self.GameScene, card: self.RummyGame.playersHands[handIndex].cardAt(cardIndex)!)
+                
+                let handSprite = self.childNodeWithName("\(self.RummyGame.playersHands[handIndex].cardAt(cardIndex)!.getRank())\(self.RummyGame.playersHands[handIndex].cardAt(cardIndex)!.getSuit())") //as! RummyCardSprite
+                print(handSprite!.name)
+                //handSprite.size = cardSize
+                //if handSprite != nil {
+                    //handSprite!.runAction(SKAction.moveTo(handLocations[handIndex][cardIndex], duration: 0.1))
+                    //handSprite.flipCardOver()
+                //}
+                
+                //handSprite. = handLocations[handIndex][cardIndex]
+                
+                //self.addChild(handSprite)
             }
         }
         
         // Create the sprites for the cards that go into the waste pile
-        let wasteCardSprite = RummyCardSprite(gameScene: self.GameScene, card: self.RummyGame.wastePile.topCard()!)
-        wasteCardSprite.size = cardSize
-        wasteCardSprite.position = wastePileLocation
-        wasteCardSprite.flipCardOver()
-        self.addChild(wasteCardSprite)
+        //let wasteCardSprite = RummyCardSprite(gameScene: self.GameScene, card: self.RummyGame.wastePile.topCard()!)
+        //wasteCardSprite.size = cardSize
+//        wasteCardSprite.position = wastePileLocation
+//        wasteCardSprite.flipCardOver()
+//        self.addChild(wasteCardSprite)
+        
+    }
+    
+    func checkMove() {
         
     }
 }

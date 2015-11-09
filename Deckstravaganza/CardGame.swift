@@ -18,16 +18,18 @@ enum FormType : Int {
     case DropDown = 1
     case Slider = 2
     case Switch = 3
+    case Cards = 4
     
-    static let numberOfFormTypes = 3
+    static let numberOfFormTypes = 4
 }
 
 enum DataType : Int {
     case Int = 1
     case Bool = 2
     case String = 3
+    case Image = 4
     
-    static let numberOfDataTypes = 3
+    static let numberOfDataTypes = 4
 }
 
 struct AdjustableSetting {
@@ -37,7 +39,12 @@ struct AdjustableSetting {
     var options: [String]
 }
 
-
+enum GameType: Int {
+    case Solitaire = 0;
+    case Rummy = 1;
+    
+    static let numberOfGameTypes = 2;
+}
 
 protocol CardGame {
     // Properties
@@ -46,8 +53,12 @@ protocol CardGame {
     // Methods
     
     func play()
+    
     // sets the players with point values and names
     func setPlayers(numberOfPlayers: Int)
+    
+    // Return adjustable settings for the game
+    func getAdjustableSettings() -> [AdjustableSetting];
     
     var adjustableSettings: [AdjustableSetting] { get set }
 }

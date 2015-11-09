@@ -17,7 +17,20 @@ class Solitaire: CardGame {
     var diff: Difficulty
     
     // properties of the game rules that can be changed
-    var adjustableSettings = [AdjustableSetting(settingName: "Difficulty Level", formType: FormType.DropDown, dataType: DataType.String, options: ["Easy", "Hard"])]
+    var adjustableSettings = [
+        AdjustableSetting(
+            settingName: "Difficulty Level",
+            formType: FormType.DropDown,
+            dataType: DataType.String,
+            options: ["Easy", "Hard"]
+        ),
+        AdjustableSetting(
+            settingName: "Card Type",
+            formType: FormType.Cards,
+            dataType: DataType.Image,
+            options: []
+        )
+    ];
     
     // Difficulty levels possibly in solitaire
     enum Difficulty : Int {
@@ -87,6 +100,12 @@ class Solitaire: CardGame {
     }
     
     // Methods
+    /**
+    * Return the game options.
+    */
+    func getGameOptions() -> [AdjustableSetting] {
+        return adjustableSettings;
+    }
     
     // play function is run to play the game
     func play() {

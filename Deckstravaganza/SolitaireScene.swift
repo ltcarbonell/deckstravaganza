@@ -368,10 +368,10 @@ class SolitaireScene: SKScene {
     var bottomRowYPos : CGFloat = 0;
     var wasteXPos : CGFloat = 0;
     
-    init(gameScene : GameSceneViewController, size: CGSize) {
+    init(gameScene : GameSceneViewController, game: Solitaire, gameDelegate: SolitaireDelegate, size: CGSize) {
         self.GameScene = gameScene
-        self.SolitaireGame = self.GameScene.game! as! Solitaire
-        self.SolitaireGameDelegate = self.GameScene.gameDelegate! as! SolitaireDelegate
+        self.SolitaireGame = game
+        self.SolitaireGameDelegate = gameDelegate
         
         super.init(size: size)
         

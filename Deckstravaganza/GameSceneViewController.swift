@@ -8,12 +8,8 @@
 
 import SpriteKit
 
-
 class GameSceneViewController: UIViewController {
-    var gameScene: SKScene!
-    var game: Rummy!
-    var gameDelegate: RummyDelegate!
-    
+    var gameType: GameType!;
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,20 +27,21 @@ class GameSceneViewController: UIViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
-        //solitaireScene = SolitaireScene(size: CGSizeMake(768, 1024))
-        let gameName = "Solitaire"
-//        if gameName == "Solitaire" {
-//            self.game = Solitaire()
-//            self.gameDelegate = SolitaireDelegate()
-//            self.gameScene = SolitaireScene(gameScene: self, size: CGSizeMake(768, 1024))
-//        } else if gameName == "Rummy" {
-            self.game = Rummy(numberOfPlayers: 2)
-            self.gameDelegate = RummyDelegate()
-            self.gameScene = RummyScene(gameScene: self, size: CGSizeMake(768, 1024))
-//        }
+        var gameScene: SKScene;
+        
+        if(gameType == nil) {
+            return;
+        }
+        
+        switch(gameType!) {
+        case .Solitaire:
+            gameScene = SolitaireScene(gameScene: self, game: Solitaire(), gameDelegate: SolitaireDelegate(), size: CGSizeMake(768, 1024));
+        case .Rummy:
+            gameScene = RummyScene(gameScene: self, game: Rummy(), gameDelegate: RummyDelegate(), size: CGSizeMake(768, 1024));
+        }
+        
         let spriteView:SKView = self.view as! SKView
         spriteView.presentScene(gameScene)
-        
     }
 
     /*

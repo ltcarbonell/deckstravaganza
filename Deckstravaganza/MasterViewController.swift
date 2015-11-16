@@ -18,8 +18,8 @@ class MasterViewController: UITableViewController {
         [Menu(name: "Continue", description: "Continue playing from your last game.")],
         [
             Menu(name: "New Game", description: "Start a new game.", clickable: false),
-            Menu(name: "Solitaire", description: "Start a new solitaire game.", level: 2),
-            Menu(name: "Rummy", description: "Start a new rummy game.", level: 2)
+            Menu(name: "\tSolitaire", description: "Start a new solitaire game.", level: 2),
+            Menu(name: "\tRummy", description: "Start a new rummy game.", level: 2)
         ]
     ];
 

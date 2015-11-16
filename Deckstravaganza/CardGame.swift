@@ -58,7 +58,7 @@ protocol CardGame {
     func setPlayers(numberOfPlayers: Int)
     
     // Return adjustable settings for the game
-    func getAdjustableSettings() -> [AdjustableSetting];
+    func getGameOptions() -> [AdjustableSetting];
     
     var adjustableSettings: [AdjustableSetting] { get set }
 }

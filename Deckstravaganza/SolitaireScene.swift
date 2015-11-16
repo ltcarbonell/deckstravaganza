@@ -61,10 +61,10 @@ class CardSprite: SKSpriteNode {
     }
     
     // initializer sets the card value and references the gamescene being used
-    init(gameScene: GameSceneViewController, card: Card) {
+    init(gameScene: SolitaireScene, card: Card) {
         self.card = card
-        self.solitaireScene = gameScene.gameScene! as! SolitaireScene
-        self.solitaireGame = gameScene.game! as! Solitaire
+        self.solitaireScene = gameScene
+        self.solitaireGame = gameScene.SolitaireGame
         
         self.frontTexture = SKTexture(image: card.getCardFace(Deck.DeckFronts.Default)!)
         self.backTexture = SKTexture(image: card.getCardBack(Deck.DeckBacks.Default)!)
@@ -431,7 +431,7 @@ class SolitaireScene: SKScene {
         // staggers the piles in the tableus so parts of all cards are visible
         for var i = 0; i < tableuLocations.count; i++ {
             for var j = 0; j <= i; j++ {
-                let newTableuCardSprite = CardSprite(gameScene: self.GameScene, card: self.SolitaireGame.tableus[i].cardAt(j)!)
+                let newTableuCardSprite = CardSprite(gameScene: self, card: self.SolitaireGame.tableus[i].cardAt(j)!)
                 
                 //tableuLocations[i].y = tableuLocations[i].y + cardOffset(j)
                 let cardLocation = CGPoint(x: tableuLocations[i].x, y: tableuLocations[i].y + cardOffset(j));
@@ -450,7 +450,7 @@ class SolitaireScene: SKScene {
         // places the rest of the cards in the deck pile
         var count = 0
         while dealtCount < 52 {
-            let newDeckCardSprite = CardSprite(gameScene: self.GameScene, card: self.SolitaireGame.deck.cardAt(count++)!);
+            let newDeckCardSprite = CardSprite(gameScene: self, card: self.SolitaireGame.deck.cardAt(count++)!);
             
             newDeckCardSprite.size = cardSize
             newDeckCardSprite.position = deckLocation
@@ -581,7 +581,7 @@ class SolitaireScene: SKScene {
         }
         
         for index in 0..<self.SolitaireGame.deck.numberOfCards() {
-            let deckSprite = CardSprite(gameScene: self.GameScene, card: self.SolitaireGame.deck.cardAt(index)!)
+            let deckSprite = CardSprite(gameScene: self, card: self.SolitaireGame.deck.cardAt(index)!)
             
             deckSprite.size = cardSize
             deckSprite.position = deckLocation

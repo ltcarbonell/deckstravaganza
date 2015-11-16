@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let masterViewController = leftNavController.topViewController as! MasterViewController
         let detailViewController = splitViewController.viewControllers.last as! DetailViewController
         
-        let firstMenu = masterViewController.menuItems.first
+        let firstMenu = masterViewController.menus.first?.first
         detailViewController.menu = firstMenu!
 
         masterViewController.delegate = detailViewController

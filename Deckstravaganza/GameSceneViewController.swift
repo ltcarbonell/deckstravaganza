@@ -12,7 +12,8 @@ import SpriteKit
 class GameSceneViewController: UIViewController {
     var gameScene: SKScene!
     var game: Rummy!
-    var gameDelegate: RummyDelegate!
+    //var gameDelegate: RummyDelegate!
+    var gameDelegate: SolitaireDelegate!
     
     
     override func viewDidLoad() {
@@ -39,8 +40,8 @@ class GameSceneViewController: UIViewController {
 //            self.gameScene = SolitaireScene(gameScene: self, size: CGSizeMake(768, 1024))
 //        } else if gameName == "Rummy" {
             self.game = Rummy(numberOfPlayers: 2)
-            self.gameDelegate = RummyDelegate()
-            self.gameScene = RummyScene(gameScene: self, game: self.game, gameDelegate: self.gameDelegate, size: CGSizeMake(768, 1024))
+            //self.gameDelegate = RummyDelegate()
+            self.gameScene = RummyScene(gameScene: self, game: self.game, /*gameDelegate: self.gameDelegate,*/ size: CGSizeMake(768, 1024))
 //        }
         let spriteView:SKView = self.view as! SKView
         spriteView.presentScene(gameScene)

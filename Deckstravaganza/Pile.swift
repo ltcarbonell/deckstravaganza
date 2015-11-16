@@ -36,6 +36,27 @@ class Pile {
     }
     
     /**
+     * Find the card and remove it.  If card is not in pile, nil is returned.
+     *
+     * @param card : Card - the index of the card to return in the pile
+     * @return Card? - the card at index
+     */
+    func removeCard(card : Card) -> Card? {
+        var index = -1
+        for cardIndex in 0..<pile.count {
+            if card.isEqualTo(pile[cardIndex], ignoreSuit:  false) {
+                index = cardIndex
+            }
+        }
+        if(index >= 0 && index < pile.count) {
+            return removeCardAt(index);
+        } else {
+            return nil;
+        }
+    }
+    
+    
+   /**
     * Return the card at index.  If index is out of bounds, nil is returned.
     *
     * @param index : Int - the index of the card to return in the pile
@@ -50,11 +71,11 @@ class Pile {
     }
     
     /**
-    * Return and remove the card at index.  If index is out of bounds, nil is returned.
-    *
-    * @param index : Int - the index of the card to return in the pile
-    * @return Card? - the card at index
-    */
+     * Return and remove the card at index.  If index is out of bounds, nil is returned.
+     *
+     * @param index : Int - the index of the card to return in the pile
+     * @return Card? - the card at index
+     */
     func removeCardAt(index : Int) -> Card? {
         if(index >= 0 && index < pile.count) {
             return pile.removeAtIndex(index);
@@ -64,12 +85,43 @@ class Pile {
     }
     
     /**
-     * Insert the card at end of pile.
+     * Insert the card at index.  If index is out of bounds, card is appended.
+     *
+     * @param index : Int - the index of the card to insert in the pile
+     * @param Card - the card at index
+     */
+    func insertCardAt(card: Card, index : Int) {
+        if(index >= 0 && index < pile.count) {
+            return pile.insert(card, atIndex: index);
+        } else {
+            return pile.append(card);
+        }
+    }
+    
+    /**
+     * Append the card at end of pile.
      *
      * @param card : Card - the card to be inserted into the pile
      */
-    func addCard(card : Card) {
+    func appendCard(card : Card) {
         pile.append(card);
+    }
+    
+    /**
+     *
+     * Return true if and only if the pile contains the card.
+     *
+     * @param card: Card - the card being searched for
+     * @ return Bool
+     */
+     
+    func contains(card: Card) -> Bool {
+        for searchCard in pile {
+            if card.isEqualTo(searchCard, ignoreSuit: false) {
+                return true
+            }
+        }
+        return false
     }
     
     /**

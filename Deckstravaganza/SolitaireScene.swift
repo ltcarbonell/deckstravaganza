@@ -187,8 +187,7 @@ class CardSprite: SKSpriteNode {
         return cards
     }
     
-    // MARK:
-    /* TOUCH CONTROLS */
+    // MARK: TOUCH CONTROLS 
     
     /**
     * Increase this card's z-index so it is above all other cards and save the fromLocation.
@@ -589,6 +588,8 @@ class SolitaireScene: SKScene {
             self.addChild(deckSprite)
         }
     }
+    
+    
     
     // updates the tableulocations after a card is moved
     // NOT CURRENTLY IMPLEMENTED

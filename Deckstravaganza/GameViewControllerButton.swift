@@ -19,8 +19,8 @@ class GameViewControllerButton: SKSpriteNode {
         defaultButton = SKSpriteNode(imageNamed: defaultButtonImage)
         action = buttonAction
         
-        let cardReloadTexture = SKTexture(imageNamed: "reload_card")
-        super.init(texture: cardReloadTexture, color: UIColor.blackColor(), size: cardReloadTexture.size())
+        let imageTexture = SKTexture(imageNamed: defaultButtonImage)
+        super.init(texture: imageTexture, color: UIColor.blackColor(), size: imageTexture.size())
         
         userInteractionEnabled = true
     }
@@ -55,6 +55,7 @@ class GameViewControllerButton: SKSpriteNode {
             }
             
             defaultButton.hidden = false
+            self.removeFromParent()
         }
         
     }

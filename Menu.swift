@@ -12,12 +12,15 @@ import UIKit
 class Menu {
     let name: String
     let description: String
+    let level: Int
+    let clickable: Bool
     
     // designated initializer for a MenuItem
-    init(name: String, description: String) {
+    init(name: String, description: String, level: Int = 1, clickable: Bool = true) {
         self.name = name
         self.description = description
-        
+        self.level = level
+        self.clickable = clickable
     }
 }
 

@@ -13,6 +13,15 @@ protocol MenuSelectionDelegate: class {
 }
 
 class MasterViewController: UITableViewController {
+    weak var delegate: MenuSelectionDelegate?
+    var menus: [[Menu]] = [
+        [Menu(name: "Continue", description: "Continue playing from your last game.")],
+        [
+            Menu(name: "New Game", description: "Start a new game.", clickable: false),
+            Menu(name: "Solitaire", description: "Start a new solitaire game.", level: 2),
+            Menu(name: "Rummy", description: "Start a new rummy game.", level: 2)
+        ]
+    ];
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,10 +33,6 @@ class MasterViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
-   // var list: [String] = ["Continue Game", "New Game", "Multiplayer", "Settings"]
-    weak var delegate: MenuSelectionDelegate?
-    var menuItems = [Menu]()
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -36,41 +41,30 @@ class MasterViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
+        return menus.count;
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        
-        return self.menuItems.count
+        return menus[section].count;
     }
-
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
 
         // Configure the cell...
-        
-        let menuItems = self.menuItems[indexPath.row]
-        cell.textLabel?.text = menuItems.name
+        let menuItem = self.menus[indexPath.section][indexPath.row];
+        cell.textLabel?.text = menuItem.name;
         
         return cell
     }
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
-        
-        self.menuItems.append(Menu(name: "Test", description: "Testing"))
-        self.menuItems.append(Menu(name: "Continue", description: "Continue a previous game"))
-        self.menuItems.append(Menu(name: "Saved Games", description: "Choose a saved game"))
-        self.menuItems.append(Menu(name: "New", description: "Start a new Game"))
-        
     }
     
     
    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let selectedMenu = self.menuItems[indexPath.row]
+        let selectedMenu = self.menus[indexPath.section][indexPath.row];
         self.delegate?.menuSelected(selectedMenu)
         
         if let detailViewController = self.delegate as? DetailViewController {

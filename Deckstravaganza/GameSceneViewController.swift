@@ -37,7 +37,7 @@ class GameSceneViewController: UIViewController {
         case .Solitaire:
             gameScene = SolitaireScene(gameScene: self, game: Solitaire(), gameDelegate: SolitaireDelegate(), size: CGSizeMake(768, 1024));
         case .Rummy:
-            gameScene = RummyScene(gameScene: self, game: Rummy(), gameDelegate: RummyDelegate(), size: CGSizeMake(768, 1024));
+            gameScene = RummyScene(gameScene: self, game: Rummy(numberOfPlayers: 2), gameDelegate: RummyDelegate(), size: CGSizeMake(768, 1024));
         }
         
         let spriteView:SKView = self.view as! SKView

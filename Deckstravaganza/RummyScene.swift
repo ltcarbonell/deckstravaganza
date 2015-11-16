@@ -240,8 +240,16 @@ class RummyScene: SKScene {
     
     func meld() {
         print("meld")
+        var cardSpritesMeld = [RummyCardSprite]()
+        for cardIndex in 0..<self.RummyGame.selectedCards.numberOfCards() {
+            cardSpritesMeld.append(self.childNodeWithName("\(self.RummyGame.selectedCards.cardAt(cardIndex)!.getRank())\(self.RummyGame.selectedCards.cardAt(cardIndex)!.getSuit())") as! RummyCardSprite)
+        }
+        if self.RummyGame.isValidMeld(self.RummyGame.selectedCards) {
+            // Move the cards to a meld pile
+        } else {
+            
         
-        
+        }
     }
     
     func discard() {

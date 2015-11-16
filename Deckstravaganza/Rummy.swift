@@ -10,7 +10,7 @@ import Foundation
 
 struct RummyMeld {
     var user: Player;
-    var meld: StackPile;
+    var meld: Pile;
 }
 
 class Rummy: CardGame {
@@ -64,6 +64,7 @@ class Rummy: CardGame {
     
     // MARK: Methods for playing game
     
+    // Deals the cards from the pre-shuffled deck into the approporate number of players hands
     func deal() {
         if(self.playersHands.count == 0) {
             for(var playerIndex = 0; playerIndex < self.playersHands.count; playerIndex++) {
@@ -95,23 +96,47 @@ class Rummy: CardGame {
         print("Dealt");
     }
     
+    // MARK: Methods for moving cards in game
+    // Adds a card when it is selected to a pile
     func addSelectedCard(card: Card) {
         selectedCards.appendCard(card)
     }
     
+    // Removes card from hand and adds it to the waste pile
     func discard(card: Card) {
         let discardedCard = self.playersHands[players[0].playerNumber].removeCard(card)
         self.wastePile.push(discardedCard!)
     }
     
+    // Draws card from deck and adds it to the users hand
     func drawFromDeck(card: Card) {
         let drawnCard = self.deck.removeCard(card)
         self.playersHands[0].insertCardAt(drawnCard!, index: 0)
     }
     
+    // Draws waste pile from deck and adds it to the users hand
     func drawFromWastePile(card: Card) {
         let drawnCard = self.wastePile.removeCard(card)
         self.playersHands[0].insertCardAt(drawnCard!, index: 0)
+    }
+    
+    // MARK: Methods for checking for valid moves
+    func isValidMeld(pile: Pile) -> Bool {
+        if pile.numberOfCards() > 3 {
+            // Check for run
+            for cardIndex in 0..<pile.numberOfCards() {
+                
+            }
+            // Check for group
+            for cardIndex in 1..<pile.numberOfCards() {
+                if !pile.cardAt(cardIndex)!.hasSameSuitAs(pile.cardAt(0)!) {
+                    return false
+                }
+            }
+        } else {
+            return false
+        }
+        return false
     }
     
     //begin round
@@ -132,6 +157,8 @@ class Rummy: CardGame {
         /*The Discard At the end of your turn, one card must be discarded from your hand and placed on top of the discard pile face up. If you began your turn by picking up the top card of the discard pile you are not allowed to end that turn by discarding the same card, leaving the pile unchanged - you must discard a different card.*/
     }
     
+    
+    // MARK: Methods for checking and changing game status
     func checkRoundEnded() -> Bool{
         return false
     }

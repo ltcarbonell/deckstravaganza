@@ -7,12 +7,14 @@
 //
 
 import UIKit
+import GameKit
 
 class MenuSplitViewController: UISplitViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        authenticateLocalPlayer()
         // Do any additional setup after loading the view.
     }
 
@@ -25,6 +27,21 @@ class MenuSplitViewController: UISplitViewController {
         let barButtonItem = self.displayModeButtonItem()
         UIApplication.sharedApplication().sendAction(barButtonItem.action, to: barButtonItem.target, from: nil, forEvent: nil)
     }
+    
+    func authenticateLocalPlayer(){
+        let localPlayer = GKLocalPlayer.localPlayer()
+        localPlayer.authenticateHandler = {(viewController, error) -> Void in
+            if error != nil {
+                print(error)
+            }
+            if (viewController != nil) {
+                self.presentViewController(viewController!, animated: true, completion: nil)
+            }else{
+                print((GKLocalPlayer().authenticated))
+            }
+        }
+    }
+    
 
     /*
     // MARK: - Navigation

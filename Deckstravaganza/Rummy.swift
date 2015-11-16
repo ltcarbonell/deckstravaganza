@@ -108,6 +108,15 @@ class Rummy: CardGame {
         self.wastePile.push(discardedCard!)
     }
     
+    func meldCards() {
+        for cardIndex in 0..<self.selectedCards.numberOfCards() {
+            self.playersHands[players[0].playerNumber].removeCard(self.selectedCards.cardAt(cardIndex)!)
+        }
+        let newMeld = RummyMeld(user: players[0], meld: selectedCards)
+        self.melds.append(newMeld)
+        self.selectedCards.removeAllCards()
+    }
+    
     // Draws card from deck and adds it to the users hand
     func drawFromDeck(card: Card) {
         let drawnCard = self.deck.removeCard(card)
@@ -122,21 +131,28 @@ class Rummy: CardGame {
     
     // MARK: Methods for checking for valid moves
     func isValidMeld(pile: Pile) -> Bool {
+        pile.sortByRank(true)
+        for cardIndex in 0..<pile.numberOfCards() {
+            print(pile.cardAt(cardIndex)?.getRank())
+        }
+        
         if pile.numberOfCards() > 3 {
             // Check for run
-            for cardIndex in 0..<pile.numberOfCards() {
-                
-            }
-            // Check for group
             for cardIndex in 1..<pile.numberOfCards() {
-                if !pile.cardAt(cardIndex)!.hasSameSuitAs(pile.cardAt(0)!) {
+                if (pile.cardAt(cardIndex - 1)?.getRank().hashValue)! != (pile.cardAt(cardIndex)?.getRank().hashValue)! - 1 {
                     return false
                 }
             }
+            // Check for group
+            for cardIndex in 1..<pile.numberOfCards() {
+                if !pile.cardAt(cardIndex)!.hasSameRankAs(pile.cardAt(0)!) {
+                    return false
+                }
+            }
+            return true
         } else {
             return false
         }
-        return false
     }
     
     //begin round

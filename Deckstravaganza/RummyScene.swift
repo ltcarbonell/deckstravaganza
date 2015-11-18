@@ -203,7 +203,7 @@ class RummyScene: SKScene {
         }
     }
     
-    // MARK: Functions used for imlpementing the game rules and moves
+    // MARK: Functions used for implementing the game rules and moves
     func shuffle() {
         // Create the sprites for the cards that go into the deck
         for index in 0..<self.RummyGame.deck.numberOfCards() {
@@ -248,14 +248,14 @@ class RummyScene: SKScene {
         for cardIndex in 0..<self.RummyGame.selectedCards.numberOfCards() {
             cardSpritesMeld.append(self.childNodeWithName("\(self.RummyGame.selectedCards.cardAt(cardIndex)!.getRank())\(self.RummyGame.selectedCards.cardAt(cardIndex)!.getSuit())") as! RummyCardSprite)
         }
-        if self.RummyGame.isValidMeld(self.RummyGame.selectedCards) {
+        if self.RummyGame.isSelectedCardsValidMeld() {
             // Move the cards to a meld pile
-            self.RummyGame.meldCards(self.RummyGame.selectedCards)
+            self.RummyGame.meldSelectedCards()
             for sprite in cardSpritesMeld {
                 sprite.runAction(SKAction.moveTo(meldLocation, duration: 0.5))
             }
         } else {
-        
+            didPlayInvalidMove()
         }
     }
     
@@ -277,6 +277,18 @@ class RummyScene: SKScene {
     
     func layOff() {
         print("layoff")
+        var cardSpritesLayOff = [RummyCardSprite]()
+        for cardIndex in 0..<self.RummyGame.selectedCards.numberOfCards() {
+            cardSpritesLayOff.append(self.childNodeWithName("\(self.RummyGame.selectedCards.cardAt(cardIndex)!.getRank())\(self.RummyGame.selectedCards.cardAt(cardIndex)!.getSuit())") as! RummyCardSprite)
+        }
+        
+        if self.RummyGame.isSelectedCardsValidLayOff() {
+            // Move the cards to a meld pile
+            self.RummyGame.layOffSelectedCards()
+            // Move them to the correct location of that specific meld
+        } else {
+            didPlayInvalidMove()
+        }
     }
     
     // MARK: Functions used for recognizing movements and implementing using cardSprites
@@ -336,6 +348,17 @@ class RummyScene: SKScene {
         setUserInteractionEnabledPlayerHand(true, player: self.RummyGame.players[0])
     }
     
+    func didPlayInvalidMove() {
+        let message = SKLabelNode(fontNamed: "Chalkduster")
+        message.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame))
+        message.fontSize = 60
+        message.text = "Invalid Move"
+        
+        self.addChild(message)
+        self.runAction(SKAction.waitForDuration(0.5))
+        message.removeFromParent()
+        checkAndAddValidButtonOptions()
+    }
     
     // MARK: Touch recognizers
     func touchesBeganClosure(cardSprite: RummyCardSprite) {

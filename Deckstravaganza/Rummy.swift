@@ -108,13 +108,19 @@ class Rummy: CardGame {
         self.wastePile.push(discardedCard!)
     }
     
-    func meldCards() {
+    // Moves cards in a valid meld from the players hand and into the array of melds
+    func meldSelectedCards() {
         for cardIndex in 0..<self.selectedCards.numberOfCards() {
             self.playersHands[players[0].playerNumber].removeCard(self.selectedCards.cardAt(cardIndex)!)
         }
         let newMeld = RummyMeld(user: players[0], meld: selectedCards)
         self.melds.append(newMeld)
         self.selectedCards.removeAllCards()
+    }
+    
+    // Moves cards in a valid layoff from the players hand into the meld in the array of melds
+    func layOffSelectedCards() {
+        
     }
     
     // Draws card from deck and adds it to the users hand
@@ -130,22 +136,24 @@ class Rummy: CardGame {
     }
     
     // MARK: Methods for checking for valid moves
-    func isValidMeld(pile: Pile) -> Bool {
-        pile.sortByRank(true)
-        for cardIndex in 0..<pile.numberOfCards() {
-            print(pile.cardAt(cardIndex)?.getRank())
+    
+    // Check if the selected cards are a valid meld
+    func isSelectedCardsValidMeld() -> Bool {
+        selectedCards.sortByRank(true)
+        for cardIndex in 0..<selectedCards.numberOfCards() {
+            print(selectedCards.cardAt(cardIndex)!.getRank())
         }
         
-        if pile.numberOfCards() > 3 {
+        if selectedCards.numberOfCards() > 3 {
             // Check for run
-            for cardIndex in 1..<pile.numberOfCards() {
-                if (pile.cardAt(cardIndex - 1)?.getRank().hashValue)! != (pile.cardAt(cardIndex)?.getRank().hashValue)! - 1 {
+            for cardIndex in 1..<selectedCards.numberOfCards() {
+                if (selectedCards.cardAt(cardIndex - 1)!.getRank().hashValue) != (selectedCards.cardAt(cardIndex)!.getRank().hashValue - 1) || !(selectedCards.cardAt(cardIndex - 1)!.hasSameSuitAs(selectedCards.cardAt(cardIndex)!)) {
                     return false
                 }
             }
             // Check for group
-            for cardIndex in 1..<pile.numberOfCards() {
-                if !pile.cardAt(cardIndex)!.hasSameRankAs(pile.cardAt(0)!) {
+            for cardIndex in 1..<selectedCards.numberOfCards() {
+                if !selectedCards.cardAt(cardIndex)!.hasSameRankAs(selectedCards.cardAt(0)!) {
                     return false
                 }
             }
@@ -153,6 +161,13 @@ class Rummy: CardGame {
         } else {
             return false
         }
+    }
+    
+    // Check if the selected card(s) are a valid layoff
+    func isSelectedCardsValidLayOff() -> Bool {
+        selectedCards.sortByRank(true)
+        
+        return false
     }
     
     //begin round

@@ -86,6 +86,7 @@ class RummyScene: SKScene {
     var deckLocation = CGPoint(x: 0,y: 0)
     var wastePileLocation = CGPoint(x: 0, y: 0)
     var handLocations = [[CGPoint(x: 0,y: 0)]]
+    var meldLocation = CGPoint(x: 0,y: 0)
     
     var isWinner = false
     var isPlayerTurn = false
@@ -106,6 +107,9 @@ class RummyScene: SKScene {
         // Sets the location for where the deck and waste pile are located in the frame
         self.deckLocation = CGPoint(x: self.scene!.frame.midX - cardSize.width/2, y: self.scene!.frame.midY)
         self.wastePileLocation = CGPoint(x: self.scene!.frame.midX + cardSize.width/2 , y: self.scene!.frame.midY)
+        
+        // Sets the location for where the melds should be location
+        self.meldLocation = CGPoint(x: self.scene!.frame.minX + cardSize.width, y: self.scene!.frame.maxY - cardSize.height)
 
         // Sets the locations of where the players' hands begin
         switch RummyGame.playersHands.count {
@@ -240,8 +244,19 @@ class RummyScene: SKScene {
     
     func meld() {
         print("meld")
+        var cardSpritesMeld = [RummyCardSprite]()
+        for cardIndex in 0..<self.RummyGame.selectedCards.numberOfCards() {
+            cardSpritesMeld.append(self.childNodeWithName("\(self.RummyGame.selectedCards.cardAt(cardIndex)!.getRank())\(self.RummyGame.selectedCards.cardAt(cardIndex)!.getSuit())") as! RummyCardSprite)
+        }
+        if self.RummyGame.isValidMeld(self.RummyGame.selectedCards) {
+            // Move the cards to a meld pile
+            self.RummyGame.meldCards(self.RummyGame.selectedCards)
+            for sprite in cardSpritesMeld {
+                sprite.runAction(SKAction.moveTo(meldLocation, duration: 0.5))
+            }
+        } else {
         
-        
+        }
     }
     
     func discard() {

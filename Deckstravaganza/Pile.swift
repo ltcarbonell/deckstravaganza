@@ -141,11 +141,34 @@ class Pile {
     }
     
     /**
-    * Return the number of cards in this pile.
-    *
-    * @return Bool
-    */
+     * Return the number of cards in this pile.
+     *
+     * @return Bool
+     */
     func numberOfCards() -> Int {
         return pile.count;
+    }
+    
+    /**
+     * Sort the cards in this pile by their rank.
+     *
+     * @param card: acesLow: Bool - True if Aces should be considered low.
+     */
+    func sortByRank(acesLow: Bool) {
+        pile.sortInPlace { (card1: Card, card2: Card) -> Bool in
+            return card1.isLowerThan(card2, acesLow: acesLow)
+        }
+    }
+    
+    /**
+     * Sort the cards in this pile by their suit.
+     * Places priority order as Spades, Hearts, Diamonds, Clubs
+     *
+     * @return Bool
+     */
+    func sortBySuit() {
+        pile.sortInPlace { (card1: Card, card2: Card) -> Bool in
+            return card1.getSuit().hashValue < card2.getSuit().hashValue
+        }
     }
 }

@@ -19,6 +19,7 @@ class GameSceneViewController: UIViewController {
         spriteView.showsDrawCount = true
         spriteView.showsNodeCount = true
         spriteView.showsFPS = true
+        
     }
 
     override func didReceiveMemoryWarning() {

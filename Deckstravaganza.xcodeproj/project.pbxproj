@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		22145B341BFA54E6005F50B2 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22145B331BFA54E6005F50B2 /* GameKit.framework */; };
 		2220B9A91BD5F08700E9E3F6 /* GameViewControllerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2220B9A81BD5F08700E9E3F6 /* GameViewControllerButton.swift */; };
 		227912941BB47EF9006C6C60 /* CardGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227912931BB47EF9006C6C60 /* CardGame.swift */; };
 		227912961BB47F5C006C6C60 /* Solitaire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227912951BB47F5C006C6C60 /* Solitaire.swift */; };
@@ -54,6 +55,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		22145B331BFA54E6005F50B2 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		2220B9A81BD5F08700E9E3F6 /* GameViewControllerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewControllerButton.swift; sourceTree = "<group>"; };
 		227912931BB47EF9006C6C60 /* CardGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardGame.swift; sourceTree = "<group>"; };
 		227912951BB47F5C006C6C60 /* Solitaire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Solitaire.swift; sourceTree = "<group>"; };
@@ -95,6 +97,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				229EB7B81BBB78E400ECE5B5 /* SpriteKit.framework in Frameworks */,
+				22145B341BFA54E6005F50B2 /* GameKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -164,6 +167,7 @@
 				D54C898C1BAD9527007AEB7E /* DeckstravaganzaTests */,
 				D54C89971BAD9527007AEB7E /* DeckstravaganzaUITests */,
 				D54C89761BAD9527007AEB7E /* Products */,
+				22145B331BFA54E6005F50B2 /* GameKit.framework */,
 				229EB7B71BBB78E400ECE5B5 /* SpriteKit.framework */,
 			);
 			sourceTree = "<group>";
@@ -286,6 +290,11 @@
 					D54C89741BAD9527007AEB7E = {
 						CreatedOnToolsVersion = 7.0;
 						DevelopmentTeam = 25NK4A4VUP;
+						SystemCapabilities = {
+							com.apple.GameCenter = {
+								enabled = 1;
+							};
+						};
 					};
 					D54C89881BAD9527007AEB7E = {
 						CreatedOnToolsVersion = 7.0;

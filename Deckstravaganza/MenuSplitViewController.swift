@@ -12,7 +12,8 @@ class MenuSplitViewController: UISplitViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        self.preferredDisplayMode = .AllVisible;
         // Do any additional setup after loading the view.
     }
 

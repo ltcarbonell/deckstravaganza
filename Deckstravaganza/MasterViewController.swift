@@ -15,11 +15,11 @@ protocol MenuSelectionDelegate: class {
 class MasterViewController: UITableViewController {
     weak var delegate: MenuSelectionDelegate?
     var menus: [[Menu]] = [
-        [Menu(name: "Continue", description: "Continue playing from your last game.")],
+        [Menu(name: "Continue", description: "Continue Playing Last Game")],
         [
-            Menu(name: "New Game", description: "Start a new game.", clickable: false),
-            Menu(name: "\tSolitaire", description: "Start a new solitaire game.", level: 2),
-            Menu(name: "\tRummy", description: "Start a new rummy game.", level: 2)
+            Menu(name: "New Game", description: "New Game", clickable: false),
+            Menu(name: "\tSolitaire", description: "New Solitaire Game", level: 2, viewGameOptions: true, gameType: .Solitaire),
+            Menu(name: "\tRummy", description: "New Rummy Game", level: 2, viewGameOptions: true, gameType: .Rummy)
         ]
     ];
 
@@ -45,13 +45,34 @@ class MasterViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return menus[section].count;
+        let menuItems = menus[section].count;
+        
+        if(menus[section].first!.clickable) {
+            return menuItems;
+        } else {
+            return menuItems - 1;
+        }
+    }
+    
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if(!menus[section].first!.clickable) {
+            return menus[section].first!.name;
+        }
+        
+        return nil;
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
 
         // Configure the cell...
+        if(!menus[indexPath.section].first!.clickable) {
+            let menuItem = self.menus[indexPath.section][indexPath.row + 1];
+            cell.textLabel?.text = menuItem.name;
+            
+            return cell;
+        }
+        
         let menuItem = self.menus[indexPath.section][indexPath.row];
         cell.textLabel?.text = menuItem.name;
         
@@ -63,14 +84,21 @@ class MasterViewController: UITableViewController {
     }
     
     
-   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let selectedMenu = self.menus[indexPath.section][indexPath.row];
-        self.delegate?.menuSelected(selectedMenu)
-        
-        if let detailViewController = self.delegate as? DetailViewController {
-           splitViewController?.showDetailViewController(detailViewController, sender: nil)
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let selectedMenu: Menu;
+        if(self.menus[indexPath.section].first!.clickable) {
+            selectedMenu = self.menus[indexPath.section][indexPath.row];
+        } else {
+            selectedMenu = self.menus[indexPath.section][indexPath.row + 1];
         }
-    } 
+        
+        self.delegate?.menuSelected(selectedMenu)
+    
+        if let detailViewController = self.delegate as? DetailViewController {
+            detailViewController.setupMenuUI();
+            splitViewController?.showDetailViewController(detailViewController, sender: nil)
+        }
+    }
 
 
     /*

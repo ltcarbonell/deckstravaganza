@@ -8,9 +8,17 @@
 
 import Foundation
 
+enum MeldType : Int {
+    case Group = 1
+    case Run = 2
+    
+    static let numberOfRummyTypes = 2
+}
+
 struct RummyMeld {
     var user: Player;
     var meld: Pile;
+    var type: MeldType
 }
 
 class Rummy: CardGame {
@@ -24,6 +32,8 @@ class Rummy: CardGame {
         melds =         [RummyMeld]();
     
     var players = [Player]();
+    var currentPlayerNumber = 0
+    var turn: Int
     
     var adjustableSettings = [AdjustableSetting]();
     
@@ -39,8 +49,21 @@ class Rummy: CardGame {
     var selectedCards = Pile()
     
     init(numberOfPlayers: Int) {
+        self.turn = 0
         self.setPlayers(numberOfPlayers)
+        
     }
+    
+    
+    //begin round
+    //begin turn player i
+    // if player score = 500 -> end turn, end round, end game
+    // end turn player i, begin turn player i+1, repeat for n turns
+    //end round
+    // Redeal cards -> begin round if score != 500
+    
+    
+    
     
     // MARK: Methods for setting up the game
     
@@ -104,54 +127,116 @@ class Rummy: CardGame {
     
     // Removes card from hand and adds it to the waste pile
     func discard(card: Card) {
-        let discardedCard = self.playersHands[players[0].playerNumber].removeCard(card)
+        let discardedCard = self.playersHands[currentPlayerNumber].removeCard(card)
         self.wastePile.push(discardedCard!)
+        turnDidEnd()
     }
     
     // Moves cards in a valid meld from the players hand and into the array of melds
     func meldSelectedCards() {
+        // Remove cards from hand
         for cardIndex in 0..<self.selectedCards.numberOfCards() {
-            self.playersHands[players[0].playerNumber].removeCard(self.selectedCards.cardAt(cardIndex)!)
+            self.playersHands[currentPlayerNumber].removeCard(self.selectedCards.cardAt(cardIndex)!)
         }
-        let newMeld = RummyMeld(user: players[0], meld: selectedCards)
-        self.melds.append(newMeld)
-        self.selectedCards.removeAllCards()
+        
+        if checkForRun() {
+            let newMeld = RummyMeld(user: players[currentPlayerNumber], meld: Pile(), type: .Run)
+            for cardIndex in 0..<selectedCards.numberOfCards() {
+                newMeld.meld.appendCard(selectedCards.cardAt(cardIndex)!)
+            }
+            self.melds.append(newMeld)
+            self.selectedCards.removeAllCards()
+        }
+        
+        else if checkForGroup() {
+            let newMeld = RummyMeld(user: players[currentPlayerNumber], meld: Pile(), type: .Group)
+            for cardIndex in 0..<selectedCards.numberOfCards() {
+                newMeld.meld.appendCard(selectedCards.cardAt(cardIndex)!)
+            }
+            self.melds.append(newMeld)
+            self.selectedCards.removeAllCards()
+        }
     }
     
     // Moves cards in a valid layoff from the players hand into the meld in the array of melds
-    func layOffSelectedCards() {
+    // Return the index of the meld it was moved to
+    func layOffSelectedCards(meldIndex: Int, insertIndex: Int){
+        for cardIndex in 0..<self.selectedCards.numberOfCards() {
+            self.playersHands[currentPlayerNumber].removeCard(self.selectedCards.cardAt(cardIndex)!)
+            self.melds[meldIndex].meld.insertCardAt(self.selectedCards.cardAt(cardIndex)!, index: insertIndex)
+        }
+        self.selectedCards.removeAllCards()
         
     }
+    
+    // Check to see where the cards can be moved to
+    // Returns an array of possible meld options
+    func checkForMeldOptions() -> [Int] {
+        selectedCards.sortByRank(true)
+        var meldIndicies: [Int] = []
+        // If there arent any melds, then there is nothing to check
+        if self.melds.count > 0 {
+            for cardIndex in 0..<selectedCards.numberOfCards() {
+                // check for first card of a group
+                for meldIndex in 0..<melds.count {
+                    // if it is same rank return true
+                    if melds[meldIndex].type == .Group && melds[meldIndex].meld.cardAt(0)!.hasSameRankAs(selectedCards.cardAt(cardIndex)!) {
+                        meldIndicies.append(meldIndex)
+                    }
+                        // Check for run
+                    else if melds[meldIndex].type == .Run {
+                        // if same suit and 1 - first card rank return true
+                        if selectedCards.cardAt(cardIndex)!.getRank().hashValue == melds[meldIndex].meld.cardAt(0)!.getRank().hashValue-1 && melds[meldIndex].meld.cardAt(0)!.hasSameSuitAs(selectedCards.cardAt(cardIndex)!) {
+                            meldIndicies.append(meldIndex)
+                            // if is it same suit and 1+ last card rank return true
+                        } else if selectedCards.cardAt(cardIndex)!.getRank().hashValue == melds[meldIndex].meld.cardAt(melds[meldIndex].meld.numberOfCards() - 1)!.getRank().hashValue+1 && melds[meldIndex].meld.cardAt(0)!.hasSameSuitAs(selectedCards.cardAt(cardIndex)!) {
+                            meldIndicies.append(meldIndex)
+                        }
+                    }
+                }
+            }
+        }
+        return meldIndicies
+    }
+    
     
     // Draws card from deck and adds it to the users hand
     func drawFromDeck(card: Card) {
         let drawnCard = self.deck.removeCard(card)
-        self.playersHands[0].insertCardAt(drawnCard!, index: 0)
+        self.playersHands[currentPlayerNumber].insertCardAt(drawnCard!, index: 0)
     }
     
     // Draws waste pile from deck and adds it to the users hand
     func drawFromWastePile(card: Card) {
         let drawnCard = self.wastePile.removeCard(card)
-        self.playersHands[0].insertCardAt(drawnCard!, index: 0)
+        self.playersHands[currentPlayerNumber].insertCardAt(drawnCard!, index: 0)
     }
     
     // MARK: Methods for checking for valid moves
-    
-    // Check if the selected cards are a valid meld
-    func isSelectedCardsValidMeld() -> Bool {
-        selectedCards.sortByRank(true)
-        for cardIndex in 0..<selectedCards.numberOfCards() {
-            print(selectedCards.cardAt(cardIndex)!.getRank())
-        }
-        
-        if selectedCards.numberOfCards() > 3 {
-            // Check for run
+    // Check for run
+    func checkForRun() -> Bool {
+        if selectedCards.numberOfCards() >= 3 {
+            var prevCard = selectedCards.cardAt(0)!
             for cardIndex in 1..<selectedCards.numberOfCards() {
-                if (selectedCards.cardAt(cardIndex - 1)!.getRank().hashValue) != (selectedCards.cardAt(cardIndex)!.getRank().hashValue - 1) || !(selectedCards.cardAt(cardIndex - 1)!.hasSameSuitAs(selectedCards.cardAt(cardIndex)!)) {
+                if !selectedCards.cardAt(cardIndex)!.hasSameSuitAs(selectedCards.cardAt(0)!) {
                     return false
                 }
+                else {
+                    if prevCard.getRank().hashValue + 1 != selectedCards.cardAt(cardIndex)?.getRank().hashValue {
+                        return false
+                    } else {
+                        prevCard = selectedCards.cardAt(cardIndex)!
+                    }
+                }
             }
-            // Check for group
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func checkForGroup() -> Bool {
+        if selectedCards.numberOfCards() >= 3 {
             for cardIndex in 1..<selectedCards.numberOfCards() {
                 if !selectedCards.cardAt(cardIndex)!.hasSameRankAs(selectedCards.cardAt(0)!) {
                     return false
@@ -163,39 +248,65 @@ class Rummy: CardGame {
         }
     }
     
+    // Check if the selected cards are a valid meld
+    func isSelectedCardsValidMeld() -> Bool {
+        selectedCards.sortByRank(true)
+        if checkForRun() || checkForGroup() {
+            return true
+        } else {
+            return false
+        }
+    }
+    
     // Check if the selected card(s) are a valid layoff
     func isSelectedCardsValidLayOff() -> Bool {
         selectedCards.sortByRank(true)
         
-        return false
+        // If there arent any melds, then there is nothing to check
+        if self.melds.count == 0 {
+            return false
+        } else {
+            for cardIndex in 0..<selectedCards.numberOfCards() {
+                // check for first card of a group
+                for meld in melds {
+                    // if it is same rank return true
+                    if meld.type == .Group && meld.meld.cardAt(0)!.hasSameRankAs(selectedCards.cardAt(cardIndex)!) {
+                        return true
+                    }
+                    // Check for run
+                    else if meld.type == .Run {
+                            // if same suit and 1 - first card rank return true
+                        if selectedCards.cardAt(cardIndex)!.getRank().hashValue == meld.meld.cardAt(0)!.getRank().hashValue-1 && meld.meld.cardAt(0)!.hasSameSuitAs(selectedCards.cardAt(cardIndex)!) {
+                            return true
+                            // if is it same suit and 1+ last card rank return true
+                        } else if selectedCards.cardAt(cardIndex)!.getRank().hashValue == meld.meld.cardAt(meld.meld.numberOfCards() - 1)!.getRank().hashValue+1 && meld.meld.cardAt(0)!.hasSameSuitAs(selectedCards.cardAt(cardIndex)!) {
+                            return true
+                        }
+                        else {
+                            return false
+                        }
+                    }
+                }
+            }
+            return false
+        }
     }
-    
-    //begin round
-    //begin turn player i
-    // if player score = 500 -> end turn, end round, end game
-    // end turn player i, begin turn player i+1, repeat for n turns
-    //end round
-    // Redeal cards -> begin round if score != 500
-    
-    func checkValidTurn(card: Card, toPile: StackPile) {
-        /*Each turn consists of the following parts:*/
-        /*The Draw. You must begin by taking one card from either the top of the Stock pile or the top card on the discard pile, and adding it to your hand.*/
-        
-        /* Melding. If you have a valid group or sequence in your hand, you may lay one such combination face up on the table in front of you. You cannot meld more than one combination in a turn. Melding is optional; you are not obliged to meld just because you can.*/
-        
-        /*Laying off. This is also optional. If you wish, you may add cards to groups or sequences previously melded by yourself or others. There is no limit to the number of cards a player may lay off in one turn.*/
-        
-        /*The Discard At the end of your turn, one card must be discarded from your hand and placed on top of the discard pile face up. If you began your turn by picking up the top card of the discard pile you are not allowed to end that turn by discarding the same card, leaving the pile unchanged - you must discard a different card.*/
-    }
-    
-    
+
     // MARK: Methods for checking and changing game status
     func checkRoundEnded() -> Bool{
-        return false
+        if playersHands[currentPlayerNumber].isEmpty() {
+            return true
+        } else {
+            return false
+        }
     }
     
-    func checkGameEnded() {
-        
+    func checkGameEnded() -> Bool {
+        if players[currentPlayerNumber].score >= targetScore {
+            return true
+        } else {
+            return false
+        }
     }
     
     func gameDidStart() {
@@ -224,14 +335,20 @@ class Rummy: CardGame {
     }
     
     func turnDidEnd() {
+        print("TURN NUMBER", turn)
         // If turn ended check if the round ended
         if checkRoundEnded() {
             // check if game ended
-            // if ended, display winner
+            if checkGameEnded() {
+                // display winner
+            } else {
+                increaseScore()
+                currentPlayerNumber = ++turn%players.count
+            }
+            
             // else start new round
         } else {
-            // Go to next player
-            // Current player's turn is player++%(number of players).
+            currentPlayerNumber = ++turn%players.count
         }
         
     }

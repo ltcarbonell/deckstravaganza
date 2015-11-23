@@ -65,7 +65,7 @@ class DetailViewController: UIViewController {
         btntwo.backgroundColor = UIColor.whiteColor()
         btntwo.frame = CGRectMake(160, 150, 100, 50)
         btntwo.center = CGPointMake(350, 160 )
-        btntwo.addTarget(self, action: "testAction:", forControlEvents: UIControlEvents.TouchUpInside)
+        btntwo.addTarget(self, action: "buttonAction:", forControlEvents: UIControlEvents.TouchUpInside)
         self.view.addSubview(btntwo)
     
     }
@@ -146,7 +146,7 @@ class DetailViewController: UIViewController {
         }
     }
     
-    func testAction(sender:UIButton!)
+    func buttonAction(sender:UIButton!)
     {
         print("Button tapped")
         performSegueWithIdentifier("menuToGameSegue", sender: nil)

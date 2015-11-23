@@ -26,6 +26,7 @@
 		D56CC3CC1BAF135200E6A9BC /* Pile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56CC3CB1BAF135200E6A9BC /* Pile.swift */; };
 		D56CC3CE1BB037E000E6A9BC /* StackPile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56CC3CD1BB037E000E6A9BC /* StackPile.swift */; };
 		D56CC3D01BB03E8200E6A9BC /* QueuePile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56CC3CF1BB03E8200E6A9BC /* QueuePile.swift */; };
+		D56F24E01C03A67500922739 /* GenericSwitchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56F24DF1C03A67500922739 /* GenericSwitchView.swift */; };
 		D5A0C80F1BC2E46900CE8A60 /* GameSceneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A0C80D1BC2E46900CE8A60 /* GameSceneViewController.swift */; };
 		D5A0C8101BC2E46900CE8A60 /* SolitaireScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A0C80E1BC2E46900CE8A60 /* SolitaireScene.swift */; };
 		D5DC30701BB97702001C4F58 /* Deck.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DC306F1BB97702001C4F58 /* Deck.swift */; };
@@ -81,6 +82,7 @@
 		D56CC3CB1BAF135200E6A9BC /* Pile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pile.swift; sourceTree = "<group>"; };
 		D56CC3CD1BB037E000E6A9BC /* StackPile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackPile.swift; sourceTree = "<group>"; };
 		D56CC3CF1BB03E8200E6A9BC /* QueuePile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueuePile.swift; sourceTree = "<group>"; };
+		D56F24DF1C03A67500922739 /* GenericSwitchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericSwitchView.swift; sourceTree = "<group>"; };
 		D5A0C80D1BC2E46900CE8A60 /* GameSceneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSceneViewController.swift; sourceTree = "<group>"; };
 		D5A0C80E1BC2E46900CE8A60 /* SolitaireScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SolitaireScene.swift; sourceTree = "<group>"; };
 		D5DC306F1BB97702001C4F58 /* Deck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Deck.swift; sourceTree = "<group>"; };
@@ -198,6 +200,7 @@
 				DCA2FB811BB9AC71007695E0 /* Menu.swift */,
 				DCA2FB7B1BB993CA007695E0 /* MasterViewController.swift */,
 				DCA2FB7D1BB9957D007695E0 /* DetailViewController.swift */,
+				D56F24DF1C03A67500922739 /* GenericSwitchView.swift */,
 				D5F55B3D1BFCC6820076871C /* GenericPickerView.swift */,
 				D5F55B2A1BFA6C600076871C /* GameFormElement.swift */,
 				D54C897F1BAD9527007AEB7E /* Assets.xcassets */,
@@ -382,6 +385,7 @@
 				D54C89791BAD9527007AEB7E /* AppDelegate.swift in Sources */,
 				DCA2FB7E1BB9957D007695E0 /* DetailViewController.swift in Sources */,
 				D56CC3CC1BAF135200E6A9BC /* Pile.swift in Sources */,
+				D56F24E01C03A67500922739 /* GenericSwitchView.swift in Sources */,
 				D56CC3CE1BB037E000E6A9BC /* StackPile.swift in Sources */,
 				2220B9A91BD5F08700E9E3F6 /* GameViewControllerButton.swift in Sources */,
 				D5A0C8101BC2E46900CE8A60 /* SolitaireScene.swift in Sources */,

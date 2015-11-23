@@ -76,27 +76,31 @@ class DetailViewController: UIViewController {
         if(gameOptions != nil) {
             for gameOption in gameOptions! {
                 let elementLabel = UILabel();
+                let element: GameFormElement;
                 elementLabel.text = gameOption.settingName;
                 
                 switch(gameOption.formType) {
                 case .Cards:
+                    element = GameFormElement(frame: CGRect(), settingName: "", formLabel: nil, formField: UIView());
                     break;
                 case .DropDown:
                     let elementField = GenericPickerView(data: gameOption.options);
                     elementField.dataSource = elementField;
                     elementField.delegate = elementField;
                     
-                    let element: GameFormElement = GameFormElement(frame: elementFrame, settingName: gameOption.settingName, formLabel: elementLabel, formField: elementField);
-                    element.center = CGPoint(x: CGRectGetMidX(elementFrame), y: FIELD_START_FROM_TOP + FIELD_TOP_MARGIN + (CGFloat(numberFields) * FIELD_HEIGHT));
-                    
-                    formFields.append(element);
-                    
-                    self.view.addSubview(formFields.last!);
+                    element = GameFormElement(frame: elementFrame, settingName: gameOption.settingName, formLabel: elementLabel, formField: elementField);
                 case .Slider:
-                    break;
+                    element = GameFormElement(frame: CGRect(), settingName: "", formLabel: nil, formField: UIView());
                 case .Switch:
-                    break;
+                    let elementField = GenericSwitchView();
+                    element = GameFormElement(frame: elementFrame, settingName: gameOption.settingName, formLabel: elementLabel, formField: elementField);
                 }
+                
+                element.center = CGPoint(x: CGRectGetMidX(elementFrame), y: FIELD_START_FROM_TOP + FIELD_TOP_MARGIN + (CGFloat(numberFields) * FIELD_HEIGHT));
+                
+                formFields.append(element);
+                
+                self.view.addSubview(formFields.last!);
                 
                 numberFields++;
             }

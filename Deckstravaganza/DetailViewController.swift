@@ -75,8 +75,8 @@ class DetailViewController: UIViewController {
         var numberFields = 0;
         if(gameOptions != nil) {
             for gameOption in gameOptions! {
-                let elementLabel = UILabel();
                 let element: GameFormElement;
+                let elementLabel = UILabel();
                 elementLabel.text = gameOption.settingName;
                 
                 switch(gameOption.formType) {
@@ -90,7 +90,9 @@ class DetailViewController: UIViewController {
                     
                     element = GameFormElement(frame: elementFrame, settingName: gameOption.settingName, formLabel: elementLabel, formField: elementField);
                 case .Slider:
-                    element = GameFormElement(frame: CGRect(), settingName: "", formLabel: nil, formField: UIView());
+                    let elementField = GenericSliderView(data: gameOption.options);
+                    
+                    element = GameFormElement(frame: elementFrame, settingName: gameOption.settingName, formLabel: elementLabel, formField: elementField);
                 case .Switch:
                     let elementField = GenericSwitchView();
                     

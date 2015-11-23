@@ -11,7 +11,7 @@ import SpriteKit
 
 // this is a class for a button that can be used with SKScenes
 class GameViewControllerButton: SKSpriteNode {
-    var defaultButton: SKSpriteNode
+    var defaultButton: SKSpriteNode;
     var action: () -> Void
     
     init(defaultButtonImage: String, buttonAction: () -> Void) {
@@ -23,6 +23,7 @@ class GameViewControllerButton: SKSpriteNode {
         
         userInteractionEnabled = true
     }
+    
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

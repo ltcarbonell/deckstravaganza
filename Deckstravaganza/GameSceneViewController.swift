@@ -10,6 +10,7 @@ import SpriteKit
 
 class GameSceneViewController: UIViewController {
     var gameType: GameType!;
+    var menuButton: SKSpriteNode!;
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +44,13 @@ class GameSceneViewController: UIViewController {
         
         let spriteView:SKView = self.view as! SKView
         spriteView.presentScene(gameScene)
+        
+        menuButton = SKSpriteNode(texture: SKTexture(imageNamed: "menuButtonTexture"));
+        menuButton.zPosition = 99999;
+        menuButton.size = CGSize(width: 50, height: 50);
+        menuButton.position = CGPoint(x: CGRectGetMaxX(gameScene.frame) + 50, y: CGRectGetMaxY(gameScene.frame) - 50);
+        gameScene.addChild(menuButton);
+    }
     
     
     /*
@@ -54,7 +62,5 @@ class GameSceneViewController: UIViewController {
     // Pass the selected object to the new view controller.
     }
     */
-    
-    }
 }
 

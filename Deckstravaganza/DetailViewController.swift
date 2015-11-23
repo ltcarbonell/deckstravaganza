@@ -76,27 +76,35 @@ class DetailViewController: UIViewController {
         if(gameOptions != nil) {
             for gameOption in gameOptions! {
                 let elementLabel = UILabel();
+                let element: GameFormElement;
                 elementLabel.text = gameOption.settingName;
                 
                 switch(gameOption.formType) {
                 case .Cards:
+                    element = GameFormElement(frame: CGRect(), settingName: "", formLabel: nil, formField: UIView());
                     break;
                 case .DropDown:
                     let elementField = GenericPickerView(data: gameOption.options);
                     elementField.dataSource = elementField;
                     elementField.delegate = elementField;
                     
-                    let element: GameFormElement = GameFormElement(frame: elementFrame, settingName: gameOption.settingName, formLabel: elementLabel, formField: elementField);
-                    element.center = CGPoint(x: CGRectGetMidX(elementFrame), y: FIELD_START_FROM_TOP + FIELD_TOP_MARGIN + (CGFloat(numberFields) * FIELD_HEIGHT));
-                    
-                    formFields.append(element);
-                    
-                    self.view.addSubview(formFields.last!);
+                    element = GameFormElement(frame: elementFrame, settingName: gameOption.settingName, formLabel: elementLabel, formField: elementField);
                 case .Slider:
-                    break;
+                    element = GameFormElement(frame: CGRect(), settingName: "", formLabel: nil, formField: UIView());
                 case .Switch:
-                    break;
+                    let elementField = GenericSwitchView();
+                    
+                    /* All switches are assumed to be for multiplayer settings. */
+                    elementField.addTarget(self, action: "updateMultiplayer:", forControlEvents: UIControlEvents.AllTouchEvents);
+                    
+                    element = GameFormElement(frame: elementFrame, settingName: gameOption.settingName, formLabel: elementLabel, formField: elementField);
                 }
+                
+                element.center = CGPoint(x: CGRectGetMidX(elementFrame), y: FIELD_START_FROM_TOP + FIELD_TOP_MARGIN + (CGFloat(numberFields) * FIELD_HEIGHT));
+                
+                formFields.append(element);
+                
+                self.view.addSubview(formFields.last!);
                 
                 numberFields++;
             }
@@ -127,6 +135,16 @@ class DetailViewController: UIViewController {
     
     func buttonPressed(sender: UIButton?) {
         performSegueWithIdentifier("menuToGameSegue", sender: nil);
+    }
+    
+    func updateMultiplayer(sender: UISwitch?) {
+        if(sender != nil) {
+            if(sender!.on) {
+                // Start multiplayer.
+            } else {
+                // Check if multiplayer is on and turn off if necessary.
+            }
+        }
     }
   
 //    var menu: Menu!{

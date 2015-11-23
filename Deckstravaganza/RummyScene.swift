@@ -252,7 +252,7 @@ class RummyScene: SKScene {
         for cardIndex in 0..<self.RummyGame.selectedCards.numberOfCards() {
             cardSpritesMeld.append(self.childNodeWithName("\(self.RummyGame.selectedCards.cardAt(cardIndex)!.getRank())\(self.RummyGame.selectedCards.cardAt(cardIndex)!.getSuit())") as! RummyCardSprite)
         }
-        if self.RummyGame.isValidMeld(self.RummyGame.selectedCards) {
+        if self.RummyGame.isSelectedCardsValidMeld() {
             // Move the cards to a meld pile
 //            self.RummyGame.meldCards(self.RummyGame.selectedCards)
             for sprite in cardSpritesMeld {
@@ -279,7 +279,7 @@ class RummyScene: SKScene {
         reorganizePlayersHand()
     }
     
-    func meld() {
+    func meldSelectedCards() {
         print("meld")
         var cardSpritesMeld = [RummyCardSprite]()
         for cardIndex in 0..<self.RummyGame.selectedCards.numberOfCards() {

@@ -51,7 +51,26 @@ class Rummy: CardGame {
     init(numberOfPlayers: Int) {
         self.turn = 0
         self.setPlayers(numberOfPlayers)
-        
+        self.adjustableSettings = [
+            AdjustableSetting(
+                settingName: "Difficulty Level",
+                formType: FormType.DropDown,
+                dataType: DataType.String,
+                options: ["Easy", "Hard"]
+            ),
+            AdjustableSetting(
+                settingName: "Card Type",
+                formType: FormType.Cards,
+                dataType: DataType.Image,
+                options: []
+            ),
+            AdjustableSetting(
+                settingName: "Multiplayer",
+                formType: FormType.Switch,
+                dataType: DataType.Bool,
+                options: ["on","off"]
+            )
+        ]
     }
     
     
@@ -82,7 +101,7 @@ class Rummy: CardGame {
     }
     
     func getGameOptions() -> [AdjustableSetting] {
-        return []
+        return self.adjustableSettings
     }
     
     // MARK: Methods for playing game

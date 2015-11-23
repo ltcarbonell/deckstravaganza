@@ -61,7 +61,7 @@ class DetailViewController: UIViewController {
             case .Solitaire:
                 gameOptions = Solitaire().getGameOptions();
             case .Rummy:
-                gameOptions = Solitaire().getGameOptions();
+                gameOptions = Rummy(numberOfPlayers: 1).getGameOptions();
             }
         }
         

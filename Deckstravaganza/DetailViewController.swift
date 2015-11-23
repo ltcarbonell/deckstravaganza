@@ -15,14 +15,14 @@ let FIELD_HEIGHT: CGFloat = 50;
 
 class DetailViewController: UIViewController {
     let titleMargin: CGFloat = 20;
+    let buttonFrame = CGRect(x: 0, y: 0, width: 100, height: 50);
     var selectedMenuOption: Menu!;
-    var gameViewController: GameSceneViewController? = nil;
     var gameOptions: [AdjustableSetting]? = nil;
     
     var menuDescription = UILabel(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.width / 2, 21))
     var formFields: [GameFormElement] = [];
     
-    var buttonOption = UIButton();
+    var buttonOption = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 20));
     
 //    let btntwo = UIButton(type: UIButtonType.System)
 //    let multlabel = UILabel(frame: CGRectMake(0,0,200,21))
@@ -47,6 +47,7 @@ class DetailViewController: UIViewController {
         }
         
         menuDescription.removeFromSuperview();
+        buttonOption.removeFromSuperview();
     }
     
     func setupMenuUI() {
@@ -56,16 +57,10 @@ class DetailViewController: UIViewController {
         self.view.addSubview(menuDescription);
         
         if(selectedMenuOption.viewGameOptions && selectedMenuOption.gameType != nil) {
-            gameViewController = GameSceneViewController();
-            
             switch(selectedMenuOption.gameType!) {
             case .Solitaire:
-                gameViewController!.gameType = .Solitaire;
-                
                 gameOptions = Solitaire().getGameOptions();
             case .Rummy:
-                gameViewController!.gameType = .Rummy;
-                
                 gameOptions = Solitaire().getGameOptions();
             }
         }
@@ -82,7 +77,6 @@ class DetailViewController: UIViewController {
                 case .Cards:
                     break;
                 case .DropDown:
-                    print("Executing...");
                     let elementField = GenericPickerView(data: gameOption.options);
                     elementField.dataSource = elementField;
                     elementField.delegate = elementField;
@@ -98,14 +92,36 @@ class DetailViewController: UIViewController {
                 case .Switch:
                     break;
                 }
+                
+                numberFields++;
             }
         }
         
-        numberFields++;
-        
+        buttonOption.frame = buttonFrame;
         buttonOption.center = CGPoint(x: CGRectGetMidX(elementFrame), y: FIELD_START_FROM_TOP + FIELD_TOP_MARGIN + (CGFloat(numberFields) * FIELD_HEIGHT));
+        buttonOption.alpha = 0.8;
+        buttonOption.backgroundColor = UIColor.clearColor();
+        buttonOption.setTitleColor(UIColor(red: 0, green: 122.0/255.0, blue: 1.0, alpha: 1.0), forState: .Normal);
+        buttonOption.setTitleColor(UIColor(red: 0, green: 122.0/255.0, blue: 1.0, alpha: 0.5), forState: .Highlighted);
+        buttonOption.userInteractionEnabled = true;
+        
+        if(selectedMenuOption.name == "Continue") {
+            buttonOption.setTitle("Continue", forState: .Normal);
+        } else {
+            buttonOption.setTitle("Play", forState: .Normal);
+        }
         
         self.view.addSubview(buttonOption);
+        
+        buttonOption.hidden = false;
+        buttonOption.setNeedsDisplay();
+        buttonOption.setNeedsLayout();
+        
+        buttonOption.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside);
+    }
+    
+    func buttonPressed(sender: UIButton?) {
+        performSegueWithIdentifier("menuToGameSegue", sender: nil);
     }
   
 //    var menu: Menu!{
@@ -238,6 +254,10 @@ class DetailViewController: UIViewController {
         if(segue.identifier != nil && segue.identifier == "menuToGameSegue") {
             if let menuSplitViewController = self.splitViewController as? MenuSplitViewController {
                 menuSplitViewController.toggleMasterView();
+            }
+            
+            if let gameViewController = segue.destinationViewController as? GameSceneViewController {
+                gameViewController.gameType = selectedMenuOption.gameType;
             }
         }
     }

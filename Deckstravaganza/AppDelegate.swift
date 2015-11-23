@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let detailViewController = splitViewController.viewControllers.last as! DetailViewController
         
         let firstMenu = masterViewController.menus.first?.first
-        detailViewController.menu = firstMenu!
+        detailViewController.selectedMenuOption = firstMenu!
 
         masterViewController.delegate = detailViewController
         return true

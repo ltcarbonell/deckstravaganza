@@ -93,6 +93,10 @@ class DetailViewController: UIViewController {
                     element = GameFormElement(frame: CGRect(), settingName: "", formLabel: nil, formField: UIView());
                 case .Switch:
                     let elementField = GenericSwitchView();
+                    
+                    /* All switches are assumed to be for multiplayer settings. */
+                    elementField.addTarget(self, action: "updateMultiplayer:", forControlEvents: UIControlEvents.AllTouchEvents);
+                    
                     element = GameFormElement(frame: elementFrame, settingName: gameOption.settingName, formLabel: elementLabel, formField: elementField);
                 }
                 
@@ -131,6 +135,16 @@ class DetailViewController: UIViewController {
     
     func buttonPressed(sender: UIButton?) {
         performSegueWithIdentifier("menuToGameSegue", sender: nil);
+    }
+    
+    func updateMultiplayer(sender: UISwitch?) {
+        if(sender != nil) {
+            if(sender!.on) {
+                // Start multiplayer.
+            } else {
+                // Check if multiplayer is on and turn off if necessary.
+            }
+        }
     }
   
 //    var menu: Menu!{

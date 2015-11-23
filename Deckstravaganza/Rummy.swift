@@ -51,7 +51,26 @@ class Rummy: CardGame {
     init(numberOfPlayers: Int) {
         self.turn = 0
         self.setPlayers(numberOfPlayers)
-        
+        self.adjustableSettings = [
+            AdjustableSetting(
+                settingName: "Difficulty Level",
+                formType: FormType.DropDown,
+                dataType: DataType.String,
+                options: ["Easy", "Hard"]
+            ),
+            AdjustableSetting(
+                settingName: "Card Type",
+                formType: FormType.Cards,
+                dataType: DataType.Image,
+                options: []
+            ),
+            AdjustableSetting(
+                settingName: "Multiplayer",
+                formType: FormType.Switch,
+                dataType: DataType.Bool,
+                options: ["on","off"]
+            )
+        ]
     }
     
     
@@ -82,7 +101,7 @@ class Rummy: CardGame {
     }
     
     func getGameOptions() -> [AdjustableSetting] {
-        return []
+        return self.adjustableSettings
     }
     
     // MARK: Methods for playing game
@@ -147,7 +166,7 @@ class Rummy: CardGame {
             self.melds.append(newMeld)
             self.selectedCards.removeAllCards()
         }
-        
+            
         else if checkForGroup() {
             let newMeld = RummyMeld(user: players[currentPlayerNumber], meld: Pile(), type: .Group)
             for cardIndex in 0..<selectedCards.numberOfCards() {
@@ -273,9 +292,9 @@ class Rummy: CardGame {
                     if meld.type == .Group && meld.meld.cardAt(0)!.hasSameRankAs(selectedCards.cardAt(cardIndex)!) {
                         return true
                     }
-                    // Check for run
+                        // Check for run
                     else if meld.type == .Run {
-                            // if same suit and 1 - first card rank return true
+                        // if same suit and 1 - first card rank return true
                         if selectedCards.cardAt(cardIndex)!.getRank().hashValue == meld.meld.cardAt(0)!.getRank().hashValue-1 && meld.meld.cardAt(0)!.hasSameSuitAs(selectedCards.cardAt(cardIndex)!) {
                             return true
                             // if is it same suit and 1+ last card rank return true

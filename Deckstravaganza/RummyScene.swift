@@ -6,7 +6,7 @@
 //  Copyright © 2015 University of Florida. All rights reserved.
 //
 
-import UIKit
+import Foundation
 import SpriteKit
 
 class RummyCardSprite: SKSpriteNode {
@@ -56,18 +56,18 @@ class RummyCardSprite: SKSpriteNode {
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for _ in touches {
-         touchesBeganClosure(self)
+            touchesBeganClosure(self)
         }
     }
     
-//    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-//        touchesMovedClosure(self)
-//        for touch in touches {
-//            let location = touch.locationInNode(scene!)
-//            let touchedNode = nodeAtPoint(location)
-//            touchedNode.position = location
-//        }
-//    }
+    //    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    //        touchesMovedClosure(self)
+    //        for touch in touches {
+    //            let location = touch.locationInNode(scene!)
+    //            let touchedNode = nodeAtPoint(location)
+    //            touchedNode.position = location
+    //        }
+    //    }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for _ in touches {
@@ -94,7 +94,7 @@ class RummyScene: SKScene {
     var buttonsOnScreen = [GameViewControllerButton]()
     
     init(gameScene : GameSceneViewController, game: Rummy, /*gameDelegate: RummyDelegate,*/ size: CGSize) {
-    
+        
         self.GameScene = gameScene
         self.RummyGame = game // as! Rummy
         //self.RummyGameDelegate = gameDelegate // as! RummyDelegate
@@ -110,26 +110,26 @@ class RummyScene: SKScene {
         
         // Sets the location for where the melds should be location
         self.meldLocation = CGPoint(x: self.scene!.frame.minX + cardSize.width, y: self.scene!.frame.maxY - cardSize.height)
-
+        
         // Sets the locations of where the players' hands begin
         switch RummyGame.playersHands.count {
-            case 2:
-                self.handLocations = [[CGPoint(x: self.frame.midX,y: self.frame.minY+cardSize.height)], [CGPoint(x: self.frame.midX, y: self.frame.maxY-cardSize.height)]]
-            case 3:
-                break
-            case 4:
-                break
-                //self.handLocations = [[CGPoint(x: self.frame.midX,y: self.frame.maxY-cardSize.height)],[CGPoint(x: self.frame.maxX-cardSize.width, y: self.frame.midY)], [CGPoint(x: self.frame.midX, y: self.frame.minY+cardSize.height)],[CGPoint(x: self.frame.minX+cardSize.width, y: self.frame.midY)]]
-            case 5:
-                break
-            case 6:
-                break
-            default:
-                break
+        case 2:
+            self.handLocations = [[CGPoint(x: self.frame.midX,y: self.frame.minY+cardSize.height)], [CGPoint(x: self.frame.midX, y: self.frame.maxY-cardSize.height)]]
+        case 3:
+            break
+        case 4:
+            break
+            //self.handLocations = [[CGPoint(x: self.frame.midX,y: self.frame.maxY-cardSize.height)],[CGPoint(x: self.frame.maxX-cardSize.width, y: self.frame.midY)], [CGPoint(x: self.frame.midX, y: self.frame.minY+cardSize.height)],[CGPoint(x: self.frame.minX+cardSize.width, y: self.frame.midY)]]
+        case 5:
+            break
+        case 6:
+            break
+        default:
+            break
         }
         
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -198,7 +198,7 @@ class RummyScene: SKScene {
             }
             addDiscardButton()
         }
-        // if more than one card is selected add layoff button and meldbutton
+            // if more than one card is selected add layoff button and meldbutton
         else if self.RummyGame.selectedCards.numberOfCards() > 1{
             if  self.RummyGame.melds.count > 0 {
                 addLayOffButton()
@@ -229,7 +229,7 @@ class RummyScene: SKScene {
                 
             }
         }
-
+        
         // Create the sprites for the cards that go into the players's hands
         for handIndex in 0..<self.RummyGame.playersHands.count {
             for cardIndex in 0..<self.RummyGame.playersHands[handIndex].numberOfCards() {
@@ -244,23 +244,6 @@ class RummyScene: SKScene {
         wastePileSprite.flipCardOver()
         wastePileSprite.runAction(SKAction.moveTo(wastePileLocation, duration: 0.1))
         
-    }
-    
-    func meld() {
-        print("meld")
-        var cardSpritesMeld = [RummyCardSprite]()
-        for cardIndex in 0..<self.RummyGame.selectedCards.numberOfCards() {
-            cardSpritesMeld.append(self.childNodeWithName("\(self.RummyGame.selectedCards.cardAt(cardIndex)!.getRank())\(self.RummyGame.selectedCards.cardAt(cardIndex)!.getSuit())") as! RummyCardSprite)
-        }
-        if self.RummyGame.isSelectedCardsValidMeld() {
-            // Move the cards to a meld pile
-//            self.RummyGame.meldCards(self.RummyGame.selectedCards)
-            for sprite in cardSpritesMeld {
-                sprite.runAction(SKAction.moveTo(meldLocation, duration: 0.5))
-            }
-        } else {
-        
-        }
     }
     
     func discard() {
@@ -279,7 +262,7 @@ class RummyScene: SKScene {
         reorganizePlayersHand()
     }
     
-    func meldSelectedCards() {
+    func meld() {
         print("meld")
         var cardSpritesMeld = [RummyCardSprite]()
         for cardIndex in 0..<self.RummyGame.selectedCards.numberOfCards() {
@@ -310,7 +293,7 @@ class RummyScene: SKScene {
         }
         let meldIndicies = self.RummyGame.checkForMeldOptions()
         if meldIndicies.count > 0 {
-        // Move the cards to a meld pile
+            // Move the cards to a meld pile
             let meldIndex = meldIndicies.first!
             self.RummyGame.layOffSelectedCards(meldIndex, insertIndex: 0)
             self.RummyGame.melds[meldIndex].meld.sortByRank(true)

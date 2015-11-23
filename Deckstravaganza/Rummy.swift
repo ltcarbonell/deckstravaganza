@@ -294,179 +294,57 @@ class Rummy: CardGame {
 
     // MARK: Methods for checking and changing game status
     func checkRoundEnded() -> Bool{
-        if playersHands[currentPlayerNumber].isEmpty() {
-            return true
-        } else {
-            return false
-        }
+        return playersHands[currentPlayerNumber].isEmpty()
     }
     
     func checkGameEnded() -> Bool {
-        if players[currentPlayerNumber].score >= targetScore {
-            return true
-        } else {
-            return false
-        }
-    }
-    
-    func gameDidStart() {
-        print("Game started");
+        return players[currentPlayerNumber].score >= targetScore
     }
     
     func gameDidEnd() {
-        print("Game ended");
-    }
-    
-    func isWinner() -> Bool {
-        print("Winner!");
-        return true;
+        print("Player \(currentPlayerNumber) won.");
     }
     
     func roundDidStart() {
         print("Round started");
+        currentPlayerNumber = ++turn%players.count
     }
     
     func roundDidEnd() {
+        increaseScore()
+        if checkGameEnded() {
+            gameDidEnd()
+        } else {
+            currentPlayerNumber = ++turn%players.count
+            for player in players {
+                print(player.playerNumber, player.score)
+            }
+        }
         print("Round ended");
     }
     
     func increaseScore() {
-        print("Score increased");
+        var scoreAdded = 0
+        for player in players {
+            for cardIndex in 0..<self.playersHands[player.playerNumber].numberOfCards() {
+                if self.playersHands[player.playerNumber].cardAt(cardIndex)!.getRank().hashValue > 10 {
+                    scoreAdded = scoreAdded + 10
+                } else {
+                    scoreAdded = scoreAdded + self.playersHands[player.playerNumber].cardAt(cardIndex)!.getRank().hashValue
+                }
+            }
+        }
+        players[currentPlayerNumber].score += scoreAdded
+        print("Score increased by \(scoreAdded)");
     }
     
     func turnDidEnd() {
         print("TURN NUMBER", turn)
-        // If turn ended check if the round ended
         if checkRoundEnded() {
-            // check if game ended
-            if checkGameEnded() {
-                // display winner
-            } else {
-                increaseScore()
-                currentPlayerNumber = ++turn%players.count
-            }
-            
-            // else start new round
+            roundDidEnd()
         } else {
-            currentPlayerNumber = ++turn%players.count
+            roundDidStart()
         }
         
     }
 }
-
-
-
-/*
-class RummyDelegate: CardGameDelegate {
-    typealias CardGameType = Rummy;
-    
-    let smallGameHand = 10;
-    let mediumGameHand = 7;
-    let largeGameHand = 6;
-    
-    var didDrawCard = false
-    var didPlayMeld = false
-    var didLayOff = false
-    var didDiscard = false
-    
-    var selectedCards = Pile()
-    
-    func deal(Game: CardGameType) {
-        if(Game.playersHands.count == 0) {
-            for(var playerIndex = 0; playerIndex < Game.playersHands.count; playerIndex++) {
-                Game.playersHands.append(Pile());
-            }
-        }
-        let handSize : Int;
-        
-        switch(Game.players.count) {
-            case 2:
-                handSize = smallGameHand;
-            case 3, 4:
-                handSize = mediumGameHand;
-            case 5, 6:
-                handSize = largeGameHand;
-            default:
-                handSize = 0;
-                print("Error: Number of players incorrect.");
-        }
-        
-        for(var cardIndex = 0; cardIndex < handSize; cardIndex++) {
-            for(var playerIndex = 0; playerIndex < Game.playersHands.count && !Game.deck.isEmpty(); playerIndex++) {
-                Game.playersHands[playerIndex].appendCard(Game.deck.pull()!);
-            }
-        }
-        
-        Game.wastePile.push(Game.deck.pull()!)
-        
-        print("Dealt");
-    }
-    
-
-    
-    func addSelectedCard(card: Card) {
-        selectedCards.appendCard(card)
-    }
-    
-    //begin round
-    //begin turn player i
-    // if player score = 500 -> end turn, end round, end game
-    // end turn player i, begin turn player i+1, repeat for n turns
-    //end round
-    // Redeal cards -> begin round if score != 500
-    
-    func checkValidTurn(card: Card, toPile: StackPile) {
-        /*Each turn consists of the following parts:*/
-            /*The Draw. You must begin by taking one card from either the top of the Stock pile or the top card on the discard pile, and adding it to your hand.*/
-        
-           /* Melding. If you have a valid group or sequence in your hand, you may lay one such combination face up on the table in front of you. You cannot meld more than one combination in a turn. Melding is optional; you are not obliged to meld just because you can.*/
-            
-            /*Laying off. This is also optional. If you wish, you may add cards to groups or sequences previously melded by yourself or others. There is no limit to the number of cards a player may lay off in one turn.*/
-        
-            /*The Discard At the end of your turn, one card must be discarded from your hand and placed on top of the discard pile face up. If you began your turn by picking up the top card of the discard pile you are not allowed to end that turn by discarding the same card, leaving the pile unchanged - you must discard a different card.*/
-    }
-
-    func checkRoundEnded() -> Bool{
-        return false
-    }
-    
-    func checkGameEnded() {
-        
-    }
-    
-    func gameDidStart(Game: CardGameType) {
-        print("Game started");
-    }
-    
-    func gameDidEnd(Game: CardGameType) {
-        print("Game ended");
-    }
-    
-    func isWinner(Game: CardGameType) -> Bool {
-        print("Winner!");
-        return true;
-    }
-    
-    func roundDidStart(Game: CardGameType) {
-        print("Round started");
-    }
-    
-    func roundDidEnd(Game: CardGameType) {
-        print("Round ended");
-    }
-    
-    func increaseScore(Game: CardGameType) {
-        print("Score increased");
-    }
-    
-    func turnDidEnd(Game: CardGameType) {
-        // Current player's turn is player++%(number of players).
-        if checkRoundEnded() {
-            
-        } else {
-            
-        }
-        
-    }
-}*/
-

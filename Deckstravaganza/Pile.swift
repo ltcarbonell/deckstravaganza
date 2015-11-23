@@ -156,7 +156,7 @@ class Pile {
      */
     func sortByRank(acesLow: Bool) {
         pile.sortInPlace { (card1: Card, card2: Card) -> Bool in
-            return card1.isLowerThan(card2, acesLow: acesLow)
+            return card1.isHigherThan(card2, acesLow: acesLow)
         }
     }
     

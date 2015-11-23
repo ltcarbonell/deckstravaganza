@@ -6,7 +6,7 @@
 //  Copyright © 2015 University of Florida. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import SpriteKit
 
 class RummyCardSprite: SKSpriteNode {
@@ -244,6 +244,23 @@ class RummyScene: SKScene {
         wastePileSprite.flipCardOver()
         wastePileSprite.runAction(SKAction.moveTo(wastePileLocation, duration: 0.1))
         
+    }
+    
+    func meld() {
+        print("meld")
+        var cardSpritesMeld = [RummyCardSprite]()
+        for cardIndex in 0..<self.RummyGame.selectedCards.numberOfCards() {
+            cardSpritesMeld.append(self.childNodeWithName("\(self.RummyGame.selectedCards.cardAt(cardIndex)!.getRank())\(self.RummyGame.selectedCards.cardAt(cardIndex)!.getSuit())") as! RummyCardSprite)
+        }
+        if self.RummyGame.isValidMeld(self.RummyGame.selectedCards) {
+            // Move the cards to a meld pile
+//            self.RummyGame.meldCards(self.RummyGame.selectedCards)
+            for sprite in cardSpritesMeld {
+                sprite.runAction(SKAction.moveTo(meldLocation, duration: 0.5))
+            }
+        } else {
+        
+        }
     }
     
     func discard() {

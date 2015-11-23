@@ -6,7 +6,7 @@
 //  Copyright © 2015 University of Florida. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 enum MeldType : Int {
     case Group = 1

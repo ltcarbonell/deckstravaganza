@@ -6,7 +6,7 @@
 //  Copyright © 2015 University of Florida. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class Deck: StackPile {
     enum DeckFronts : String {

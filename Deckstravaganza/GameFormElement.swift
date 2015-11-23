@@ -6,7 +6,6 @@
 //  Copyright © 2015 University of Florida. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
 class GameFormElement: UIView {
@@ -31,11 +30,13 @@ class GameFormElement: UIView {
     private func setUpLayout() {
         let fieldXPosition: CGFloat;
         
+        formField.frame = CGRect(x: 0, y: 0, width: self.frame.width / 2, height: self.frame.height);
+        
         if(formLabel != nil) {
             formLabel!.center = CGPoint(x: 0, y: CGRectGetMidY(self.frame));
             formLabel!.frame = CGRect(x: 0, y: 0, width: self.frame.width / 2, height: self.frame.height);
             
-            fieldXPosition = CGRectGetMaxX(self.frame) - (formField.frame.width / 2);
+            fieldXPosition = CGRectGetMidX(self.frame) + (formField.frame.width / 2);
             
             self.addSubview(formLabel!);
         } else {
@@ -43,7 +44,6 @@ class GameFormElement: UIView {
         }
         
         formField.center = CGPoint(x: fieldXPosition, y: CGRectGetMidY(self.frame));
-        formField.frame = CGRect(x: 0, y: 0, width: self.frame.width / 2, height: self.frame.height);
         
         self.addSubview(formField);
     }

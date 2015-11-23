@@ -95,6 +95,7 @@ class MasterViewController: UITableViewController {
         self.delegate?.menuSelected(selectedMenu)
     
         if let detailViewController = self.delegate as? DetailViewController {
+            detailViewController.tearDownMenuUI();
             detailViewController.setupMenuUI();
             splitViewController?.showDetailViewController(detailViewController, sender: nil)
         }

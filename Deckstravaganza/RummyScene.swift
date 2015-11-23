@@ -6,7 +6,7 @@
 //  Copyright © 2015 University of Florida. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import SpriteKit
 
 class RummyCardSprite: SKSpriteNode {
@@ -250,7 +250,7 @@ class RummyScene: SKScene {
         }
         if self.RummyGame.isValidMeld(self.RummyGame.selectedCards) {
             // Move the cards to a meld pile
-            self.RummyGame.meldCards(self.RummyGame.selectedCards)
+//            self.RummyGame.meldCards(self.RummyGame.selectedCards)
             for sprite in cardSpritesMeld {
                 sprite.runAction(SKAction.moveTo(meldLocation, duration: 0.5))
             }

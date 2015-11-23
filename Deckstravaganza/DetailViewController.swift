@@ -9,9 +9,9 @@
 import UIKit
 import SpriteKit
 
-let FIELD_START_FROM_TOP: CGFloat = 30;
+let FIELD_START_FROM_TOP: CGFloat = 50;
 let FIELD_TOP_MARGIN: CGFloat = 10;
-let FIELD_HEIGHT: CGFloat = 25;
+let FIELD_HEIGHT: CGFloat = 50;
 
 class DetailViewController: UIViewController {
     let titleMargin: CGFloat = 20;
@@ -22,6 +22,8 @@ class DetailViewController: UIViewController {
     var menuDescription = UILabel(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.width / 2, 21))
     var formFields: [GameFormElement] = [];
     
+    var buttonOption = UIButton();
+    
 //    let btntwo = UIButton(type: UIButtonType.System)
 //    let multlabel = UILabel(frame: CGRectMake(0,0,200,21))
 //    let switch1 = UISwitch(frame:CGRectMake(150, 300, 0, 0))
@@ -30,6 +32,7 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         
         // Setup the screen.
+        tearDownMenuUI();
         setupMenuUI();
     }
 
@@ -38,7 +41,16 @@ class DetailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func tearDownMenuUI() {
+        for element in formFields {
+            element.removeFromSuperview();
+        }
+        
+        menuDescription.removeFromSuperview();
+    }
+    
     func setupMenuUI() {
+        gameOptions = nil;
         menuDescription.text = selectedMenuOption.description;
         menuDescription.center = CGPoint(x: menuDescription.frame.width / 2 + titleMargin, y: titleMargin);
         self.view.addSubview(menuDescription);
@@ -59,9 +71,9 @@ class DetailViewController: UIViewController {
         }
         
         let elementFrame = CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width - splitViewController!.primaryColumnWidth, height: FIELD_HEIGHT);
+        
+        var numberFields = 0;
         if(gameOptions != nil) {
-            var numberFields = 0;
-            
             for gameOption in gameOptions! {
                 let elementLabel = UILabel();
                 elementLabel.text = gameOption.settingName;
@@ -70,7 +82,10 @@ class DetailViewController: UIViewController {
                 case .Cards:
                     break;
                 case .DropDown:
+                    print("Executing...");
                     let elementField = GenericPickerView(data: gameOption.options);
+                    elementField.dataSource = elementField;
+                    elementField.delegate = elementField;
                     
                     let element: GameFormElement = GameFormElement(frame: elementFrame, settingName: gameOption.settingName, formLabel: elementLabel, formField: elementField);
                     element.center = CGPoint(x: CGRectGetMidX(elementFrame), y: FIELD_START_FROM_TOP + FIELD_TOP_MARGIN + (CGFloat(numberFields) * FIELD_HEIGHT));
@@ -85,6 +100,12 @@ class DetailViewController: UIViewController {
                 }
             }
         }
+        
+        numberFields++;
+        
+        buttonOption.center = CGPoint(x: CGRectGetMidX(elementFrame), y: FIELD_START_FROM_TOP + FIELD_TOP_MARGIN + (CGFloat(numberFields) * FIELD_HEIGHT));
+        
+        self.view.addSubview(buttonOption);
     }
   
 //    var menu: Menu!{

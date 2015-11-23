@@ -65,7 +65,12 @@ class DetailViewController: UIViewController {
             }
         }
         
-        let elementFrame = CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width - splitViewController!.primaryColumnWidth, height: FIELD_HEIGHT);
+        let elementFrame : CGRect;
+        if(splitViewController != nil) {
+            elementFrame = CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width - splitViewController!.primaryColumnWidth, height: FIELD_HEIGHT);
+        } else {
+            elementFrame = CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: FIELD_HEIGHT);
+        }
         
         var numberFields = 0;
         if(gameOptions != nil) {

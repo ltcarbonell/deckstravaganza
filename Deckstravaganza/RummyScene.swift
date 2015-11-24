@@ -429,7 +429,9 @@ class RummyScene: SKScene {
             self.RummyGame.roundDidStart()
         }
         print("Turn ended")
-        print("")
+        print("Number of computer players", self.RummyGame.computerPlayers.count)
+        print(self.RummyGame.computerPlayers[0].shouldDrawCardFromDeck())
+        print(self.RummyGame.computerPlayers[0].getDiscardCardIndex())
         
     }
     

@@ -268,6 +268,7 @@ class RummyScene: SKScene {
         setUserInteractionEnabledDeck(true)
         setUserInteractionEnabledWastePile(true)
         reorganizePlayersHand()
+        let userNumber = self.RummyGame.currentPlayerNumber
         moveDidEndTurn()
     }
     
@@ -325,6 +326,16 @@ class RummyScene: SKScene {
         reorganizePlayersHand()
         if self.RummyGame.playersHands[self.RummyGame.currentPlayerNumber].numberOfCards() == 0 {
             moveDidEndTurn()
+        }
+    }
+    
+    func AITurn(computer: RummyAI) {
+        if computer.shouldDrawCardFromDeck() {
+            let cardSprite = childNodeWithName("\(self.RummyGame.deck.topCard()!.getRank())\(self.RummyGame.deck.topCard()!.getSuit())") as! RummyCardSprite
+            self.cardWasDrawn(cardSprite)
+        } else {
+            let cardSprite = childNodeWithName("\(self.RummyGame.deck.topCard()!.getRank())\(self.RummyGame.deck.topCard()!.getSuit())") as! RummyCardSprite
+            self.cardWasDrawn(cardSprite)
         }
     }
     

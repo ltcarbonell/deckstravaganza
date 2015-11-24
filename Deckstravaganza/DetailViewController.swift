@@ -159,6 +159,12 @@ class DetailViewController: UIViewController, GCHelperDelegate {
             buttonOption.setTitle("Continue", forState: .Normal);
             
             newGame = false;
+            
+            if(gameScene == nil) {
+                // Continue should be disabled.
+                buttonOption.userInteractionEnabled = false;
+                buttonOption.setTitleColor(UIColor.lightGrayColor(), forState: .Normal);
+            }
         } else {
             buttonOption.setTitle("Play", forState: .Normal);
 

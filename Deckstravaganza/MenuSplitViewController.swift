@@ -9,10 +9,13 @@
 import UIKit
 import GameKit
 
-class MenuSplitViewController: UISplitViewController {
+class MenuSplitViewController: UISplitViewController, UISplitViewControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.delegate = self;
+        self.preferredDisplayMode = UISplitViewControllerDisplayMode.AllVisible;
         
         authenticateLocalPlayer()
         // Do any additional setup after loading the view.
@@ -21,6 +24,11 @@ class MenuSplitViewController: UISplitViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController, ontoPrimaryViewController primaryViewController: UIViewController) -> Bool {
+        // Return YES to prevent UIKit from applying its default behavior
+        return true
     }
     
     func toggleMasterView() {

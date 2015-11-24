@@ -51,9 +51,7 @@ protocol CardGame {
     var deck: Deck { get }
     var players: [Player] { get set }
     // Methods
-    
-    func play()
-    
+        
     // sets the players with point values and names
     func setPlayers(numberOfPlayers: Int)
     

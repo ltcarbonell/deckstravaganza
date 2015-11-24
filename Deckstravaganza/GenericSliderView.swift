@@ -16,7 +16,7 @@ class GenericSliderView: UISlider, GenericFormElements {
         let max = Float(data[1]);
         let tempStepSize = Float(data[2]);
         
-        if(data.count != 3 || min == nil || max == nil || stepSize == nil) {
+        if(data.count != 3 || min == nil || max == nil || tempStepSize == nil) {
             fatalError("3 and only 3 float values must be passed to the GenericSliderView");
         }
         
@@ -25,7 +25,7 @@ class GenericSliderView: UISlider, GenericFormElements {
         super.init(frame: CGRect());
         
         super.minimumValue = 0;
-        super.maximumValue = max! / stepSize!;
+        super.maximumValue = max! / stepSize;
         
         super.continuous = true;
         super.addTarget(self, action: "updateSliderValue:", forControlEvents: UIControlEvents.ValueChanged);
@@ -40,7 +40,7 @@ class GenericSliderView: UISlider, GenericFormElements {
     }
     
     func updateSliderValue(sender: UISlider) {
-        sender.value = sender.value * stepSize!;
+        sender.value = sender.value * stepSize;
     }
     
     /*

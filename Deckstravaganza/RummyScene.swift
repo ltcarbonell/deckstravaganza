@@ -429,6 +429,7 @@ class RummyScene: SKScene {
             self.RummyGame.roundDidStart()
         }
         print("Turn ended")
+        print("")
         
     }
     

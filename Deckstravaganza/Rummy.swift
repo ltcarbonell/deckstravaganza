@@ -56,6 +56,12 @@ class Rummy: CardGame {
         self.setPlayers(numberOfPlayers)
         self.adjustableSettings = [
             AdjustableSetting(
+                settingName: "Multiplayer",
+                formType: FormType.Switch,
+                dataType: DataType.Bool,
+                options: ["on","off"]
+            ),
+            AdjustableSetting(
                 settingName: "Difficulty Level",
                 formType: FormType.DropDown,
                 dataType: DataType.String,
@@ -68,21 +74,15 @@ class Rummy: CardGame {
                 options: []
             ),
             AdjustableSetting(
-                settingName: "Multiplayer",
-                formType: FormType.Switch,
-                dataType: DataType.Bool,
-                options: ["on","off"]
-            ),
-            AdjustableSetting(
                 settingName: "Score",
-                formType: FormType.DropDown,
+                formType: FormType.Slider,
                 dataType: DataType.Int,
-                options: ["200","300","400","500","600"]
+                options: ["0","1000","10"]
             ),
             AdjustableSetting(
                 settingName: "Number of players",
                 formType: FormType.DropDown,
-                dataType: DataType.String,
+                dataType: DataType.Int,
                 options: ["2","3","4","5","6"]
             )
         ]

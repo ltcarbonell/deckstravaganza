@@ -25,7 +25,7 @@ class Rummy: CardGame {
     /* Rules from http://www.pagat.com/rummy/rummy.html */
     
     var deck = Deck(deckFront: Deck.DeckFronts.Deck2, deckBack: Deck.DeckBacks.Default)
-    var targetScore = 500;
+    var targetScore: Int;
     
     var wastePile =     StackPile(),
         playersHands =  [Pile](),
@@ -48,10 +48,19 @@ class Rummy: CardGame {
     
     var selectedCards = Pile()
     
+    var computerPlayers = [RummyAI]()
+    
     init(numberOfPlayers: Int) {
         self.turn = 0
+        self.targetScore = 500
         self.setPlayers(numberOfPlayers)
         self.adjustableSettings = [
+            AdjustableSetting(
+                settingName: "Multiplayer",
+                formType: FormType.Switch,
+                dataType: DataType.Bool,
+                options: ["on","off"]
+            ),
             AdjustableSetting(
                 settingName: "Difficulty Level",
                 formType: FormType.DropDown,
@@ -65,39 +74,33 @@ class Rummy: CardGame {
                 options: []
             ),
             AdjustableSetting(
-                settingName: "Multiplayer",
-                formType: FormType.Switch,
-                dataType: DataType.Bool,
-                options: ["on","off"]
+                settingName: "Score",
+                formType: FormType.Slider,
+                dataType: DataType.Int,
+                options: ["0","1000","10"]
+            ),
+            AdjustableSetting(
+                settingName: "Number of players",
+                formType: FormType.DropDown,
+                dataType: DataType.Int,
+                options: ["2","3","4","5","6"]
             )
         ]
+        
+        
     }
-    
-    
-    //begin round
-    //begin turn player i
-    // if player score = 500 -> end turn, end round, end game
-    // end turn player i, begin turn player i+1, repeat for n turns
-    //end round
-    // Redeal cards -> begin round if score != 500
-    
-    
-    
     
     // MARK: Methods for setting up the game
     
-    func play() {
-        print("Playing");
-    }
-    
     func setPlayers(numberOfPlayers: Int) {
-        print("Setting players");
+        print("Setting \(numberOfPlayers) players");
         for playerNumber in 0..<numberOfPlayers {
             self.players.append(Player(userName: "Player \(playerNumber)", score: 0, playerNumber: playerNumber))
         }
         for _ in 0..<players.count {
             self.playersHands.append(Pile())
         }
+        self.computerPlayers = [RummyAI(difficulty: 1, game: self, player: self.players.last!)]
     }
     
     func getGameOptions() -> [AdjustableSetting] {
@@ -108,6 +111,7 @@ class Rummy: CardGame {
     
     // Deals the cards from the pre-shuffled deck into the approporate number of players hands
     func deal() {
+        print("Dealt \(self.deck.numberOfCards()) cards");
         if(self.playersHands.count == 0) {
             for(var playerIndex = 0; playerIndex < self.playersHands.count; playerIndex++) {
                 self.playersHands.append(Pile());
@@ -135,7 +139,7 @@ class Rummy: CardGame {
         
         self.wastePile.push(self.deck.pull()!)
         
-        print("Dealt");
+        
     }
     
     // MARK: Methods for moving cards in game
@@ -148,7 +152,6 @@ class Rummy: CardGame {
     func discard(card: Card) {
         let discardedCard = self.playersHands[currentPlayerNumber].removeCard(card)
         self.wastePile.push(discardedCard!)
-        turnDidEnd()
     }
     
     // Moves cards in a valid meld from the players hand and into the array of melds
@@ -185,7 +188,6 @@ class Rummy: CardGame {
             self.melds[meldIndex].meld.insertCardAt(self.selectedCards.cardAt(cardIndex)!, index: insertIndex)
         }
         self.selectedCards.removeAllCards()
-        
     }
     
     // Check to see where the cards can be moved to
@@ -320,36 +322,37 @@ class Rummy: CardGame {
         return players[currentPlayerNumber].score >= targetScore
     }
     
-    func gameDidEnd() {
-        print("Player \(currentPlayerNumber) won.");
-    }
+//    func gameDidEnd() {
+//        print("Player \(currentPlayerNumber) won.");
+//    }
     
     func roundDidStart() {
         print("Round started");
         currentPlayerNumber = ++turn%players.count
     }
     
-    func roundDidEnd() {
-        increaseScore()
-        if checkGameEnded() {
-            gameDidEnd()
-        } else {
-            currentPlayerNumber = ++turn%players.count
-            for player in players {
-                print(player.playerNumber, player.score)
-            }
-        }
-        print("Round ended");
-    }
+//    func roundDidEnd() {
+//        increaseScore()
+//        if checkGameEnded() {
+//            gameDidEnd()
+//        } else {
+//            currentPlayerNumber = ++turn%players.count
+//            for player in players {
+//                print(player.playerNumber, player.score)
+//            }
+//        }
+//        print("Round ended");
+//    }
     
     func increaseScore() {
         var scoreAdded = 0
         for player in players {
             for cardIndex in 0..<self.playersHands[player.playerNumber].numberOfCards() {
-                if self.playersHands[player.playerNumber].cardAt(cardIndex)!.getRank().hashValue > 10 {
+                print(scoreAdded,"added")
+                if self.playersHands[player.playerNumber].cardAt(cardIndex)!.getRank().rawValue > 10 {
                     scoreAdded = scoreAdded + 10
                 } else {
-                    scoreAdded = scoreAdded + self.playersHands[player.playerNumber].cardAt(cardIndex)!.getRank().hashValue
+                    scoreAdded = scoreAdded + self.playersHands[player.playerNumber].cardAt(cardIndex)!.getRank().rawValue
                 }
             }
         }
@@ -357,13 +360,13 @@ class Rummy: CardGame {
         print("Score increased by \(scoreAdded)");
     }
     
-    func turnDidEnd() {
-        print("TURN NUMBER", turn)
-        if checkRoundEnded() {
-            roundDidEnd()
-        } else {
-            roundDidStart()
-        }
+//    func turnDidEnd() {
+//        print("TURN NUMBER", turn)
+//        if checkRoundEnded() {
+//            roundDidEnd()
+//        } else {
+//            roundDidStart()
+//        }
         
-    }
+//    }
 }

@@ -23,7 +23,7 @@ class CardConstants {
     let POSITION_CORRECTLY_TIME = 0.5;
     
     let DECK_X_FACTOR : CGFloat = 3/4;
-    let TOP_ROW_Y_FACTOR : CGFloat = 3/4;
+    let TOP_ROW_Y_FACTOR : CGFloat = 1;
     
     let MOVING_Y_ADJUSTMENT : CGFloat = 10;
 }
@@ -385,7 +385,7 @@ class SolitaireScene: SKScene {
         deckXPos = self.scene!.frame.minX + (cardConstants.DECK_X_FACTOR * cardSize.width);
         wasteXPos = deckXPos + cardSize.width + 15;
         topRowYPos = self.scene!.frame.maxY - (cardConstants.TOP_ROW_Y_FACTOR * cardSize.height);
-        bottomRowYPos = self.scene!.frame.maxY - (2 * cardSize.height);
+        bottomRowYPos = self.scene!.frame.maxY - (2.2 * cardSize.height);
         
         self.deckLocation = CGPoint(x: deckXPos, y: topRowYPos)
         self.wastePileLocation = CGPoint(x: wasteXPos, y: topRowYPos)

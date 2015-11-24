@@ -137,7 +137,12 @@ class RummyScene: SKScene {
     
     override func didMoveToView(view: SKView) {
         backgroundColor = UIColor.blueColor()
-        
+        startRound()
+    }
+    
+    
+    // MARK: Function that add buttons to the scene
+    func startRound() {
         self.shuffle()
         
         // Must first deal the cards, use a GameViewButton to deal
@@ -146,16 +151,14 @@ class RummyScene: SKScene {
         for player in RummyGame.players {
             setUserInteractionEnabledPlayerHand(false, player: player)
         }
-        
     }
     
-    
-    // MARK: Function that add buttons to the scene
     func addDealButton() {
         let dealButton = GameViewControllerButton(defaultButtonImage: "start", buttonAction: deal)
         dealButton.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame))
         dealButton.size = CGSize(width: 100, height: 200)
         self.addChild(dealButton)
+        
     }
     
     func addMeldButton() {
@@ -243,7 +246,6 @@ class RummyScene: SKScene {
         let wastePileSprite = self.childNodeWithName("\(self.RummyGame.wastePile.topCard()!.getRank())\(self.RummyGame.wastePile.topCard()!.getSuit())") as! RummyCardSprite
         wastePileSprite.flipCardOver()
         wastePileSprite.runAction(SKAction.moveTo(wastePileLocation, duration: 0.1))
-        
     }
     
     func discard() {
@@ -254,12 +256,19 @@ class RummyScene: SKScene {
         self.RummyGame.discard(self.RummyGame.selectedCards.removeCard(cardSpriteDiscarded.card)!)
         checkAndAddValidButtonOptions()
         
-        setUserInteractionEnabledDeck(true)
+        // Reorganized the waste pile's zPosition so they are in correct order
+        for cardIndex in 0..<self.RummyGame.wastePile.numberOfCards() {
+            let currentCard = self.childNodeWithName("\(self.RummyGame.wastePile.cardAt(cardIndex)!.getRank())\(self.RummyGame.wastePile.cardAt(cardIndex)!.getSuit())") as! RummyCardSprite
+            currentCard.zPosition = CGFloat(cardIndex)
+        }
+        
         for player in self.RummyGame.players {
             setUserInteractionEnabledPlayerHand(false, player: player)
         }
+        setUserInteractionEnabledDeck(true)
         setUserInteractionEnabledWastePile(true)
         reorganizePlayersHand()
+        moveDidEndTurn()
     }
     
     func meld() {
@@ -283,6 +292,9 @@ class RummyScene: SKScene {
         }
         reorganizePlayersHand()
         setUserInteractionEnabledMelds(false)
+        if self.RummyGame.playersHands[self.RummyGame.currentPlayerNumber].numberOfCards() == 0 {
+            moveDidEndTurn()
+        }
     }
     
     func layOff() {
@@ -311,6 +323,9 @@ class RummyScene: SKScene {
             didPlayInvalidMove()
         }
         reorganizePlayersHand()
+        if self.RummyGame.playersHands[self.RummyGame.currentPlayerNumber].numberOfCards() == 0 {
+            moveDidEndTurn()
+        }
     }
     
     // MARK: Functions used for recognizing movements and implementing using cardSprites
@@ -405,6 +420,46 @@ class RummyScene: SKScene {
         }
         
     }
+    
+    // MARK: Delegate functions for the Rummy Game
+    func moveDidEndTurn() {
+        if self.RummyGame.checkRoundEnded() {
+            turnDidEndRound()
+        } else {
+            self.RummyGame.roundDidStart()
+        }
+        print("Turn ended")
+        print("")
+        
+    }
+    
+    func turnDidEndRound() {
+        self.RummyGame.increaseScore()
+        if self.RummyGame.checkGameEnded() {
+            roundDidEndGame()
+        } else {
+            self.RummyGame.currentPlayerNumber = ++self.RummyGame.turn%self.RummyGame.players.count
+            for player in self.RummyGame.players {
+                print(player.playerNumber, player.score)
+            }
+        }
+        
+        print("Round ended");
+        
+        self.RummyGame.deck.newDeck()
+        self.RummyGame.wastePile.removeAllCards()
+        self.RummyGame.melds.removeAll()
+        for playerHand in self.RummyGame.playersHands {
+            playerHand.removeAllCards()
+        }
+        self.removeAllChildren()
+        startRound()
+    }
+    
+    func roundDidEndGame() {
+        print("Player \(self.RummyGame.currentPlayerNumber) won.");
+    }
+    
     
     // MARK: Touch recognizers
     func touchesBeganClosure(cardSprite: RummyCardSprite) {

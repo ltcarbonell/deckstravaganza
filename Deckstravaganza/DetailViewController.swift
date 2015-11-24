@@ -8,18 +8,21 @@
 
 import UIKit
 import SpriteKit
+import GameKit
 
 let FIELD_START_FROM_TOP: CGFloat = 50;
 let FIELD_TOP_MARGIN: CGFloat = 10;
-let FIELD_HEIGHT: CGFloat = 50;
+let FIELD_HEIGHT: CGFloat = 40;
+let TITLE_SIZE: CGFloat = 25;
 
-class DetailViewController: UIViewController {
-    let titleMargin: CGFloat = 20;
+class DetailViewController: UIViewController, GCHelperDelegate {
+    let titleMargin: CGFloat = 50;
     let buttonFrame = CGRect(x: 0, y: 0, width: 100, height: 50);
     var selectedMenuOption: Menu!;
     var gameOptions: [AdjustableSetting]? = nil;
+    var newGame: Bool = true;
     
-    var menuDescription = UILabel(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.width / 2, 21))
+    var menuDescription = UILabel(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, 30))
     var formFields: [GameFormElement] = [];
     
     var buttonOption = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 20));
@@ -30,10 +33,14 @@ class DetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Setup the screen.
+        // Setup the menu
         tearDownMenuUI();
         setupMenuUI();
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        self.view.setNeedsDisplay();
+        self.view.setNeedsLayout();
     }
 
     override func didReceiveMemoryWarning() {
@@ -50,10 +57,38 @@ class DetailViewController: UIViewController {
         buttonOption.removeFromSuperview();
     }
     
+    /// Method called when a match has been initiated.
+    func matchStarted(){
+        
+    }
+    
+    /// Method called when the device received data about the match from another device in the match.
+    func match(match: GKMatch, didReceiveData: NSData, fromPlayer: String){
+        
+    }
+    
+    /// Method called when the match has ended.
+    func matchEnded(){
+        
+    }
+    
+    
+    
+    
+    
+    
     func setupMenuUI() {
         gameOptions = nil;
         menuDescription.text = selectedMenuOption.description;
-        menuDescription.center = CGPoint(x: menuDescription.frame.width / 2 + titleMargin, y: titleMargin);
+        menuDescription.font = UIFont.systemFontOfSize(25, weight: UIFontWeightBold);
+        menuDescription.textAlignment = .Center;
+        
+        if(splitViewController != nil) {
+            menuDescription.center = CGPoint(x: (UIScreen.mainScreen().bounds.width - splitViewController!.primaryColumnWidth) / 2, y: titleMargin);
+        } else {
+            menuDescription.center = CGPoint(x: CGRectGetMidX(UIScreen.mainScreen().bounds), y: titleMargin);
+        }
+        
         self.view.addSubview(menuDescription);
         
         if(selectedMenuOption.viewGameOptions && selectedMenuOption.gameType != nil) {
@@ -75,8 +110,8 @@ class DetailViewController: UIViewController {
         var numberFields = 0;
         if(gameOptions != nil) {
             for gameOption in gameOptions! {
-                let elementLabel = UILabel();
                 let element: GameFormElement;
+                let elementLabel = UILabel();
                 elementLabel.text = gameOption.settingName;
                 
                 switch(gameOption.formType) {
@@ -90,7 +125,9 @@ class DetailViewController: UIViewController {
                     
                     element = GameFormElement(frame: elementFrame, settingName: gameOption.settingName, formLabel: elementLabel, formField: elementField);
                 case .Slider:
-                    element = GameFormElement(frame: CGRect(), settingName: "", formLabel: nil, formField: UIView());
+                    let elementField = GenericSliderView(data: gameOption.options);
+                    
+                    element = GameFormElement(frame: elementFrame, settingName: gameOption.settingName, formLabel: elementLabel, formField: elementField);
                 case .Switch:
                     let elementField = GenericSwitchView();
                     
@@ -100,7 +137,7 @@ class DetailViewController: UIViewController {
                     element = GameFormElement(frame: elementFrame, settingName: gameOption.settingName, formLabel: elementLabel, formField: elementField);
                 }
                 
-                element.center = CGPoint(x: CGRectGetMidX(elementFrame), y: FIELD_START_FROM_TOP + FIELD_TOP_MARGIN + (CGFloat(numberFields) * FIELD_HEIGHT));
+                element.center = CGPoint(x: CGRectGetMidX(elementFrame), y: FIELD_START_FROM_TOP + FIELD_TOP_MARGIN + (CGFloat(numberFields) * FIELD_HEIGHT) + TITLE_SIZE);
                 
                 formFields.append(element);
                 
@@ -111,7 +148,7 @@ class DetailViewController: UIViewController {
         }
         
         buttonOption.frame = buttonFrame;
-        buttonOption.center = CGPoint(x: CGRectGetMidX(elementFrame), y: FIELD_START_FROM_TOP + FIELD_TOP_MARGIN + (CGFloat(numberFields) * FIELD_HEIGHT));
+        buttonOption.center = CGPoint(x: CGRectGetMidX(elementFrame), y: FIELD_START_FROM_TOP + FIELD_TOP_MARGIN + (CGFloat(numberFields) * FIELD_HEIGHT) + TITLE_SIZE);
         buttonOption.alpha = 0.8;
         buttonOption.backgroundColor = UIColor.clearColor();
         buttonOption.setTitleColor(UIColor(red: 0, green: 122.0/255.0, blue: 1.0, alpha: 1.0), forState: .Normal);
@@ -120,8 +157,12 @@ class DetailViewController: UIViewController {
         
         if(selectedMenuOption.name == "Continue") {
             buttonOption.setTitle("Continue", forState: .Normal);
+            
+            newGame = false;
         } else {
             buttonOption.setTitle("Play", forState: .Normal);
+
+            newGame = true;
         }
         
         self.view.addSubview(buttonOption);
@@ -134,6 +175,14 @@ class DetailViewController: UIViewController {
     }
     
     func buttonPressed(sender: UIButton?) {
+        if(sender != nil) {
+            if(sender!.titleLabel?.text == "Continue") {
+                if(gameScene == nil) {
+                    return;
+                }
+            }
+        }
+        
         performSegueWithIdentifier("menuToGameSegue", sender: nil);
     }
     
@@ -141,6 +190,8 @@ class DetailViewController: UIViewController {
         if(sender != nil) {
             if(sender!.on) {
                 // Start multiplayer.
+        GCHelper.sharedInstance.findMatchWithMinPlayers(2, maxPlayers: 4, viewController: self, delegate: self)
+                
             } else {
                 // Check if multiplayer is on and turn off if necessary.
             }
@@ -281,6 +332,8 @@ class DetailViewController: UIViewController {
             
             if let gameViewController = segue.destinationViewController as? GameSceneViewController {
                 gameViewController.gameType = selectedMenuOption.gameType;
+                gameViewController.newGame = self.newGame;
+                gameViewController.selectedMenuOption = self.selectedMenuOption;
             }
         }
     }

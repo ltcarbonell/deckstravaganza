@@ -8,8 +8,12 @@
 
 import SpriteKit
 
+var gameScene: SKScene?;
+
 class GameSceneViewController: UIViewController {
-    var gameType: GameType!;
+    var gameType: GameType!;    // What game should we play.
+    var newGame: Bool = true;   // Should we begin a new game.
+    var selectedMenuOption: Menu!;
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,21 +32,39 @@ class GameSceneViewController: UIViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
-        var gameScene: SKScene;
-        
-        if(gameType == nil) {
+        if(gameType == nil && newGame) {
+            performSegueWithIdentifier("gameToMenu", sender: nil);
+            return;
+        } else if(gameScene == nil && !newGame) {
+            performSegueWithIdentifier("gameToMenu", sender: nil);
             return;
         }
         
-        switch(gameType!) {
-        case .Solitaire:
-            gameScene = SolitaireScene(gameScene: self, game: Solitaire(), gameDelegate: SolitaireDelegate(), size: CGSizeMake(768, 1024));
-        case .Rummy:
-            gameScene = RummyScene(gameScene: self, game: Rummy(numberOfPlayers: 2), size: CGSizeMake(768, 1024));
+        if(newGame) {
+            switch(gameType!) {
+            case .Solitaire:
+                gameScene = SolitaireScene(gameScene: self, game: Solitaire(), gameDelegate: SolitaireDelegate(), size: CGSizeMake(768, 1024));
+            case .Rummy:
+                gameScene = RummyScene(gameScene: self, game: Rummy(numberOfPlayers: 2), size: CGSizeMake(768, 1024));
+            }
         }
         
         let spriteView:SKView = self.view as! SKView
         spriteView.presentScene(gameScene)
+        
+//        menuButton = SKSpriteNode(texture: SKTexture(imageNamed: "menuButtonTexture"));
+//        menuButton.zPosition = 99999;
+//        menuButton.size = CGSize(width: 40, height: 100);
+//        menuButton.position = CGPoint(x: CGRectGetMinX(gameScene.frame) + 50, y: CGRectGetMaxY(gameScene.frame) - 50);
+//        
+//        gameScene.addChild(menuButton);
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if(segue.destinationViewController is DetailViewController) {
+            (segue.destinationViewController as! DetailViewController).selectedMenuOption = selectedMenuOption;
+        }
+    }
     
     
     /*
@@ -54,7 +76,5 @@ class GameSceneViewController: UIViewController {
     // Pass the selected object to the new view controller.
     }
     */
-    
-    }
 }
 

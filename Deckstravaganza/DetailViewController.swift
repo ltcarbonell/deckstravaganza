@@ -18,6 +18,7 @@ class DetailViewController: UIViewController {
     let buttonFrame = CGRect(x: 0, y: 0, width: 100, height: 50);
     var selectedMenuOption: Menu!;
     var gameOptions: [AdjustableSetting]? = nil;
+    var newGame: Bool = true;
     
     var menuDescription = UILabel(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.width / 2, 21))
     var formFields: [GameFormElement] = [];
@@ -122,8 +123,12 @@ class DetailViewController: UIViewController {
         
         if(selectedMenuOption.name == "Continue") {
             buttonOption.setTitle("Continue", forState: .Normal);
+            
+            newGame = false;
         } else {
             buttonOption.setTitle("Play", forState: .Normal);
+
+            newGame = true;
         }
         
         self.view.addSubview(buttonOption);
@@ -136,6 +141,14 @@ class DetailViewController: UIViewController {
     }
     
     func buttonPressed(sender: UIButton?) {
+        if(sender != nil) {
+            if(sender!.titleLabel?.text == "Continue") {
+                if(gameScene == nil) {
+                    return;
+                }
+            }
+        }
+        
         performSegueWithIdentifier("menuToGameSegue", sender: nil);
     }
     
@@ -283,6 +296,8 @@ class DetailViewController: UIViewController {
             
             if let gameViewController = segue.destinationViewController as? GameSceneViewController {
                 gameViewController.gameType = selectedMenuOption.gameType;
+                gameViewController.newGame = self.newGame;
+                gameViewController.selectedMenuOption = self.selectedMenuOption;
             }
         }
     }

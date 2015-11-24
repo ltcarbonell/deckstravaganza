@@ -367,7 +367,11 @@ class SolitaireScene: SKScene {
     var bottomRowYPos : CGFloat = 0;
     var wasteXPos : CGFloat = 0;
     
+    var newGame: Bool = true;
+    
     init(gameScene : GameSceneViewController, game: Solitaire, gameDelegate: SolitaireDelegate, size: CGSize) {
+        newGame = true;
+        
         self.GameScene = gameScene
         self.SolitaireGame = game
         self.SolitaireGameDelegate = gameDelegate
@@ -406,7 +410,11 @@ class SolitaireScene: SKScene {
     override func didMoveToView(view: SKView) {
         backgroundColor = UIColor.greenColor()
         
-        self.deal()
+        if(newGame) {
+            self.deal()
+        }
+        
+        newGame = false;
         
 //        SolitaireGameDelegate.gameDidStart(SolitaireGame)
 //        

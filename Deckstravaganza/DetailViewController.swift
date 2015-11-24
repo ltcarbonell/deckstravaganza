@@ -8,13 +8,14 @@
 
 import UIKit
 import SpriteKit
+import GameKit
 
 let FIELD_START_FROM_TOP: CGFloat = 50;
 let FIELD_TOP_MARGIN: CGFloat = 10;
 let FIELD_HEIGHT: CGFloat = 40;
 let TITLE_SIZE: CGFloat = 25;
 
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController, GCHelperDelegate {
     let titleMargin: CGFloat = 50;
     let buttonFrame = CGRect(x: 0, y: 0, width: 100, height: 50);
     var selectedMenuOption: Menu!;
@@ -55,6 +56,26 @@ class DetailViewController: UIViewController {
         menuDescription.removeFromSuperview();
         buttonOption.removeFromSuperview();
     }
+    
+    /// Method called when a match has been initiated.
+    func matchStarted(){
+        
+    }
+    
+    /// Method called when the device received data about the match from another device in the match.
+    func match(match: GKMatch, didReceiveData: NSData, fromPlayer: String){
+        
+    }
+    
+    /// Method called when the match has ended.
+    func matchEnded(){
+        
+    }
+    
+    
+    
+    
+    
     
     func setupMenuUI() {
         gameOptions = nil;
@@ -175,6 +196,8 @@ class DetailViewController: UIViewController {
         if(sender != nil) {
             if(sender!.on) {
                 // Start multiplayer.
+        GCHelper.sharedInstance.findMatchWithMinPlayers(2, maxPlayers: 4, viewController: self, delegate: self)
+                
             } else {
                 // Check if multiplayer is on and turn off if necessary.
             }

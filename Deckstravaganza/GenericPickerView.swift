@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GenericPickerView: UIPickerView, UIPickerViewDataSource, UIPickerViewDelegate {
+class GenericPickerView: UIPickerView, UIPickerViewDataSource, UIPickerViewDelegate, GenericFormElements {
     let data: [String];
     
     init(data: [String]) {
@@ -19,6 +19,10 @@ class GenericPickerView: UIPickerView, UIPickerViewDataSource, UIPickerViewDeleg
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func getDefaultFrame() -> CGRect {
+        return UIPickerView().frame;
     }
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GenericSliderView: UISlider {
+class GenericSliderView: UISlider, GenericFormElements {
     init(data: [String]) {
         super.init(frame: CGRect());
         
@@ -28,6 +28,10 @@ class GenericSliderView: UISlider {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func getDefaultFrame() -> CGRect {
+        return UISlider().frame;
     }
     
     func updateSliderValue(sender: UISlider) {

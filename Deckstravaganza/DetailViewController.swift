@@ -11,16 +11,17 @@ import SpriteKit
 
 let FIELD_START_FROM_TOP: CGFloat = 50;
 let FIELD_TOP_MARGIN: CGFloat = 10;
-let FIELD_HEIGHT: CGFloat = 50;
+let FIELD_HEIGHT: CGFloat = 40;
+let TITLE_SIZE: CGFloat = 25;
 
 class DetailViewController: UIViewController {
-    let titleMargin: CGFloat = 20;
+    let titleMargin: CGFloat = 50;
     let buttonFrame = CGRect(x: 0, y: 0, width: 100, height: 50);
     var selectedMenuOption: Menu!;
     var gameOptions: [AdjustableSetting]? = nil;
     var newGame: Bool = true;
     
-    var menuDescription = UILabel(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.width / 2, 21))
+    var menuDescription = UILabel(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, 30))
     var formFields: [GameFormElement] = [];
     
     var buttonOption = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 20));
@@ -31,10 +32,14 @@ class DetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Setup the screen.
+        // Setup the menu
         tearDownMenuUI();
         setupMenuUI();
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        self.view.setNeedsDisplay();
+        self.view.setNeedsLayout();
     }
 
     override func didReceiveMemoryWarning() {
@@ -54,7 +59,15 @@ class DetailViewController: UIViewController {
     func setupMenuUI() {
         gameOptions = nil;
         menuDescription.text = selectedMenuOption.description;
-        menuDescription.center = CGPoint(x: menuDescription.frame.width / 2 + titleMargin, y: titleMargin);
+        menuDescription.font = UIFont.systemFontOfSize(25, weight: UIFontWeightBold);
+        menuDescription.textAlignment = .Center;
+        
+        if(splitViewController != nil) {
+            menuDescription.center = CGPoint(x: (UIScreen.mainScreen().bounds.width - splitViewController!.primaryColumnWidth) / 2, y: titleMargin);
+        } else {
+            menuDescription.center = CGPoint(x: CGRectGetMidX(UIScreen.mainScreen().bounds), y: titleMargin);
+        }
+        
         self.view.addSubview(menuDescription);
         
         if(selectedMenuOption.viewGameOptions && selectedMenuOption.gameType != nil) {
@@ -103,7 +116,7 @@ class DetailViewController: UIViewController {
                     element = GameFormElement(frame: elementFrame, settingName: gameOption.settingName, formLabel: elementLabel, formField: elementField);
                 }
                 
-                element.center = CGPoint(x: CGRectGetMidX(elementFrame), y: FIELD_START_FROM_TOP + FIELD_TOP_MARGIN + (CGFloat(numberFields) * FIELD_HEIGHT));
+                element.center = CGPoint(x: CGRectGetMidX(elementFrame), y: FIELD_START_FROM_TOP + FIELD_TOP_MARGIN + (CGFloat(numberFields) * FIELD_HEIGHT) + TITLE_SIZE);
                 
                 formFields.append(element);
                 
@@ -114,7 +127,7 @@ class DetailViewController: UIViewController {
         }
         
         buttonOption.frame = buttonFrame;
-        buttonOption.center = CGPoint(x: CGRectGetMidX(elementFrame), y: FIELD_START_FROM_TOP + FIELD_TOP_MARGIN + (CGFloat(numberFields) * FIELD_HEIGHT));
+        buttonOption.center = CGPoint(x: CGRectGetMidX(elementFrame), y: FIELD_START_FROM_TOP + FIELD_TOP_MARGIN + (CGFloat(numberFields) * FIELD_HEIGHT) + TITLE_SIZE);
         buttonOption.alpha = 0.8;
         buttonOption.backgroundColor = UIColor.clearColor();
         buttonOption.setTitleColor(UIColor(red: 0, green: 122.0/255.0, blue: 1.0, alpha: 1.0), forState: .Normal);

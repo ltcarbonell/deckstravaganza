@@ -59,6 +59,7 @@ class DetailViewController: UIViewController, GCHelperDelegate {
     
     /// Method called when a match has been initiated.
     func matchStarted(){
+        newGame = true
         
     }
     

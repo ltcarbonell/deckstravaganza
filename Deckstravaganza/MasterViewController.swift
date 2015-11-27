@@ -91,12 +91,13 @@ class MasterViewController: UITableViewController {
         } else {
             selectedMenu = self.menus[indexPath.section][indexPath.row + 1];
         }
-        
-        self.delegate?.menuSelected(selectedMenu)
     
         if let detailViewController = self.delegate as? DetailViewController {
+            self.delegate?.menuSelected(selectedMenu);
+            
             detailViewController.tearDownMenuUI();
             detailViewController.setupMenuUI();
+            
             splitViewController?.showDetailViewController(detailViewController, sender: nil)
         }
     }

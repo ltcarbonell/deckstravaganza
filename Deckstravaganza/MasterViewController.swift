@@ -13,7 +13,7 @@ protocol MenuSelectionDelegate: class {
 }
 
 class MasterViewController: UITableViewController {
-    weak var delegate: MenuSelectionDelegate?
+    var delegate: MenuSelectionDelegate?
     var menus: [[Menu]] = [
         [Menu(name: "Continue", description: "Continue Playing Last Game")],
         [

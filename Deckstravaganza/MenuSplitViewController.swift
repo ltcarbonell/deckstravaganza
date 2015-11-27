@@ -32,8 +32,9 @@ class MenuSplitViewController: UISplitViewController, UISplitViewControllerDeleg
     }
     
     func toggleMasterView() {
-        let barButtonItem = self.displayModeButtonItem()
-        UIApplication.sharedApplication().sendAction(barButtonItem.action, to: barButtonItem.target, from: nil, forEvent: nil)
+        let barButtonItem = self.displayModeButtonItem();
+        UIApplication.sharedApplication().sendAction(barButtonItem.action, to: barButtonItem.target, from: nil, forEvent: nil);
+//        self.navigationController.
     }
     
     func authenticateLocalPlayer(){

@@ -26,10 +26,6 @@ class DetailViewController: UIViewController, GCHelperDelegate {
     var formFields: [GameFormElement] = [];
     
     var buttonOption = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 20));
-    
-//    let btntwo = UIButton(type: UIButtonType.System)
-//    let multlabel = UILabel(frame: CGRectMake(0,0,200,21))
-//    let switch1 = UISwitch(frame:CGRectMake(150, 300, 0, 0))
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -190,7 +186,16 @@ class DetailViewController: UIViewController, GCHelperDelegate {
             }
         }
         
-        performSegueWithIdentifier("menuToGameSegue", sender: nil);
+        let gameViewController = GameSceneViewController();
+        gameViewController.gameType = selectedMenuOption.gameType;
+        gameViewController.newGame = self.newGame;
+        gameViewController.selectedMenuOption = self.selectedMenuOption;
+        
+        if let menuSplitViewController = self.splitViewController as? MenuSplitViewController {
+            menuSplitViewController.toggleMasterView();
+        }
+        
+        splitViewController?.showDetailViewController(gameViewController, sender: nil);
     }
     
     func updateMultiplayer(sender: UISwitch?) {
@@ -201,21 +206,6 @@ class DetailViewController: UIViewController, GCHelperDelegate {
                 
             } else {
                 // Check if multiplayer is on and turn off if necessary.
-            }
-        }
-    }
-
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if(segue.identifier != nil && segue.identifier == "menuToGameSegue") {
-            if let menuSplitViewController = self.splitViewController as? MenuSplitViewController {
-                menuSplitViewController.toggleMasterView();
-            }
-            
-            if let gameViewController = segue.destinationViewController as? GameSceneViewController {
-                gameViewController.gameType = selectedMenuOption.gameType;
-                gameViewController.newGame = self.newGame;
-                gameViewController.selectedMenuOption = self.selectedMenuOption;
             }
         }
     }

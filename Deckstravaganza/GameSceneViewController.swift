@@ -9,12 +9,12 @@
 import SpriteKit
 
 var gameScene: SKScene?;
+var spriteView: SKView = SKView();
 
 class GameSceneViewController: UIViewController, UINavigationBarDelegate {
     var gameType: GameType!;    // What game should we play.
     var newGame: Bool = true;   // Should we begin a new game.
     var selectedMenuOption: Menu!;
-    var spriteView: SKView = SKView();
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,7 +96,7 @@ class GameSceneViewController: UIViewController, UINavigationBarDelegate {
         }
     }
     
-    func startNewGame(sender: UIBarButtonItem) {
+    func startNewGame(sender: UIBarButtonItem?) {
         gameScene!.removeEverything();
         spriteView.presentScene(nil);
         gameScene = nil;

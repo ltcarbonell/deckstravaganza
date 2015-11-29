@@ -124,7 +124,6 @@ class CardSprite: SKSpriteNode {
             let cardNode = nodeFromCard(tempCard);
             
             yPositionDeltas.append(self.position.y - cardNode.position.y);
-            print(yPositionDeltas[yPositionDeltas.count - 1]);
             
             tempStack.push(tempCard);
         }
@@ -292,8 +291,6 @@ class CardSprite: SKSpriteNode {
                 
                 if(cardBelow != nil) {
                     cardBelowNode = self.nodeFromCard(cardBelow!);
-                    
-                    print(cardBelowNode!.name);
                 }
                 
                 for(var index = 0; index < cardsAbove.count; index++) {
@@ -318,8 +315,6 @@ class CardSprite: SKSpriteNode {
                 }
             }
             
-            print(newPile?.name);
-            print(newPile);
             if newPile == nil {
                 // If the new pile is not a valid position, move back to correct location
                 moveCardsBack();
@@ -328,9 +323,24 @@ class CardSprite: SKSpriteNode {
                 if solitaireGame!.checkMove(card, previousPile: oldPile!, newPile: newPile!) {
                     if(toLocation! != fromLocation!) {
                         movePile();
+                        
+                        let isFoundation = solitaireScene!.foundationsContainPoint(toLocation!);
+                        if(self.card.getRank() == .King && isFoundation) {
+                            // Check if the game is over.
+                            let foundationCardCount = solitaireGame!.foundation1.count() + solitaireGame!.foundation2.count() + solitaireGame!.foundation3.count() + solitaireGame!.foundation3.count();
+                            
+                            if(foundationCardCount >= 52) {
+                                solitaireScene!.endGame();
+                            }
+                        } else if(isFoundation) {
+                            // No need to keep references to the solitaireScene and solitaireGame anymore.
+                            self.solitaireScene = nil;
+                            self.solitaireGame = nil;
+                            self.newPile = nil;
+                            self.oldPile = nil;
+                        }
                     }
                 } else {
-                    print("invalid");
                     // Invalid move.  Move stack back to original location.
                     moveCardsBack();
                 }
@@ -361,6 +371,12 @@ class SolitaireScene: SKScene {
     
     // End of Game variables
     var reloadSprite: GameViewControllerButton?
+    var endMessageBackground: SKSpriteNode?;
+    let endMessageBackgroundTexture: SKTexture = SKTexture(imageNamed: "MessageBackgroundTexture");
+    let endMessage = SKLabelNode(text: "Congratulations! You won.");
+    let endButton = SKLabelNode(text: "New Game");
+    var gameOver = false;
+    
     
     // Position variables
     var deckXPos : CGFloat = 0;
@@ -547,6 +563,17 @@ class SolitaireScene: SKScene {
         
     }
     
+    // Check if the specified point is in a foundation pile.
+    func foundationsContainPoint(point: CGPoint) -> Bool {
+        for(var index = 0; index < foundationLocations.count; index++) {
+            if(point == foundationLocations[index]) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
     // flips over all the top cards of the tableus to be face up
     // called after a move has completed
     func flipTopCards() {
@@ -598,7 +625,56 @@ class SolitaireScene: SKScene {
         }
     }
     
+    func endGame() {
+        // Make the cards fly off the screen.
+        let moveDownAction = SKAction.moveByX(-cardSize.width, y: UIScreen.mainScreen().bounds.height, duration: 0.5);
+        let bounceUpAction = SKAction.moveByX(-cardSize.width / 2, y: -(UIScreen.mainScreen().bounds.height * 0.3), duration: 0.25);
+        let bounceDownAction = SKAction.moveByX(-cardSize.width / 0.3, y: UIScreen.mainScreen().bounds.height, duration: 0.25 / 0.3);
+        
+        var waitTime = 0.0;
+        for cardSprite in cardSprites {
+            let waitAction = SKAction.waitForDuration(waitTime);
+            waitTime += 0.4;
+            
+            let actions = SKAction.sequence([waitAction, moveDownAction, bounceUpAction, bounceDownAction]);
+            cardSprite.runAction(actions);
+        }
+        
+        self.endMessageBackground = SKSpriteNode(texture: endMessageBackgroundTexture);
+        self.endMessageBackground!.size = CGSize(width: self.frame.width / 2, height: self.frame.height / 2);
+        self.endMessageBackground!.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame));
+        self.endMessageBackground!.zPosition = 99999;
+        
+        self.endMessage.fontColor = UIColor.redColor();
+        self.endMessage.fontName = "ChalkboardSE-Light";
+        self.endMessage.position = CGPoint(x: 0, y: (self.endMessageBackground!.frame.height / 2) - 100);
+        self.endMessage.zPosition = 100000;
+        
+        self.endButton.fontColor = UIColor.redColor();
+        self.endButton.fontName = "ChalkboardSE-Light";
+        self.endButton.position = CGPoint(x: 0, y: -(self.endMessageBackground!.frame.height / 2) + 100);
+        self.endButton.zPosition = 100000;
+        
+        self.endMessageBackground!.addChild(self.endMessage);
+        self.endMessageBackground!.addChild(self.endButton);
+        self.addChild(endMessageBackground!);
+        
+        gameOver = true;
+    }
     
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if(gameOver) {
+            if(self.endButton.containsPoint(touches.first!.locationInNode(self.endMessageBackground!))) {
+                gameScene!.removeEverything();
+                self.view!.presentScene(nil);
+                gameScene = nil;
+                
+                gameScene = SolitaireScene(gameScene: self.GameScene, game: Solitaire(), gameDelegate: SolitaireDelegate(), size: CGSizeMake(768, 1024));
+                
+                spriteView.presentScene(gameScene);
+            }
+        }
+    }
     
     // updates the tableulocations after a card is moved
     // NOT CURRENTLY IMPLEMENTED

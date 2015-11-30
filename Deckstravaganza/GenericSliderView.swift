@@ -9,7 +9,16 @@
 import UIKit
 
 class GenericSliderView: UISlider, GenericFormElements {
+    let textWidth: CGFloat = 50;
+    let textHeight: CGFloat = 50;
+    
+    let max: Float;
+    let min: Float;
     let stepSize: Float;
+    
+    var actualValue: Int;
+    
+    let valueLabel = UILabel();
     
     init(data: [String]) {
         let min = Float(data[0]);
@@ -20,12 +29,24 @@ class GenericSliderView: UISlider, GenericFormElements {
             fatalError("3 and only 3 float values must be passed to the GenericSliderView");
         }
         
-        stepSize = tempStepSize!;
+        self.stepSize = tempStepSize!;
+        self.max = max!;
+        self.min = min!;
+        
+        actualValue = 0;
         
         super.init(frame: CGRect());
         
         super.minimumValue = 0;
-        super.maximumValue = max! / stepSize;
+        super.maximumValue = (max! - min!) / stepSize;
+        
+        valueLabel.text = String(actualValue);
+        valueLabel.frame = CGRect(x: 0, y: 0, width: 50, height: 50);
+        
+        let defaultFrame = UISlider().frame;
+        valueLabel.center = CGPoint(x: defaultFrame.width + (textWidth / 2), y: 15);
+        
+        self.addSubview(valueLabel);
         
         super.continuous = true;
         super.addTarget(self, action: "updateSliderValue:", forControlEvents: UIControlEvents.ValueChanged);
@@ -40,11 +61,12 @@ class GenericSliderView: UISlider, GenericFormElements {
     }
     
     func updateSliderValue(sender: UISlider) {
-        sender.value = sender.value * stepSize;
+        actualValue = Int((super.value + min) * stepSize);
+        valueLabel.text = String(actualValue);
     }
     
     func getResults() -> String {
-        return String(super.value);
+        return String((super.value + min) * stepSize);
     }
     
     /*

@@ -10,4 +10,6 @@ import UIKit
 
 protocol GenericFormElements {
     func getDefaultFrame() -> CGRect;
+    
+    func getResults() -> String;
 }

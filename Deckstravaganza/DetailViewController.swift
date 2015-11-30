@@ -91,9 +91,9 @@ class DetailViewController: UIViewController, GCHelperDelegate {
         if(selectedMenuOption.viewGameOptions && selectedMenuOption.gameType != nil) {
             switch(selectedMenuOption.gameType!) {
             case .Solitaire:
-                gameOptions = Solitaire().getGameOptions();
+                gameOptions = Solitaire(selectedOptions: nil)).getGameOptions();
             case .Rummy:
-                gameOptions = Rummy(numberOfPlayers: 1).getGameOptions();
+                gameOptions = Rummy(selectedOptions: nil).getGameOptions();
             }
         }
         
@@ -190,6 +190,18 @@ class DetailViewController: UIViewController, GCHelperDelegate {
         gameViewController.gameType = selectedMenuOption.gameType;
         gameViewController.newGame = self.newGame;
         gameViewController.selectedMenuOption = self.selectedMenuOption;
+        
+        var selectedOptions = gameOptions;
+        
+        if(sender != nil && selectedOptions != nil) {
+            if(sender!.titleLabel?.text != "Continue") {
+                for(var index = selectedOptions!.count; index >= 0; index--) {
+                    selectedOptions![index].options = [(formFields[index].formField as! GenericFormElements).getResults()];
+                }
+            }
+        }
+        
+        gameViewController.selectedOptions = selectedOptions;
         
         if let menuSplitViewController = self.splitViewController as? MenuSplitViewController {
             menuSplitViewController.toggleMasterView();

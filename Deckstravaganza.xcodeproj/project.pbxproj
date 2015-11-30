@@ -15,6 +15,7 @@
 		22CD05371BDE6E89004A3031 /* RummyScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CD05361BDE6E89004A3031 /* RummyScene.swift */; };
 		22EFF9751C039CEA0003034C /* RummyAI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EFF9741C039CEA0003034C /* RummyAI.swift */; };
 		D52F99801BDE5F0F008AB55B /* MenuSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52F997F1BDE5F0F008AB55B /* MenuSplitViewController.swift */; };
+		D533E3E11C0CC60D00DF6D88 /* GenericCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D533E3E01C0CC60D00DF6D88 /* GenericCollectionView.swift */; };
 		D54C89791BAD9527007AEB7E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C89781BAD9527007AEB7E /* AppDelegate.swift */; };
 		D54C897B1BAD9527007AEB7E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C897A1BAD9527007AEB7E /* ViewController.swift */; };
 		D54C897E1BAD9527007AEB7E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D54C897C1BAD9527007AEB7E /* Main.storyboard */; };
@@ -68,6 +69,7 @@
 		22CD05361BDE6E89004A3031 /* RummyScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RummyScene.swift; sourceTree = "<group>"; };
 		22EFF9741C039CEA0003034C /* RummyAI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RummyAI.swift; sourceTree = "<group>"; };
 		D52F997F1BDE5F0F008AB55B /* MenuSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuSplitViewController.swift; sourceTree = "<group>"; };
+		D533E3E01C0CC60D00DF6D88 /* GenericCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericCollectionView.swift; sourceTree = "<group>"; };
 		D54C89751BAD9527007AEB7E /* Deckstravaganza.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Deckstravaganza.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D54C89781BAD9527007AEB7E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D54C897A1BAD9527007AEB7E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -207,9 +209,10 @@
 				DCA2FB811BB9AC71007695E0 /* Menu.swift */,
 				DCA2FB7B1BB993CA007695E0 /* MasterViewController.swift */,
 				DCA2FB7D1BB9957D007695E0 /* DetailViewController.swift */,
+				D533E3E01C0CC60D00DF6D88 /* GenericCollectionView.swift */,
+				D54F1ACA1C041AC000760562 /* GenericFormElements.swift */,
 				D56F24E11C03AF7E00922739 /* GenericSliderView.swift */,
 				D56F24DF1C03A67500922739 /* GenericSwitchView.swift */,
-				D54F1ACA1C041AC000760562 /* GenericFormElements.swift */,
 				D5F55B3D1BFCC6820076871C /* GenericPickerView.swift */,
 				D5F55B2A1BFA6C600076871C /* GameFormElement.swift */,
 				D54C897F1BAD9527007AEB7E /* Assets.xcassets */,
@@ -376,6 +379,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D533E3E11C0CC60D00DF6D88 /* GenericCollectionView.swift in Sources */,
 				D5DC30701BB97702001C4F58 /* Deck.swift in Sources */,
 				D54C897B1BAD9527007AEB7E /* ViewController.swift in Sources */,
 				D56CC3D01BB03E8200E6A9BC /* QueuePile.swift in Sources */,

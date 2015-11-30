@@ -43,6 +43,10 @@ class GenericSliderView: UISlider, GenericFormElements {
         sender.value = sender.value * stepSize;
     }
     
+    func getResults() -> String {
+        return String(super.value);
+    }
+    
     /*
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.

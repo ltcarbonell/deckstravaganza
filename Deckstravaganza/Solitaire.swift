@@ -19,12 +19,6 @@ class Solitaire: CardGame {
     // properties of the game rules that can be changed
     var adjustableSettings = [
         AdjustableSetting(
-            settingName: "Difficulty Level",
-            formType: FormType.DropDown,
-            dataType: DataType.String,
-            options: ["Easy", "Hard"]
-        ),
-        AdjustableSetting(
             settingName: "Card Type",
             formType: FormType.Cards,
             dataType: DataType.Image,
@@ -62,7 +56,7 @@ class Solitaire: CardGame {
     let gameDelegate = SolitaireDelegate()
     
     // initializer
-    init() {
+    init(selectedOptions: [AdjustableSetting]?) {
         self.diff = .Easy
         // deals the cards out for the first and only time
         // calls from Solitaire delagate

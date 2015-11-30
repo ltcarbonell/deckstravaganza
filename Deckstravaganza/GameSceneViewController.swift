@@ -15,6 +15,7 @@ class GameSceneViewController: UIViewController, UINavigationBarDelegate {
     var gameType: GameType!;    // What game should we play.
     var newGame: Bool = true;   // Should we begin a new game.
     var selectedMenuOption: Menu!;
+    var selectedOptions: [AdjustableSetting]?;
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,7 +46,8 @@ class GameSceneViewController: UIViewController, UINavigationBarDelegate {
         if(newGame) {
             switch(gameType!) {
             case .Solitaire:
-                gameScene = SolitaireScene(gameScene: self, game: Solitaire(), gameDelegate: SolitaireDelegate(), size: CGSizeMake(768, 1024));
+                let game = Solitaire(selectedOptions: selectedOptions);
+                gameScene = SolitaireScene(gameScene: self, game: game, gameDelegate: SolitaireDelegate(), size: CGSizeMake(768, 1024));
             case .Rummy:
                 gameScene = RummyScene(gameScene: self, game: Rummy(numberOfPlayers: 4), size: CGSizeMake(768, 1024));
             }

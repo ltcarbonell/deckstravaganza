@@ -91,7 +91,7 @@ class DetailViewController: UIViewController, GCHelperDelegate {
         if(selectedMenuOption.viewGameOptions && selectedMenuOption.gameType != nil) {
             switch(selectedMenuOption.gameType!) {
             case .Solitaire:
-                gameOptions = Solitaire(selectedOptions: nil)).getGameOptions();
+                gameOptions = Solitaire(selectedOptions: nil).getGameOptions();
             case .Rummy:
                 gameOptions = Rummy(selectedOptions: nil).getGameOptions();
             }
@@ -195,7 +195,7 @@ class DetailViewController: UIViewController, GCHelperDelegate {
         
         if(sender != nil && selectedOptions != nil) {
             if(sender!.titleLabel?.text != "Continue") {
-                for(var index = selectedOptions!.count; index >= 0; index--) {
+                for(var index = selectedOptions!.count - 1; index >= 0; index--) {
                     switch(selectedOptions![index].formType) {
                     case .Cards:
                         break;

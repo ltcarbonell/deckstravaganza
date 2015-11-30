@@ -49,10 +49,10 @@ class Rummy: CardGame {
     
     var computerPlayers = [RummyAI]()
     
-    init(numberOfPlayers: Int) {
+    init(selectedOptions: [AdjustableSetting]?) {
         self.turn = 0
         self.targetScore = 500
-        self.setPlayers(numberOfPlayers)
+        self.setPlayers(2)
         self.adjustableSettings = [
             AdjustableSetting(
                 settingName: "Multiplayer",

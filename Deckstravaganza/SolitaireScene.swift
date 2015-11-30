@@ -26,6 +26,7 @@ class CardConstants {
     let TOP_ROW_Y_FACTOR : CGFloat = 1;
     
     let MOVING_Y_ADJUSTMENT : CGFloat = 10;
+    let TAP_Y_ADJUSTMENT: CGFloat = 30;
 }
 
 // Extends from SpriteNode to create a specified card sprite
@@ -213,6 +214,7 @@ class CardSprite: SKSpriteNode {
                         
                         oldYPositions.append(tempCard.position.y);
                         tempCard.zPosition = cardConstants.DRAGGED_ZINDEX + CGFloat(index);
+                        tempCard.position.y = tempCard.position.y - (self.cardConstants.TAP_Y_ADJUSTMENT * CGFloat(index));
                     }
                     
                     touchedHidden = false;
@@ -303,7 +305,7 @@ class CardSprite: SKSpriteNode {
                         tempCardYPosition = cardBelowNode!.position.y - ((CGFloat(index) + 1) * CGFloat(self.cardConstants.CARD_CASCADE_OFFSET));
                         tempCardZPosition = cardBelowNode!.zPosition + CGFloat(index) + 1;
                     } else {
-                        tempCardYPosition = self.fromLocation!.y;
+                        tempCardYPosition = self.fromLocation!.y - (CGFloat(index) * CGFloat(self.cardConstants.CARD_CASCADE_OFFSET));
                         tempCardZPosition = 0;
                     }
                     

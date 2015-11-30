@@ -12,6 +12,7 @@ struct Player {
     var userName: String
     var score = 0
     var playerNumber: Int
+    var isComputer: Bool
 }
 
 enum FormType : Int {

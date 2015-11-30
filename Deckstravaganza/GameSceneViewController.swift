@@ -45,7 +45,7 @@ class GameSceneViewController: UIViewController {
             case .Solitaire:
                 gameScene = SolitaireScene(gameScene: self, game: Solitaire(), gameDelegate: SolitaireDelegate(), size: CGSizeMake(768, 1024));
             case .Rummy:
-                gameScene = RummyScene(gameScene: self, game: Rummy(numberOfPlayers: 2), size: CGSizeMake(768, 1024));
+                gameScene = RummyScene(gameScene: self, game: Rummy(numberOfPlayers: 4), size: CGSizeMake(768, 1024));
             }
         }
         

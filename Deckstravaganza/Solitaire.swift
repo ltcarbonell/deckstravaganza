@@ -123,7 +123,7 @@ class Solitaire: CardGame {
     }
     
     func setPlayers(numberOfPlayers: Int) {
-        self.players = [Player(userName: "Player 1", score: 0, playerNumber: 1)]  // only one player... hence Solitaire
+        self.players = [Player(userName: "Player 1", score: 0, playerNumber: 1, isComputer: false)]  // only one player... hence Solitaire
     }
     
     // Moves the top card of a pile and moves it to the new pile

@@ -38,6 +38,6 @@ class GenericPickerView: UIPickerView, UIPickerViewDataSource, UIPickerViewDeleg
     }
     
     func getResults() -> String {
-        return String(data[super.selectedRowInComponent(1)]);
+        return String(data[super.selectedRowInComponent(0)]);
     }
 }

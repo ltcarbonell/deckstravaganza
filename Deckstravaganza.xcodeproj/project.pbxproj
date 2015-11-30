@@ -36,7 +36,7 @@
 		D5F55B2B1BFA6C600076871C /* GameFormElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F55B2A1BFA6C600076871C /* GameFormElement.swift */; };
 		D5F55B3E1BFCC6820076871C /* GenericPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F55B3D1BFCC6820076871C /* GenericPickerView.swift */; };
 		DC5B897C1BC2F2D700F751FB /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = DC5B897B1BC2F2D700F751FB /* GameScene.sks */; };
-		DC9E94011C04D18A0003F7EE /* GCHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9E94001C04D18A0003F7EE /* GCHelper.swift */; settings = {ASSET_TAGS = (); }; };
+		DC9E94011C04D18A0003F7EE /* GCHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9E94001C04D18A0003F7EE /* GCHelper.swift */; };
 		DCA2FB7C1BB993CA007695E0 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA2FB7B1BB993CA007695E0 /* MasterViewController.swift */; };
 		DCA2FB7E1BB9957D007695E0 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA2FB7D1BB9957D007695E0 /* DetailViewController.swift */; };
 		DCA2FB821BB9AC71007695E0 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA2FB811BB9AC71007695E0 /* Menu.swift */; };

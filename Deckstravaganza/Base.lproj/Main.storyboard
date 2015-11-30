@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8187.4" systemVersion="14F1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="6uL-Fa-RvP">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="6uL-Fa-RvP">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8151.3"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
     </dependencies>
     <scenes>
         <!--Detail View Controller-->
@@ -41,9 +41,6 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <nil key="simulatedTopBarMetrics"/>
-                    <connections>
-                        <segue destination="zIR-6Z-by3" kind="show" identifier="gameToMenu" id="ZNa-Oc-nGi"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4rz-6E-bI6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -122,7 +119,4 @@
             <point key="canvasLocation" x="-212" y="379"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="ZNa-Oc-nGi"/>
-    </inferredMetricsTieBreakers>
 </document>

@@ -26,6 +26,7 @@ class CardConstants {
     let TOP_ROW_Y_FACTOR : CGFloat = 1;
     
     let MOVING_Y_ADJUSTMENT : CGFloat = 10;
+    let TAP_Y_ADJUSTMENT: CGFloat = 30;
 }
 
 // Extends from SpriteNode to create a specified card sprite
@@ -40,14 +41,15 @@ class CardSprite: SKSpriteNode {
     let backTexture: SKTexture
     var faceUp: Bool
     
-    var solitaireScene: SolitaireScene
-    var solitaireGame: Solitaire
+    weak var solitaireScene: SolitaireScene?
+    weak var solitaireGame: Solitaire?
     
     var toLocation: CGPoint?        // Where the user lifted their finger
     var fromLocation: CGPoint?      // Where the user began dragging
     
-    var newPile: StackPile?         // Pile to which the user dragged
-    var oldPile: StackPile?         // Original pile from which the user dragged
+    weak var newPile: StackPile?    // Pile to which the user dragged
+    weak var oldPile: StackPile?
+    // Original pile from which the user dragged
     
     var touchedHidden = false;      // Did the user touch a card that was face down?
     var flipHidden = false;         // Should the hidden card be flipped?
@@ -89,19 +91,19 @@ class CardSprite: SKSpriteNode {
     // draws card from deck pile and places in waste pile
     // called when deck pile is tapped
     func drawCard() {
-        toLocation = solitaireScene.snapToCGPoint(solitaireScene.wastePileLocation)
-        newPile = solitaireGame.wastePile
-        oldPile = solitaireGame.deck
+        toLocation = solitaireScene!.snapToCGPoint(solitaireScene!.wastePileLocation)
+        newPile = solitaireGame!.wastePile
+        oldPile = solitaireGame!.deck
         
         self.flipCardOver()
-        self.zPosition = CGFloat(solitaireScene.SolitaireGame.wastePile.numberOfCards())
+        self.zPosition = CGFloat(solitaireScene!.SolitaireGame.wastePile.numberOfCards())
         
-        solitaireScene.SolitaireGame.moveTopCard(oldPile!, toPile: newPile!)
+        solitaireScene!.SolitaireGame.moveTopCard(oldPile!, toPile: newPile!)
         self.runAction(SKAction.moveTo(toLocation!, duration: 0.25))
         
         // If the deck is empty, reload the deck with cards from waste pile
-        if solitaireGame.deck.numberOfCards() == 0 {
-            solitaireScene.addReloadOption()
+        if solitaireGame!.deck.numberOfCards() == 0 {
+            solitaireScene!.addReloadOption()
         }
     }
     
@@ -110,12 +112,12 @@ class CardSprite: SKSpriteNode {
         var yPositionDeltas : [CGFloat] = [];
         let baseYPosition : CGFloat;
         
-        if(newPile!.topCard() != nil && toLocation!.y != solitaireScene.topRowYPos) {
+        if(newPile!.topCard() != nil && toLocation!.y != solitaireScene!.topRowYPos) {
             baseYPosition = nodeFromCard(newPile!.topCard()!).position.y - CGFloat(cardConstants.CARD_CASCADE_OFFSET);
-        } else if(toLocation!.y == solitaireScene.bottomRowYPos) {
-            baseYPosition = solitaireScene.bottomRowYPos;
+        } else if(toLocation!.y == solitaireScene!.bottomRowYPos) {
+            baseYPosition = solitaireScene!.bottomRowYPos;
         } else {
-            baseYPosition = solitaireScene.topRowYPos;
+            baseYPosition = solitaireScene!.topRowYPos;
         }
         
         while(!oldPile!.isEmpty() && !oldPile!.topCard()!.isEqualTo(self.card)) {
@@ -123,7 +125,6 @@ class CardSprite: SKSpriteNode {
             let cardNode = nodeFromCard(tempCard);
             
             yPositionDeltas.append(self.position.y - cardNode.position.y);
-            print(yPositionDeltas[yPositionDeltas.count - 1]);
             
             tempStack.push(tempCard);
         }
@@ -138,7 +139,7 @@ class CardSprite: SKSpriteNode {
             let cardNode = nodeFromCard(tempCard);
             let cardPosition : CGPoint;
             
-            if(baseYPosition != solitaireScene.topRowYPos) {
+            if(baseYPosition != solitaireScene!.topRowYPos) {
                 cardPosition = CGPoint(x: toLocation!.x, y: (CGFloat(baseYPosition) - yPositionDeltas[--count]));
             } else {
                 cardPosition = CGPoint(x: toLocation!.x, y: baseYPosition);
@@ -150,13 +151,13 @@ class CardSprite: SKSpriteNode {
             newPile!.push(tempCard);
         }
         
-        solitaireScene.flipTopCards();
+        solitaireScene!.flipTopCards();
     }
     
     func nodeFromCard(card: Card) -> CardSprite {
         let cardName = "\(card.getRank())\(card.getSuit())";
         
-        return self.solitaireScene.childNodeWithName(cardName) as! CardSprite;
+        return self.solitaireScene!.childNodeWithName(cardName) as! CardSprite;
     }
     
     /**
@@ -166,7 +167,7 @@ class CardSprite: SKSpriteNode {
         var cards:[Card] = [self.card]
         
         // If this is the waste pile, just return the top card.
-        if(!self.solitaireGame.wastePile.isEmpty() && pile.topCard()!.isEqualTo(self.solitaireGame.wastePile.topCard()!, ignoreSuit: false)) {
+        if(!self.solitaireGame!.wastePile.isEmpty() && pile.topCard()!.isEqualTo(self.solitaireGame!.wastePile.topCard()!, ignoreSuit: false)) {
             return cards;
         }
         
@@ -193,8 +194,8 @@ class CardSprite: SKSpriteNode {
     * Increase this card's z-index so it is above all other cards and save the fromLocation.
     */
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        fromLocation = solitaireScene.snapToCGPoint(self.position);
-        let touchedPile = solitaireScene.CGPointToPile(fromLocation!);
+        fromLocation = solitaireScene!.snapToCGPoint(self.position);
+        let touchedPile = solitaireScene!.CGPointToPile(fromLocation!);
         
         if(touchedPile != nil) {
             if(!faceUp) {
@@ -205,7 +206,7 @@ class CardSprite: SKSpriteNode {
                     flipHidden = true;
                 }
             } else {
-                if(fromLocation!.y == solitaireScene.bottomRowYPos || fromLocation!.x == solitaireScene.wastePileLocation.x) {
+                if(fromLocation!.y == solitaireScene!.bottomRowYPos || fromLocation!.x == solitaireScene!.wastePileLocation.x) {
                     let cardsAbove = getAboveCards(touchedPile!);
                     
                     for index in 0..<cardsAbove.count {
@@ -213,6 +214,7 @@ class CardSprite: SKSpriteNode {
                         
                         oldYPositions.append(tempCard.position.y);
                         tempCard.zPosition = cardConstants.DRAGGED_ZINDEX + CGFloat(index);
+                        tempCard.position.y = tempCard.position.y - (self.cardConstants.TAP_Y_ADJUSTMENT * CGFloat(index));
                     }
                     
                     touchedHidden = false;
@@ -237,13 +239,13 @@ class CardSprite: SKSpriteNode {
             let touchedNode = nodeAtPoint(location)
             touchedNode.position = location
             
-            let touchedPile = solitaireScene.CGPointToPile(fromLocation!)
+            let touchedPile = solitaireScene!.CGPointToPile(fromLocation!)
             if touchedPile != nil {
                 let aboveCards = getAboveCards(touchedPile!)
                 
                 for index in 0..<aboveCards.count {
                     let tempCard = nodeFromCard(aboveCards[index]);
-                    let tempCardYOffset = CGFloat(-(cardConstants.CARD_CASCADE_OFFSET * index)) - (0.5 * solitaireScene.cardSize.height) + cardConstants.MOVING_Y_ADJUSTMENT;
+                    let tempCardYOffset = CGFloat(-(cardConstants.CARD_CASCADE_OFFSET * index)) - (0.5 * solitaireScene!.cardSize.height) + cardConstants.MOVING_Y_ADJUSTMENT;
                     
                     tempCard.position.y = location.y + tempCardYOffset;
                     tempCard.position.x = location.x
@@ -257,18 +259,18 @@ class CardSprite: SKSpriteNode {
     * Otherwise, card all cards in the moved stack to the new stack.
     */
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        let touchedPile = solitaireScene.CGPointToPile(fromLocation!);
+        let touchedPile = solitaireScene!.CGPointToPile(fromLocation!);
         
         // test for where the card was touched
-        toLocation = solitaireScene.snapToCGPoint(position)
+        toLocation = solitaireScene!.snapToCGPoint(position)
         
         // find where the card is going to and where it is coming from
-        newPile = solitaireScene.CGPointToPile(toLocation!)
-        oldPile = solitaireScene.CGPointToPile(fromLocation!)
+        newPile = solitaireScene!.CGPointToPile(toLocation!)
+        oldPile = solitaireScene!.CGPointToPile(fromLocation!)
         
         if(touchedHidden) {
             if(flipHidden) {
-                if(newPile!.name == solitaireGame.deck.name && oldPile!.name == solitaireGame.deck.name) {
+                if(newPile!.name == solitaireGame!.deck.name && oldPile!.name == solitaireGame!.deck.name) {
                     drawCard();
                 } else {
                     flipCardOver();
@@ -291,13 +293,11 @@ class CardSprite: SKSpriteNode {
                 
                 if(cardBelow != nil) {
                     cardBelowNode = self.nodeFromCard(cardBelow!);
-                    
-                    print(cardBelowNode!.name);
                 }
                 
                 for(var index = 0; index < cardsAbove.count; index++) {
                     let tempCardName = "\(cardsAbove[index].getRank())\(cardsAbove[index].getSuit())";
-                    let tempCard = self.solitaireScene.childNodeWithName(tempCardName);
+                    let tempCard = self.solitaireScene!.childNodeWithName(tempCardName);
                     let tempCardYPosition : CGFloat;
                     let tempCardZPosition : CGFloat;
                     
@@ -305,7 +305,7 @@ class CardSprite: SKSpriteNode {
                         tempCardYPosition = cardBelowNode!.position.y - ((CGFloat(index) + 1) * CGFloat(self.cardConstants.CARD_CASCADE_OFFSET));
                         tempCardZPosition = cardBelowNode!.zPosition + CGFloat(index) + 1;
                     } else {
-                        tempCardYPosition = self.fromLocation!.y;
+                        tempCardYPosition = self.fromLocation!.y - (CGFloat(index) * CGFloat(self.cardConstants.CARD_CASCADE_OFFSET));
                         tempCardZPosition = 0;
                     }
                     
@@ -317,19 +317,32 @@ class CardSprite: SKSpriteNode {
                 }
             }
             
-            print(newPile?.name);
-            print(newPile);
             if newPile == nil {
                 // If the new pile is not a valid position, move back to correct location
                 moveCardsBack();
             } else if newPile != nil && oldPile != nil {
                 // If both piles are valid determine where the card is going to and coming from and check if the move is valid
-                if solitaireGame.checkMove(card, previousPile: oldPile!, newPile: newPile!) {
+                if solitaireGame!.checkMove(card, previousPile: oldPile!, newPile: newPile!) {
                     if(toLocation! != fromLocation!) {
                         movePile();
+                        
+                        let isFoundation = solitaireScene!.foundationsContainPoint(toLocation!);
+                        if(self.card.getRank() == .King && isFoundation) {
+                            // Check if the game is over.
+                            let foundationCardCount = solitaireGame!.foundation1.count() + solitaireGame!.foundation2.count() + solitaireGame!.foundation3.count() + solitaireGame!.foundation3.count();
+                            
+                            if(foundationCardCount >= 52) {
+                                solitaireScene!.endGame();
+                            }
+                        } else if(isFoundation) {
+                            // No need to keep references to the solitaireScene and solitaireGame anymore.
+                            self.solitaireScene = nil;
+                            self.solitaireGame = nil;
+                            self.newPile = nil;
+                            self.oldPile = nil;
+                        }
                     }
                 } else {
-                    print("invalid");
                     // Invalid move.  Move stack back to original location.
                     moveCardsBack();
                 }
@@ -360,6 +373,12 @@ class SolitaireScene: SKScene {
     
     // End of Game variables
     var reloadSprite: GameViewControllerButton?
+    var endMessageBackground: SKSpriteNode?;
+    let endMessageBackgroundTexture: SKTexture = SKTexture(imageNamed: "MessageBackgroundTexture");
+    let endMessage = SKLabelNode(text: "Congratulations! You won.");
+    let endButton = SKLabelNode(text: "New Game");
+    var gameOver = false;
+    
     
     // Position variables
     var deckXPos : CGFloat = 0;
@@ -546,6 +565,17 @@ class SolitaireScene: SKScene {
         
     }
     
+    // Check if the specified point is in a foundation pile.
+    func foundationsContainPoint(point: CGPoint) -> Bool {
+        for(var index = 0; index < foundationLocations.count; index++) {
+            if(point == foundationLocations[index]) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
     // flips over all the top cards of the tableus to be face up
     // called after a move has completed
     func flipTopCards() {
@@ -597,7 +627,56 @@ class SolitaireScene: SKScene {
         }
     }
     
+    func endGame() {
+        // Make the cards fly off the screen.
+        let moveDownAction = SKAction.moveByX(-cardSize.width, y: UIScreen.mainScreen().bounds.height, duration: 0.5);
+        let bounceUpAction = SKAction.moveByX(-cardSize.width / 2, y: -(UIScreen.mainScreen().bounds.height * 0.3), duration: 0.25);
+        let bounceDownAction = SKAction.moveByX(-cardSize.width / 0.3, y: UIScreen.mainScreen().bounds.height, duration: 0.25 / 0.3);
+        
+        var waitTime = 0.0;
+        for cardSprite in cardSprites {
+            let waitAction = SKAction.waitForDuration(waitTime);
+            waitTime += 0.4;
+            
+            let actions = SKAction.sequence([waitAction, moveDownAction, bounceUpAction, bounceDownAction]);
+            cardSprite.runAction(actions);
+        }
+        
+        self.endMessageBackground = SKSpriteNode(texture: endMessageBackgroundTexture);
+        self.endMessageBackground!.size = CGSize(width: self.frame.width / 2, height: self.frame.height / 2);
+        self.endMessageBackground!.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame));
+        self.endMessageBackground!.zPosition = 99999;
+        
+        self.endMessage.fontColor = UIColor.redColor();
+        self.endMessage.fontName = "ChalkboardSE-Light";
+        self.endMessage.position = CGPoint(x: 0, y: (self.endMessageBackground!.frame.height / 2) - 100);
+        self.endMessage.zPosition = 100000;
+        
+        self.endButton.fontColor = UIColor.redColor();
+        self.endButton.fontName = "ChalkboardSE-Light";
+        self.endButton.position = CGPoint(x: 0, y: -(self.endMessageBackground!.frame.height / 2) + 100);
+        self.endButton.zPosition = 100000;
+        
+        self.endMessageBackground!.addChild(self.endMessage);
+        self.endMessageBackground!.addChild(self.endButton);
+        self.addChild(endMessageBackground!);
+        
+        gameOver = true;
+    }
     
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if(gameOver) {
+            if(self.endButton.containsPoint(touches.first!.locationInNode(self.endMessageBackground!))) {
+                gameScene!.removeEverything();
+                self.view!.presentScene(nil);
+                gameScene = nil;
+                
+                gameScene = SolitaireScene(gameScene: self.GameScene, game: Solitaire(), gameDelegate: SolitaireDelegate(), size: CGSizeMake(768, 1024));
+                
+                spriteView.presentScene(gameScene);
+            }
+        }
+    }
     
     // updates the tableulocations after a card is moved
     // NOT CURRENTLY IMPLEMENTED

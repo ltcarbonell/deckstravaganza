@@ -171,4 +171,8 @@ class Pile {
             return card1.getSuit().hashValue < card2.getSuit().hashValue
         }
     }
+    
+    func count() -> Int {
+        return pile.count;
+    }
 }

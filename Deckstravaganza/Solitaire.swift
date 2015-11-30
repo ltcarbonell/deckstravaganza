@@ -143,9 +143,6 @@ class Solitaire: CardGame {
     }
     
     func checkMove(card: Card, previousPile: StackPile, newPile: StackPile) -> Bool {
-        // get where the card is coming from
-        // see where it is going
-        print("FROM, TO \(previousPile.name, newPile.name)")
         // if coming from wastePile and going to tableu, has to be one less and opposite color as tableu.top or king and empty space
         if previousPile.name == wastePile.name && newPile.name == tableus[0].name {
             // if the tableu it is going to is empty, it must be a king of any suit
@@ -261,7 +258,6 @@ class SolitaireDelegate: CardGameDelegate {
         var newCard: Card
         // calls a brand new, newly shuffled deck
         Game.deck.newDeck()
-        Game.printPileNumbers()
         
         
         // creates empty stacks for all three piles
@@ -280,22 +276,15 @@ class SolitaireDelegate: CardGameDelegate {
                 Game.tableus[i].push(newCard)
             }
         }
-        Game.printPileNumbers()
     }
     
     
     // these are used to keep track of the status of the game
     func gameDidStart(Game: Solitaire) {
         numberOfRounds = 0
-        if Game is Solitaire {
-            print("We are playing Solitaire")
-            
-        }
     }
     
     func gameDidEnd(Game: Solitaire) {
-        print("The game ended in \(numberOfRounds) rounds.")
-        print("\(Game.players[0].userName) has a score of \(Game.players[0].score)")
         
     }
     func isWinner(Game: Solitaire) -> Bool {
@@ -313,13 +302,10 @@ class SolitaireDelegate: CardGameDelegate {
     
     // used to keep track of the rounds which are when all players take their turn
     func roundDidStart(Game: Solitaire) {
-        print("Round number \(numberOfRounds) is starting.")
     }
     
     //
     func roundDidEnd(Game: Solitaire) {
-        print("Round number \(numberOfRounds) is ending.")
-        Game.printPileNumbers()
     }
     
     // keeps score for the player

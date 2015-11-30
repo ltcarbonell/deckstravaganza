@@ -16,7 +16,6 @@ enum MeldType : Int {
 }
 
 struct RummyMeld {
-    var user: Player;
     var meld: Pile;
     var type: MeldType
 }
@@ -68,12 +67,6 @@ class Rummy: CardGame {
                 options: ["Easy", "Hard"]
             ),
             AdjustableSetting(
-                settingName: "Card Type",
-                formType: FormType.Cards,
-                dataType: DataType.Image,
-                options: []
-            ),
-            AdjustableSetting(
                 settingName: "Score",
                 formType: FormType.Slider,
                 dataType: DataType.Int,
@@ -84,6 +77,12 @@ class Rummy: CardGame {
                 formType: FormType.DropDown,
                 dataType: DataType.Int,
                 options: ["2","3","4","5","6"]
+            ),
+            AdjustableSetting(
+                settingName: "Card Type",
+                formType: FormType.Cards,
+                dataType: DataType.Image,
+                options: []
             )
         ]
         
@@ -94,13 +93,18 @@ class Rummy: CardGame {
     
     func setPlayers(numberOfPlayers: Int) {
         print("Setting \(numberOfPlayers) players");
-        for playerNumber in 0..<numberOfPlayers {
-            self.players.append(Player(userName: "Player \(playerNumber)", score: 0, playerNumber: playerNumber))
+        self.players.append(Player(userName: "Player You", score: 0, playerNumber: 0, isComputer: false))
+        for playerNumber in 1..<numberOfPlayers {
+            self.players.append(Player(userName: "Computer \(playerNumber)", score: 0, playerNumber: playerNumber, isComputer: true))
         }
         for _ in 0..<players.count {
             self.playersHands.append(Pile())
         }
-        self.computerPlayers = [RummyAI(difficulty: 1, game: self, player: self.players.last!)]
+        for playerNumber in 0..<numberOfPlayers {
+            if players[playerNumber].isComputer {
+                computerPlayers.append(RummyAI(difficulty: 1, game: self, player: players[playerNumber]))
+            }
+        }
     }
     
     func getGameOptions() -> [AdjustableSetting] {
@@ -162,7 +166,7 @@ class Rummy: CardGame {
         }
         
         if checkForRun() {
-            let newMeld = RummyMeld(user: players[currentPlayerNumber], meld: Pile(), type: .Run)
+            let newMeld = RummyMeld(meld: Pile(), type: .Run)
             for cardIndex in 0..<selectedCards.numberOfCards() {
                 newMeld.meld.appendCard(selectedCards.cardAt(cardIndex)!)
             }
@@ -171,7 +175,7 @@ class Rummy: CardGame {
         }
             
         else if checkForGroup() {
-            let newMeld = RummyMeld(user: players[currentPlayerNumber], meld: Pile(), type: .Group)
+            let newMeld = RummyMeld(meld: Pile(), type: .Group)
             for cardIndex in 0..<selectedCards.numberOfCards() {
                 newMeld.meld.appendCard(selectedCards.cardAt(cardIndex)!)
             }
@@ -287,25 +291,25 @@ class Rummy: CardGame {
         if self.melds.count == 0 {
             return false
         } else {
-            for cardIndex in 0..<selectedCards.numberOfCards() {
-                // check for first card of a group
-                for meld in melds {
-                    // if it is same rank return true
-                    if meld.type == .Group && meld.meld.cardAt(0)!.hasSameRankAs(selectedCards.cardAt(cardIndex)!) {
+            let selectedCard = selectedCards.cardAt(0)
+            // check for first card of a group
+            print(selectedCard!.getRank(),selectedCard!.getSuit())
+            for meld in melds {
+                // if it is same rank return true
+                if meld.type == .Group && meld.meld.cardAt(0)!.hasSameRankAs(selectedCard!) {
+                    return true
+                }
+                    // Check for run
+                else if meld.type == .Run {
+                    // if same suit and 1 - first card rank return true
+                    if selectedCard!.getRank().hashValue == meld.meld.cardAt(0)!.getRank().hashValue-1 && meld.meld.cardAt(0)!.hasSameSuitAs(selectedCard!) {
+                        return true
+                        // if is it same suit and 1+ last card rank return true
+                    } else if selectedCard!.getRank().hashValue == meld.meld.cardAt(meld.meld.numberOfCards() - 1)!.getRank().hashValue+1 && meld.meld.cardAt(0)!.hasSameSuitAs(selectedCard!) {
                         return true
                     }
-                        // Check for run
-                    else if meld.type == .Run {
-                        // if same suit and 1 - first card rank return true
-                        if selectedCards.cardAt(cardIndex)!.getRank().hashValue == meld.meld.cardAt(0)!.getRank().hashValue-1 && meld.meld.cardAt(0)!.hasSameSuitAs(selectedCards.cardAt(cardIndex)!) {
-                            return true
-                            // if is it same suit and 1+ last card rank return true
-                        } else if selectedCards.cardAt(cardIndex)!.getRank().hashValue == meld.meld.cardAt(meld.meld.numberOfCards() - 1)!.getRank().hashValue+1 && meld.meld.cardAt(0)!.hasSameSuitAs(selectedCards.cardAt(cardIndex)!) {
-                            return true
-                        }
-                        else {
-                            return false
-                        }
+                    else {
+                        //return false
                     }
                 }
             }
@@ -326,8 +330,8 @@ class Rummy: CardGame {
 //        print("Player \(currentPlayerNumber) won.");
 //    }
     
-    func roundDidStart() {
-        print("Round started");
+    func turnDidStart() {
+        print("Turn started");
         currentPlayerNumber = ++turn%players.count
     }
     

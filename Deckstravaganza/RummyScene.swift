@@ -85,7 +85,7 @@ class RummyScene: SKScene {
     
     var deckLocation = CGPoint(x: 0,y: 0)
     var wastePileLocation = CGPoint(x: 0, y: 0)
-    var handLocations = [[CGPoint(x: 0,y: 0)]]
+    var handLocations = [CGPoint(x: 0,y: 0)]
     var meldLocation = CGPoint(x: 0,y: 0)
     
     var isWinner = false
@@ -93,11 +93,10 @@ class RummyScene: SKScene {
     
     var buttonsOnScreen = [GameViewControllerButton]()
     
-    init(gameScene : GameSceneViewController, game: Rummy, /*gameDelegate: RummyDelegate,*/ size: CGSize) {
+    init(gameScene : GameSceneViewController, game: Rummy, size: CGSize) {
         
         self.GameScene = gameScene
-        self.RummyGame = game // as! Rummy
-        //self.RummyGameDelegate = gameDelegate // as! RummyDelegate
+        self.RummyGame = game
         
         super.init(size: size)
         
@@ -105,21 +104,20 @@ class RummyScene: SKScene {
         self.cardSize = CGSize(width: self.scene!.size.width/10, height: self.scene!.size.height/5)
         
         // Sets the location for where the deck and waste pile are located in the frame
-        self.deckLocation = CGPoint(x: self.scene!.frame.midX - cardSize.width/2, y: self.scene!.frame.midY)
-        self.wastePileLocation = CGPoint(x: self.scene!.frame.midX + cardSize.width/2 , y: self.scene!.frame.midY)
+        self.deckLocation = CGPoint(x: self.scene!.frame.minX + 2*cardSize.width, y: self.scene!.frame.midY - cardSize.height/2)
+        self.wastePileLocation = CGPoint(x: self.scene!.frame.minX + 2*cardSize.width , y: self.scene!.frame.midY + cardSize.height/2)
         
         // Sets the location for where the melds should be location
-        self.meldLocation = CGPoint(x: self.scene!.frame.minX + cardSize.width, y: self.scene!.frame.maxY - cardSize.height)
+        self.meldLocation = CGPoint(x: self.scene!.frame.midX - cardSize.width, y: self.scene!.frame.maxY - 1.5*cardSize.height)
         
         // Sets the locations of where the players' hands begin
         switch RummyGame.playersHands.count {
         case 2:
-            self.handLocations = [[CGPoint(x: self.frame.midX,y: self.frame.minY+cardSize.height)], [CGPoint(x: self.frame.midX, y: self.frame.maxY-cardSize.height)]]
+            self.handLocations = [CGPoint(x: self.frame.midX,y: self.frame.minY+cardSize.height/3), CGPoint(x: self.frame.midX, y: self.frame.maxY-cardSize.height/3)]
         case 3:
             break
         case 4:
-            break
-            //self.handLocations = [[CGPoint(x: self.frame.midX,y: self.frame.maxY-cardSize.height)],[CGPoint(x: self.frame.maxX-cardSize.width, y: self.frame.midY)], [CGPoint(x: self.frame.midX, y: self.frame.minY+cardSize.height)],[CGPoint(x: self.frame.minX+cardSize.width, y: self.frame.midY)]]
+            self.handLocations = [CGPoint(x: self.frame.midX,y: self.frame.minY+cardSize.height/3),CGPoint(x: self.frame.maxX-cardSize.width/3, y: self.frame.midY), CGPoint(x: self.frame.midX, y: self.frame.maxY-cardSize.height/3),CGPoint(x: self.frame.minX+cardSize.width/3, y: self.frame.midY)]
         case 5:
             break
         case 6:
@@ -189,6 +187,13 @@ class RummyScene: SKScene {
         buttonsOnScreen.append(layOffButton)
     }
     
+    func addReloadButton() {
+        let reloadButton = GameViewControllerButton(defaultButtonImage: "ReloadButton", buttonAction: reload)
+        reloadButton.size = cardSize
+        reloadButton.position = deckLocation
+        self.addChild(reloadButton)
+    }
+    
     func checkAndAddValidButtonOptions() {
         // Remove all buttons currently on the screen
         self.removeChildrenInArray(buttonsOnScreen)
@@ -203,9 +208,6 @@ class RummyScene: SKScene {
         }
             // if more than one card is selected add layoff button and meldbutton
         else if self.RummyGame.selectedCards.numberOfCards() > 1{
-            if  self.RummyGame.melds.count > 0 {
-                addLayOffButton()
-            }
             addMeldButton()
         }
     }
@@ -223,29 +225,14 @@ class RummyScene: SKScene {
     }
     
     func deal() {
-        // First set the location of the players' hands based on the number of players
-        for handIndex in 0..<handLocations.count {
-            for cardIndex in 0..<RummyGame.playersHands[handIndex].numberOfCards() {
-                if handLocations[handIndex][0].x == self.frame.midX {
-                    handLocations[handIndex].append(CGPoint(x:handLocations[handIndex][0].x + CGFloat(cardIndex+1)*cardSize.width/3 , y: handLocations[handIndex][0].y))
-                }
-                
-            }
-        }
-        
         // Create the sprites for the cards that go into the players's hands
-        for handIndex in 0..<self.RummyGame.playersHands.count {
-            for cardIndex in 0..<self.RummyGame.playersHands[handIndex].numberOfCards() {
-                let handSprite = self.childNodeWithName("\(self.RummyGame.playersHands[handIndex].cardAt(cardIndex)!.getRank())\(self.RummyGame.playersHands[handIndex].cardAt(cardIndex)!.getSuit())") as! RummyCardSprite
-                handSprite.flipCardOver()
-                handSprite.runAction(SKAction.moveTo(handLocations[handIndex][cardIndex], duration: 0.1))
-            }
-        }
+        reorganizePlayersHand(0.1)
         
         // Create the sprites for the cards that go into the waste pile
         let wastePileSprite = self.childNodeWithName("\(self.RummyGame.wastePile.topCard()!.getRank())\(self.RummyGame.wastePile.topCard()!.getSuit())") as! RummyCardSprite
         wastePileSprite.flipCardOver()
         wastePileSprite.runAction(SKAction.moveTo(wastePileLocation, duration: 0.1))
+        printCardsForDebug()
     }
     
     func discard() {
@@ -267,7 +254,7 @@ class RummyScene: SKScene {
         }
         setUserInteractionEnabledDeck(true)
         setUserInteractionEnabledWastePile(true)
-        reorganizePlayersHand()
+        reorganizePlayersHand(0.5)
         moveDidEndTurn()
     }
     
@@ -280,17 +267,22 @@ class RummyScene: SKScene {
         if self.RummyGame.isSelectedCardsValidMeld() {
             // Move the cards to a meld pile
             self.RummyGame.meldSelectedCards()
-            for sprite in cardSpritesMeld {
+            let cardCount = cardSpritesMeld.count
+            for cardIndex in 0..<cardCount {
                 let gridX = (self.RummyGame.melds.count - 1)%3
                 let gridY = (self.RummyGame.melds.count - 1)/3
-                let newMeldLocation = CGPoint(x: meldLocation.x + (CGFloat(gridX) * self.cardSize.width) , y: meldLocation.y - (CGFloat(gridY) * self.cardSize.height))
-                sprite.runAction(SKAction.moveTo(newMeldLocation, duration: 0.5))
+                let newX = meldLocation.x + (CGFloat(gridX) * 2*self.cardSize.width + CGFloat(cardIndex)/CGFloat(cardCount)*cardSize.width)
+                let newY = meldLocation.y - 6*(CGFloat(gridY)*self.cardSize.height)/5
+                let newMeldLocation = CGPoint(x: newX, y: newY)
+                cardSpritesMeld[cardIndex].zPosition = CGFloat(cardIndex)
+                cardSpritesMeld[cardIndex].runAction(SKAction.moveTo(newMeldLocation, duration: 0.5))
                 checkAndAddValidButtonOptions()
             }
         } else {
             didPlayInvalidMove()
         }
-        reorganizePlayersHand()
+        reorganizePlayersHand(0.5)
+        reorganizeMeldedCards()
         setUserInteractionEnabledMelds(false)
         if self.RummyGame.playersHands[self.RummyGame.currentPlayerNumber].numberOfCards() == 0 {
             moveDidEndTurn()
@@ -304,7 +296,7 @@ class RummyScene: SKScene {
             cardSpritesLayOff.append(self.childNodeWithName("\(self.RummyGame.selectedCards.cardAt(cardIndex)!.getRank())\(self.RummyGame.selectedCards.cardAt(cardIndex)!.getSuit())") as! RummyCardSprite)
         }
         let meldIndicies = self.RummyGame.checkForMeldOptions()
-        if meldIndicies.count > 0 {
+        if self.RummyGame.isSelectedCardsValidLayOff() {
             // Move the cards to a meld pile
             let meldIndex = meldIndicies.first!
             self.RummyGame.layOffSelectedCards(meldIndex, insertIndex: 0)
@@ -313,25 +305,88 @@ class RummyScene: SKScene {
             for sprite in cardSpritesLayOff {
                 let gridX = (meldIndex)%3
                 let gridY = (meldIndex)/3
-                let newMeldLocation = CGPoint(x: meldLocation.x + (CGFloat(gridX) * self.cardSize.width) , y: meldLocation.y - (CGFloat(gridY) * self.cardSize.height))
+                let newMeldLocation = CGPoint(x: meldLocation.x + (CGFloat(gridX) * 2*self.cardSize.width) , y: meldLocation.y - (CGFloat(gridY) * 2*self.cardSize.height))
                 sprite.runAction(SKAction.moveTo(newMeldLocation, duration: 0.5))
                 checkAndAddValidButtonOptions()
-                
             }
             
         } else {
             didPlayInvalidMove()
         }
-        reorganizePlayersHand()
+        reorganizePlayersHand(0.5)
+        reorganizeMeldedCards()
         if self.RummyGame.playersHands[self.RummyGame.currentPlayerNumber].numberOfCards() == 0 {
             moveDidEndTurn()
         }
+    }
+    
+    func reload() {
+        while self.RummyGame.wastePile.numberOfCards() > 1 {
+            self.RummyGame.deck.push(self.RummyGame.wastePile.removeCardAt(0)!)
+        }
+        self.RummyGame.deck.shuffle()
+        for cardIndex in 0..<self.RummyGame.deck.numberOfCards() {
+            let deckSprite = self.childNodeWithName("\(self.RummyGame.deck.cardAt(cardIndex)!.getRank())\(self.RummyGame.deck.cardAt(cardIndex)!.getSuit())") as! RummyCardSprite
+            deckSprite.flipCardOver()
+            deckSprite.runAction(SKAction.moveTo(deckLocation, duration: 0.1))
+            deckSprite.zPosition = CGFloat(cardIndex)
+        }
+    }
+    
+    func runAllComputerTurns() {
+        print("Running computer turns...")
+        printCardsForDebug()
+        setUserInteractionEnabledDeck(false)
+        setUserInteractionEnabledWastePile(false)
+        for player in self.RummyGame.players {
+            setUserInteractionEnabledPlayerHand(false, player: player)
+        }
+        setUserInteractionEnabledMelds(false)
+        
+        let userNumber = self.RummyGame.players.first!.playerNumber
+        while userNumber != self.RummyGame.currentPlayerNumber {
+            print(self.RummyGame.currentPlayerNumber)
+            let computerPlayer = self.RummyGame.computerPlayers[self.RummyGame.currentPlayerNumber - 1]
+            AITurn(computerPlayer)
+        }
+        setUserInteractionEnabledDeck(true)
+        setUserInteractionEnabledWastePile(true)
+    }
+    
+    func AITurn(computer: RummyAI) {
+        var cardSprite: RummyCardSprite
+        print("Taking computer turn", computer.player.playerNumber)
+        computer.countHands()
+        if computer.shouldDrawCardFromWaste() {
+            cardSprite = self.childNodeWithName("\(self.RummyGame.wastePile.topCard()!.getRank())\(self.RummyGame.wastePile.topCard()!.getSuit())") as! RummyCardSprite
+        } else {
+            if self.RummyGame.deck.isEmpty() {
+                reload()
+            }
+            cardSprite = self.childNodeWithName("\(self.RummyGame.deck.topCard()!.getRank())\(self.RummyGame.deck.topCard()!.getSuit())") as! RummyCardSprite
+            
+        }
+        self.cardWasDrawn(cardSprite)
+        self.RummyGame.playersHands[computer.player.playerNumber].sortByRank(true)
+        computer.countHands()
+        while computer.shouldMeldCards() {
+            self.meld()
+            computer.countHands()
+        }
+        while computer.shouldLayOffCards() {
+            self.layOff()
+            computer.countHands()
+        }
+        
+        self.RummyGame.addSelectedCard(self.RummyGame.playersHands[computer.player.playerNumber].cardAt(computer.getDiscardCardIndex())!)
+        self.discard()
     }
     
     // MARK: Functions used for recognizing movements and implementing using cardSprites
     func setUserInteractionEnabledDeck(value: Bool) {
         for cardIndex in 0..<self.RummyGame.deck.numberOfCards() {
             let deckSprite = self.childNodeWithName("\(self.RummyGame.deck.cardAt(cardIndex)!.getRank())\(self.RummyGame.deck.cardAt(cardIndex)!.getSuit())") as! RummyCardSprite
+            deckSprite.zPosition = CGFloat(cardIndex)
             deckSprite.userInteractionEnabled = value
         }
     }
@@ -361,16 +416,20 @@ class RummyScene: SKScene {
     
     func isCardOnTopOfDeck(cardSprite: RummyCardSprite) -> Bool {
         var result = false
-        if self.RummyGame.deck.topCard()!.isEqualTo(cardSprite.card, ignoreSuit:  false) {
-            result = true
+        let topCard = self.RummyGame.deck.topCard()
+        if topCard != nil {
+            if topCard!.isEqualTo(cardSprite.card, ignoreSuit:  false) {
+                result = true
+            }
         }
         return result
     }
     
     func isCardOnTopOfWastePile(cardSprite: RummyCardSprite) -> Bool {
         var result = false
-        if self.RummyGame.wastePile.numberOfCards() > 0 {
-            if self.RummyGame.wastePile.topCard()!.isEqualTo(cardSprite.card, ignoreSuit:  false) {
+        let topCard = self.RummyGame.wastePile.topCard()
+        if topCard != nil {
+            if topCard!.isEqualTo(cardSprite.card, ignoreSuit:  false) {
                 result = true
             }
         }
@@ -381,7 +440,8 @@ class RummyScene: SKScene {
         self.RummyGame.didDrawCard = true
         
         // Move card into the hand of the player
-        cardSprite.runAction(SKAction.moveTo(CGPoint(x:self.handLocations[self.RummyGame.currentPlayerNumber][0].x - cardSize.width/3 , y: handLocations[self.RummyGame.currentPlayerNumber][0].y), duration: 0.5))
+        cardSprite.runAction(SKAction.moveTo(CGPoint(x:self.handLocations[self.RummyGame.currentPlayerNumber].x + CGFloat(self.RummyGame.playersHands[self.RummyGame.currentPlayerNumber].numberOfCards())*cardSize.width/3 , y: handLocations[self.RummyGame.currentPlayerNumber].y), duration: 0.5))
+        cardSprite.zPosition = CGFloat(self.RummyGame.playersHands[self.RummyGame.currentPlayerNumber].numberOfCards())
         if cardSprite.faceUp {
             self.RummyGame.drawFromWastePile(cardSprite.card)
         } else {
@@ -389,10 +449,35 @@ class RummyScene: SKScene {
             self.RummyGame.drawFromDeck(cardSprite.card)
         }
         
+        if self.RummyGame.deck.numberOfCards() == 0 {
+            addReloadButton()
+        }
+    
         setUserInteractionEnabledDeck(false)
         setUserInteractionEnabledWastePile(false)
         setUserInteractionEnabledPlayerHand(true, player: self.RummyGame.players[self.RummyGame.currentPlayerNumber])
     }
+    
+//    func aiCardWasDrawn(cardSprite: RummyCardSprite) {
+//        self.RummyGame.didDrawCard = true
+//        
+//        // Move card into the hand of the player
+//        cardSprite.runAction(SKAction.sequence([SKAction.moveTo(CGPoint(x:self.handLocations[self.RummyGame.currentPlayerNumber].x - cardSize.width/3 , y: handLocations[self.RummyGame.currentPlayerNumber].y), duration: 0.5)]))
+//        if cardSprite.faceUp {
+//            self.RummyGame.drawFromWastePile(cardSprite.card)
+//        } else {
+//            cardSprite.flipCardOver()
+//            self.RummyGame.drawFromDeck(cardSprite.card)
+//        }
+//        
+//        if self.RummyGame.deck.numberOfCards() == 0 {
+//            addReloadButton()
+//        }
+//        
+//        setUserInteractionEnabledDeck(false)
+//        setUserInteractionEnabledWastePile(false)
+//        setUserInteractionEnabledPlayerHand(true, player: self.RummyGame.players[self.RummyGame.currentPlayerNumber])
+//    }
     
     func didPlayInvalidMove() {
         let message = SKLabelNode(fontNamed: "Chalkduster")
@@ -405,31 +490,58 @@ class RummyScene: SKScene {
         self.addChild(message)
         message.runAction(SKAction.sequence([SKAction.waitForDuration(2), SKAction.removeFromParent()]))
         
-        reorganizePlayersHand()
+        reorganizePlayersHand(0.5)
         
         self.RummyGame.selectedCards.removeAllCards()
         checkAndAddValidButtonOptions()
     }
     
-    func reorganizePlayersHand() {
-        for player in self.RummyGame.players {
-            for cardIndex in 0..<self.RummyGame.playersHands[player.playerNumber].numberOfCards() {
-                let handSprite = self.childNodeWithName("\(self.RummyGame.playersHands[player.playerNumber].cardAt(cardIndex)!.getRank())\(self.RummyGame.playersHands[player.playerNumber].cardAt(cardIndex)!.getSuit())") as! RummyCardSprite
-                handSprite.runAction(SKAction.moveTo(handLocations[player.playerNumber][cardIndex], duration: 0.5))
+    func reorganizePlayersHand(duration: NSTimeInterval) {
+        for handIndex in 0..<self.RummyGame.playersHands.count {
+            self.RummyGame.playersHands[handIndex].sortByRank(true)
+            for cardIndex in 0..<self.RummyGame.playersHands[handIndex].numberOfCards() {
+                let handSprite = self.childNodeWithName("\(self.RummyGame.playersHands[handIndex].cardAt(cardIndex)!.getRank())\(self.RummyGame.playersHands[handIndex].cardAt(cardIndex)!.getSuit())") as! RummyCardSprite
+                if !handSprite.faceUp {
+                    handSprite.flipCardOver()
+                }
+                let newXLocation = handLocations[handIndex].x + CGFloat(cardIndex)*cardSize.width/3
+                let newYLocation = handLocations[handIndex].y
+                handSprite.runAction(SKAction.moveTo(CGPoint(x: newXLocation, y: newYLocation) , duration: duration))
+                handSprite.zPosition = CGFloat(cardIndex)
             }
         }
-        
+    }
+    
+    func reorganizeMeldedCards() {
+        for meldIndex in 0..<self.RummyGame.melds.count {
+            var cardSpritesMeld = [RummyCardSprite]()
+            self.RummyGame.melds[meldIndex].meld.sortByRank(true)
+            for cardIndex in 0..<self.RummyGame.melds[meldIndex].meld.numberOfCards() {
+                cardSpritesMeld.append(self.childNodeWithName("\(self.RummyGame.melds[meldIndex].meld.cardAt(cardIndex)!.getRank())\(self.RummyGame.melds[meldIndex].meld.cardAt(cardIndex)!.getSuit())") as! RummyCardSprite)
+            }
+            let numberOfCardsInMeld = self.RummyGame.melds[meldIndex].meld.numberOfCards()
+            for cardIndex in 0..<numberOfCardsInMeld {
+                let gridX = (meldIndex)%3
+                let gridY = (meldIndex)/3
+                let newX = meldLocation.x + (CGFloat(gridX) * 2*self.cardSize.width + CGFloat(cardIndex)/CGFloat(numberOfCardsInMeld)*cardSize.width)
+                let newY = meldLocation.y - 6*(CGFloat(gridY)*self.cardSize.height)/5
+                let newMeldLocation = CGPoint(x: newX, y: newY)
+                cardSpritesMeld[cardIndex].zPosition = CGFloat(cardIndex)
+                cardSpritesMeld[cardIndex].runAction(SKAction.moveTo(newMeldLocation, duration: 0.5))
+            }
+        }
     }
     
     // MARK: Delegate functions for the Rummy Game
     func moveDidEndTurn() {
+        print("Turn ended")
         if self.RummyGame.checkRoundEnded() {
             turnDidEndRound()
         } else {
-            self.RummyGame.roundDidStart()
+            self.RummyGame.turnDidStart()
         }
-        print("Turn ended")
-        print("")
+        
+        runAllComputerTurns()
         
     }
     
@@ -438,7 +550,7 @@ class RummyScene: SKScene {
         if self.RummyGame.checkGameEnded() {
             roundDidEndGame()
         } else {
-            self.RummyGame.currentPlayerNumber = ++self.RummyGame.turn%self.RummyGame.players.count
+            self.RummyGame.currentPlayerNumber = self.RummyGame.turn%self.RummyGame.players.count
             for player in self.RummyGame.players {
                 print(player.playerNumber, player.score)
             }
@@ -502,9 +614,17 @@ class RummyScene: SKScene {
             print(cardIndex, self.RummyGame.selectedCards.cardAt(cardIndex)!.getRank(),self.RummyGame.selectedCards.cardAt(cardIndex)!.getSuit())
         }
         
-        print("PLAYERS HAND")
-        for cardIndex in 0..<self.RummyGame.playersHands[self.RummyGame.currentPlayerNumber].numberOfCards() {
-            print(cardIndex, self.RummyGame.playersHands[self.RummyGame.currentPlayerNumber].cardAt(cardIndex)!.getRank(),self.RummyGame.playersHands[self.RummyGame.currentPlayerNumber].cardAt(cardIndex)!.getSuit())
+        print("PLAYERS HANDS")
+        for handIndex in 0..<self.RummyGame.playersHands.count {
+            for cardIndex in 0..<self.RummyGame.playersHands[handIndex].numberOfCards() {
+                print(handIndex,cardIndex, self.RummyGame.playersHands[handIndex].cardAt(cardIndex)!.getRank(),self.RummyGame.playersHands[handIndex].cardAt(cardIndex)!.getSuit())
+            }
+        }
+        
+        
+        print("WASTE")
+        for cardIndex in 0..<self.RummyGame.wastePile.numberOfCards() {
+            print(cardIndex, self.RummyGame.wastePile.cardAt(cardIndex)!.getRank(),self.RummyGame.wastePile.cardAt(cardIndex)!.getSuit())
         }
         
         print("DECK")

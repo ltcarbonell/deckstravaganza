@@ -49,8 +49,7 @@ class GameSceneViewController: UIViewController, UINavigationBarDelegate {
                 let game = Solitaire(selectedOptions: selectedOptions);
                 gameScene = SolitaireScene(gameScene: self, game: game, gameDelegate: SolitaireDelegate(), size: CGSizeMake(768, 1024));
             case .Rummy:
-                let game = Rummy(selectedOptions: selectedOptions);
-                gameScene = RummyScene(gameScene: self, game: game, size: CGSizeMake(768, 1024));
+                gameScene = RummyScene(gameScene: self, game: Rummy(numberOfPlayers: 4), size: CGSizeMake(768, 1024));
             }
         }
         

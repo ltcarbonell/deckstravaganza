@@ -11,6 +11,8 @@ import SpriteKit
 
 class Solitaire: CardGame {
     
+    let selectedOptions: [AdjustableSetting]?
+    
     //Properties from protocol of card game
     var deck: Deck
     var players = [Player]()
@@ -58,6 +60,7 @@ class Solitaire: CardGame {
     // initializer
     init(selectedOptions: [AdjustableSetting]?) {
         self.diff = .Easy
+        self.selectedOptions = selectedOptions
         // deals the cards out for the first and only time
         // calls from Solitaire delagate
         self.deck = Deck(deckFront: Deck.DeckFronts.Deck2, deckBack: Deck.DeckBacks.Default)

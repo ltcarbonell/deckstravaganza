@@ -671,7 +671,7 @@ class SolitaireScene: SKScene {
                 self.view!.presentScene(nil);
                 gameScene = nil;
                 
-                gameScene = SolitaireScene(gameScene: self.GameScene, game: Solitaire(), gameDelegate: SolitaireDelegate(), size: CGSizeMake(768, 1024));
+                gameScene = SolitaireScene(gameScene: self.GameScene, game: Solitaire(selectedOptions: SolitaireGame.selectedOptions), gameDelegate: SolitaireDelegate(), size: CGSizeMake(768, 1024));
                 
                 spriteView.presentScene(gameScene);
             }

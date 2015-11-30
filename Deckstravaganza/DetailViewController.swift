@@ -196,7 +196,16 @@ class DetailViewController: UIViewController, GCHelperDelegate {
         if(sender != nil && selectedOptions != nil) {
             if(sender!.titleLabel?.text != "Continue") {
                 for(var index = selectedOptions!.count; index >= 0; index--) {
-                    selectedOptions![index].options = [(formFields[index].formField as! GenericFormElements).getResults()];
+                    switch(selectedOptions![index].formType) {
+                    case .Cards:
+                        break;
+                    case .DropDown:
+                        selectedOptions![index].options = [(formFields[index].formField as! GenericPickerView).getResults()];
+                    case .Slider:
+                        selectedOptions![index].options = [(formFields[index].formField as! GenericSliderView).getResults()];
+                    case .Switch:
+                        selectedOptions![index].options = [(formFields[index].formField as! GenericSwitchView).getResults()];
+                    }
                 }
             }
         }

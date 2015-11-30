@@ -78,8 +78,7 @@ class GameSceneViewController: UIViewController, UINavigationBarDelegate {
         navigationBar.items = [barItem];
         
         if(self.navigationController != nil) {
-            self.navigationController!.setNavigationBarHidden(true, animated: true);
-            self.navigationController!
+            self.navigationController!.setNavigationBarHidden(true, animated: false);
         }
         
         self.view.addSubview(navigationBar);

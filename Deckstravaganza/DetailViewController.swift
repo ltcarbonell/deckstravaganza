@@ -186,37 +186,40 @@ class DetailViewController: UIViewController, GCHelperDelegate {
             }
         }
         
-        let gameViewController = GameSceneViewController();
-        gameViewController.gameType = selectedMenuOption.gameType;
-        gameViewController.newGame = self.newGame;
-        gameViewController.selectedMenuOption = self.selectedMenuOption;
-        
-        var selectedOptions = gameOptions;
-        
-        if(sender != nil && selectedOptions != nil) {
-            if(sender!.titleLabel?.text != "Continue") {
-                for(var index = selectedOptions!.count - 1; index >= 0; index--) {
-                    switch(selectedOptions![index].formType) {
-                    case .Cards:
-                        break;
-                    case .DropDown:
-                        selectedOptions![index].options = [(formFields[index].formField as! GenericPickerView).getResults()];
-                    case .Slider:
-                        selectedOptions![index].options = [(formFields[index].formField as! GenericSliderView).getResults()];
-                    case .Switch:
-                        selectedOptions![index].options = [(formFields[index].formField as! GenericSwitchView).getResults()];
+        performSegueWithIdentifier("menuToGameSegue", sender: sender);
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let gameViewController = (segue.destinationViewController as? GameSceneViewController) {
+            gameViewController.gameType = selectedMenuOption.gameType;
+            gameViewController.newGame = self.newGame;
+            gameViewController.selectedMenuOption = self.selectedMenuOption;
+            
+            var selectedOptions = gameOptions;
+            
+            if(sender != nil && selectedOptions != nil) {
+                if((sender! as! UIButton).titleLabel?.text != "Continue") {
+                    for(var index = selectedOptions!.count - 1; index >= 0; index--) {
+                        switch(selectedOptions![index].formType) {
+                        case .Cards:
+                            break;
+                        case .DropDown:
+                            selectedOptions![index].options = [(formFields[index].formField as! GenericPickerView).getResults()];
+                        case .Slider:
+                            selectedOptions![index].options = [(formFields[index].formField as! GenericSliderView).getResults()];
+                        case .Switch:
+                            selectedOptions![index].options = [(formFields[index].formField as! GenericSwitchView).getResults()];
+                        }
                     }
                 }
             }
+            
+            gameViewController.selectedOptions = selectedOptions;
+            
+            if let menuSplitViewController = self.splitViewController as? MenuSplitViewController {
+                menuSplitViewController.toggleMasterView();
+            }
         }
-        
-        gameViewController.selectedOptions = selectedOptions;
-        
-        if let menuSplitViewController = self.splitViewController as? MenuSplitViewController {
-            menuSplitViewController.toggleMasterView();
-        }
-        
-        splitViewController?.showDetailViewController(gameViewController, sender: nil);
     }
     
     func updateMultiplayer(sender: UISwitch?) {

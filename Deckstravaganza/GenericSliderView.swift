@@ -25,7 +25,8 @@ class GenericSliderView: UISlider, GenericFormElements {
         super.init(frame: CGRect());
         
         super.minimumValue = 0;
-        super.maximumValue = max! / stepSize;
+        super.maximumValue = max!;
+        self.value = max!/2
         
         super.continuous = true;
         super.addTarget(self, action: "updateSliderValue:", forControlEvents: UIControlEvents.ValueChanged);

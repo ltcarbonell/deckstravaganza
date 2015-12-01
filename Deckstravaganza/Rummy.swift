@@ -15,6 +15,11 @@ enum MeldType : Int {
     static let numberOfRummyTypes = 2
 }
 
+enum Difficulty : Int {
+    case Easy = 1
+    case Hard = 2
+}
+
 struct RummyMeld {
     var meld: Pile;
     var type: MeldType
@@ -25,6 +30,8 @@ class Rummy: CardGame {
     
     var deck = Deck(deckFront: Deck.DeckFronts.Deck2, deckBack: Deck.DeckBacks.Default)
     var targetScore: Int;
+    var difficulty: Difficulty
+    let selectedOptions: [AdjustableSetting]?
     
     var wastePile =     StackPile(),
         playersHands =  [Pile](),
@@ -33,6 +40,7 @@ class Rummy: CardGame {
     var players = [Player]();
     var currentPlayerNumber = 0
     var turn: Int
+    var round: Int
     
     var adjustableSettings = [AdjustableSetting]();
     
@@ -45,14 +53,43 @@ class Rummy: CardGame {
     var didLayOff = false
     var didDiscard = false
     
+    var roundScores: [[Int]] = []
+    
     var selectedCards = Pile()
     
     var computerPlayers = [RummyAI]()
     
     init(selectedOptions: [AdjustableSetting]?) {
+        self.selectedOptions = selectedOptions
+        if selectedOptions != nil {
+            for option in selectedOptions! {
+                print(option.settingName, option.options)
+            }
+        }
+        
         self.turn = 0
-        self.targetScore = 500
-        self.setPlayers(2)
+        self.round = 0
+        
+        if selectedOptions != nil {
+            // Check if multiplayer
+            if (selectedOptions![0].options.first! == "true") {
+                // do gamecenter stuff
+            }
+            if selectedOptions![1].options.first! == "Easy" {
+                self.difficulty = .Easy
+            } else {
+                self.difficulty = .Hard
+            }
+        
+            let floatScore = Float(selectedOptions![2].options.first!)
+            self.targetScore = Int(floatScore!)
+            self.setPlayers(Int(selectedOptions![3].options.first!)!)
+        } else {
+            self.targetScore = 500
+            self.difficulty = .Easy
+            self.setPlayers(2)
+        }
+        
         self.adjustableSettings = [
             AdjustableSetting(
                 settingName: "Multiplayer",
@@ -92,17 +129,18 @@ class Rummy: CardGame {
     // MARK: Methods for setting up the game
     
     func setPlayers(numberOfPlayers: Int) {
+        let fakeNames = ["Jess", "Bill", "Mark", "Pam", "Mike"]
         print("Setting \(numberOfPlayers) players");
-        self.players.append(Player(userName: "Player You", score: 0, playerNumber: 0, isComputer: false))
+        self.players.append(Player(userName: "You", score: 0, playerNumber: 0, isComputer: false))
         for playerNumber in 1..<numberOfPlayers {
-            self.players.append(Player(userName: "Computer \(playerNumber)", score: 0, playerNumber: playerNumber, isComputer: true))
+            self.players.append(Player(userName: fakeNames[playerNumber-1], score: 0, playerNumber: playerNumber, isComputer: true))
         }
         for _ in 0..<players.count {
             self.playersHands.append(Pile())
         }
         for playerNumber in 0..<numberOfPlayers {
             if players[playerNumber].isComputer {
-                computerPlayers.append(RummyAI(difficulty: 1, game: self, player: players[playerNumber]))
+                computerPlayers.append(RummyAI(difficulty: self.difficulty, game: self, player: players[playerNumber]))
             }
         }
     }
@@ -156,6 +194,7 @@ class Rummy: CardGame {
     func discard(card: Card) {
         let discardedCard = self.playersHands[currentPlayerNumber].removeCard(card)
         self.wastePile.push(discardedCard!)
+        self.selectedCards.removeAllCards()
     }
     
     // Moves cards in a valid meld from the players hand and into the array of melds
@@ -350,6 +389,7 @@ class Rummy: CardGame {
     
     func increaseScore() {
         var scoreAdded = 0
+        var newRoundScores = [Int]()
         for player in players {
             for cardIndex in 0..<self.playersHands[player.playerNumber].numberOfCards() {
                 print(scoreAdded,"added")
@@ -358,8 +398,20 @@ class Rummy: CardGame {
                 } else {
                     scoreAdded = scoreAdded + self.playersHands[player.playerNumber].cardAt(cardIndex)!.getRank().rawValue
                 }
+                
+            }
+            newRoundScores.append(0)
+        }
+        roundScores.append(newRoundScores)
+        print(roundScores)
+        for player in players {
+            if player.playerNumber == currentPlayerNumber {
+                roundScores[self.round][player.playerNumber] = scoreAdded
+            } else {
+                roundScores[self.round][player.playerNumber] = 0
             }
         }
+        
         players[currentPlayerNumber].score += scoreAdded
         print("Score increased by \(scoreAdded)");
     }

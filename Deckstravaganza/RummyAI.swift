@@ -11,7 +11,7 @@ import GameplayKit
 
 class RummyAI {
     
-    let difficulty: Int
+    let difficulty: Difficulty
     let game: Rummy
     let player: Player
     
@@ -22,7 +22,7 @@ class RummyAI {
     var countedRanks = [Int](count: 13, repeatedValue: 0)
     var countedSuits = [Int](count: 4, repeatedValue: 0)
     
-    init(difficulty: Int, game: Rummy, player: Player) {
+    init(difficulty: Difficulty, game: Rummy, player: Player) {
         self.difficulty = difficulty
         self.game = game
         self.player = player
@@ -42,14 +42,14 @@ class RummyAI {
     func shouldDrawCardFromWaste() -> Bool {
         let wasteTop = self.game.wastePile.topCard()!
         
-        if difficulty == 1 {
+        if difficulty == .Easy {
             if wasteTop.getColor() == Card.CardColor.Red {
                     return true
             } else {
                 return false
             }
         }
-        else if difficulty == 2 {
+        else if difficulty == .Hard {
             if self.countedRanks[wasteTop.getRank().rawValue-1] >= 2 ||  self.countedSuits[wasteTop.getSuit().rawValue-1] >= 4 {
                 return true
             }
@@ -116,7 +116,7 @@ class RummyAI {
         return false
     }
     
-    func getDiscardCardIndex() -> Int {
+    func getDiscardCardIndex(drawnCard: Card) -> Int {
         let numberOfCardsInHand = self.game.playersHands[player.playerNumber].numberOfCards()
         let distribution = GKRandomDistribution(lowestValue: 0, highestValue: numberOfCardsInHand-1)
         let checkedFirst = distribution.nextInt()
@@ -124,10 +124,10 @@ class RummyAI {
         
         var discardedIndex = checkedFirst
         
-        if difficulty == 2 {
+        if difficulty == .Hard {
             for _ in 0..<numberOfCardsInHand {
                 let cardBeingChecked = self.game.playersHands[player.playerNumber].cardAt(discardedIndex)
-                if self.countedRanks[cardBeingChecked!.getRank().rawValue-1] < 2 &&  self.countedSuits[cardBeingChecked!.getSuit().rawValue-1] < 4 {
+                if self.countedRanks[cardBeingChecked!.getRank().rawValue-1] < 2 &&  self.countedSuits[cardBeingChecked!.getSuit().rawValue-1] < 4 && !cardBeingChecked!.isEqualTo(drawnCard, ignoreSuit: false) {
                     return discardedIndex
                 } else {
                     if goRight {

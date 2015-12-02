@@ -145,7 +145,7 @@ class RummyScene: SKScene {
     
     
     override func didMoveToView(view: SKView) {
-        backgroundColor = UIColor.blueColor()
+        createBackground()
         if self.RummyGame.deck.numberOfCards() == 52 && !isDealButtonOnScreen {
             print(self.RummyGame.round,self.RummyGame.roundScores)
             addDealButton()
@@ -156,7 +156,18 @@ class RummyScene: SKScene {
     
     
     // MARK: Function that add buttons to the scene
+    func createBackground() {
+        let backgroundTexture = SKTexture(imageNamed: "poker-table-felt")
+        let background = SKSpriteNode(texture: backgroundTexture)
+        background.size.height = self.frame.height
+        background.size.width = self.frame.width
+        background.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame))
+        background.zPosition = -10
+        self.addChild(background)
+    }
+    
     func startGame() {
+        createBackground()
         self.removeChildrenInArray(scoreboardNodes)
         self.RummyGame.resetGame()
         
@@ -170,6 +181,7 @@ class RummyScene: SKScene {
     }
     
     func startRound() {
+        createBackground()
         self.removeChildrenInArray(scoreboardNodes)
         
         self.shuffle()
@@ -233,7 +245,7 @@ class RummyScene: SKScene {
             }
         }
         
-        let scoreboardBackground = SKSpriteNode(imageNamed: "felt_board")
+        let scoreboardBackground = SKSpriteNode(imageNamed: "MessageBackgroundTexture")
         scoreboardBackground.size = CGSize(width: self.frame.width/1.4, height: self.frame.height/1.4)
         scoreboardBackground.position = CGPoint(x: self.frame.midX, y: self.frame.midY)
         scoreboardBackground.zPosition = 999

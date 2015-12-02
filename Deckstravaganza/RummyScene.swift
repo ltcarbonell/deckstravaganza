@@ -80,6 +80,8 @@ class RummyScene: SKScene {
     let GameScene: GameSceneViewController
     let RummyGame: Rummy
     
+    let SCALE_FACTOR: CGFloat = 0.75
+    
     var cardSize = CGSize(width: 0, height: 0)
     
     var deckLocation = CGPoint(x: 0,y: 0)
@@ -485,11 +487,11 @@ class RummyScene: SKScene {
             for cardIndex in 0..<cardCount {
                 let gridX = (self.RummyGame.melds.count - 1)%3
                 let gridY = (self.RummyGame.melds.count - 1)/3
-                let newX = meldLocation.x + (CGFloat(gridX) * 2*self.cardSize.width + CGFloat(cardIndex)/CGFloat(cardCount)*cardSize.width)
+                let newX = meldLocation.x + (CGFloat(gridX) * 2*self.cardSize.width + CGFloat(cardIndex)/CGFloat(cardCount)*SCALE_FACTOR*cardSize.width)
                 let newY = meldLocation.y - 6*(CGFloat(gridY)*self.cardSize.height)/5
                 let newMeldLocation = CGPoint(x: newX, y: newY)
                 cardSpritesMeld[cardIndex].zPosition = CGFloat(cardIndex)
-                cardSpritesMeld[cardIndex].runAction(SKAction.moveTo(newMeldLocation, duration: 0.5))
+                cardSpritesMeld[cardIndex].runAction(SKAction.group([SKAction.moveTo(newMeldLocation, duration: 0.5),SKAction.scaleBy(SCALE_FACTOR, duration: 0.5)]))
                 if !cardSpritesMeld[cardIndex].faceUp {
                     cardSpritesMeld[cardIndex].flipCardOver()
                 }
@@ -512,14 +514,12 @@ class RummyScene: SKScene {
         for cardIndex in 0..<self.RummyGame.selectedCards.numberOfCards() {
             cardSpritesMeld.append(self.childNodeWithName("\(self.RummyGame.selectedCards.cardAt(cardIndex)!.getRank())\(self.RummyGame.selectedCards.cardAt(cardIndex)!.getSuit())") as! RummyCardSprite)
         }
-        if self.RummyGame.isSelectedCardsValidMeld() {
-            // Move the cards to a meld pile
-            self.RummyGame.meldSelectedCards()
+        self.RummyGame.meldSelectedCards()
             
-        } else {
-            didPlayInvalidMove()
-        }
         setUserInteractionEnabledMelds(false)
+        for cardSprite in cardSpritesMeld {
+            cardSprite.runAction(SKAction.scaleBy(SCALE_FACTOR, duration: 0.5))
+        }
     }
     
     func layOff() {
@@ -539,7 +539,7 @@ class RummyScene: SKScene {
                 let gridX = (meldIndex)%3
                 let gridY = (meldIndex)/3
                 let newMeldLocation = CGPoint(x: meldLocation.x + (CGFloat(gridX) * 2*self.cardSize.width) , y: meldLocation.y - (CGFloat(gridY) * 2*self.cardSize.height))
-                sprite.runAction(SKAction.moveTo(newMeldLocation, duration: 0.5))
+                sprite.runAction(SKAction.group([SKAction.moveTo(newMeldLocation, duration: 0.5), SKAction.scaleBy(SCALE_FACTOR, duration: 0.5)]))
                 if !sprite.faceUp {
                     sprite.flipCardOver()
                 }
@@ -562,15 +562,14 @@ class RummyScene: SKScene {
         for cardIndex in 0..<self.RummyGame.selectedCards.numberOfCards() {
             cardSpritesLayOff.append(self.childNodeWithName("\(self.RummyGame.selectedCards.cardAt(cardIndex)!.getRank())\(self.RummyGame.selectedCards.cardAt(cardIndex)!.getSuit())") as! RummyCardSprite)
         }
-        let meldIndicies = self.RummyGame.checkForMeldOptions()
-        if self.RummyGame.isSelectedCardsValidLayOff() {
-            // Move the cards to a meld pile
-            let meldIndex = meldIndicies.first!
-            self.RummyGame.layOffSelectedCards(meldIndex, insertIndex: 0)
-            self.RummyGame.melds[meldIndex].meld.sortByRank(true)
-        } else {
-            didPlayInvalidMove()
+        for cardSprite in cardSpritesLayOff {
+            cardSprite.runAction(SKAction.scaleBy(SCALE_FACTOR, duration: 0.5))
         }
+        let meldIndicies = self.RummyGame.checkForMeldOptions()
+        // Move the cards to a meld pile
+        let meldIndex = meldIndicies.first!
+        self.RummyGame.layOffSelectedCards(meldIndex, insertIndex: 0)
+        self.RummyGame.melds[meldIndex].meld.sortByRank(true)
     }
     
     func reload() {
@@ -712,15 +711,12 @@ class RummyScene: SKScene {
     }
     
     func didPlayInvalidMove() {
-        let message = SKLabelNode(fontNamed: "PT Sans")
-        message.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame))
-        message.fontSize = 60
-        message.fontColor = UIColor.redColor()
-        message.text = "Invalid Move"
-        message.zPosition = 999
         
-        self.addChild(message)
-        message.runAction(SKAction.sequence([SKAction.waitForDuration(2), SKAction.removeFromParent()]))
+        let alert = UIAlertView(title: "Invalid move",
+            message:  nil,
+            delegate: nil,
+            cancelButtonTitle: "Try Again")
+        alert.show()
         
         reorganizePlayersHand()
         
@@ -846,7 +842,13 @@ class RummyScene: SKScene {
             playerHand.removeAllCards()
         }
         self.removeAllChildren()
+        let alert = UIAlertView(title: "\(self.RummyGame.players[self.RummyGame.currentPlayerNumber].userName) Won!",
+            message:  nil,
+            delegate: nil,
+            cancelButtonTitle: "Go to Scoreboard")
+        alert.show()
         addScoreBoard(true)
+        
     }
     
     

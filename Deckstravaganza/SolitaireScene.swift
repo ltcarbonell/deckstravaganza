@@ -8,6 +8,7 @@
 
 import UIKit
 import SpriteKit
+import AVFoundation
 
 class CardConstants {
     let DRAGGED_ZINDEX : CGFloat = 9999;
@@ -48,14 +49,15 @@ class CardSprite: SKSpriteNode {
     var fromLocation: CGPoint?      // Where the user began dragging
     
     weak var newPile: StackPile?    // Pile to which the user dragged
-    weak var oldPile: StackPile?
-    // Original pile from which the user dragged
+    weak var oldPile: StackPile?    // Original pile from which the user dragged
     
     var touchedHidden = false;      // Did the user touch a card that was face down?
     var flipHidden = false;         // Should the hidden card be flipped?
     var ignoreTouch = false;        // Should the last touch be ignored?  Used when user touches a card in the foundation pile.
     
     var oldYPositions : [CGFloat] = [];      //Array of Y values when cards started moving
+    
+    var soundPlayer = AVAudioPlayer();
     
     // required to prevent crashing
     required init(coder aDecoder: NSCoder) {
@@ -100,6 +102,15 @@ class CardSprite: SKSpriteNode {
         
         solitaireScene!.SolitaireGame.moveTopCard(oldPile!, toPile: newPile!)
         self.runAction(SKAction.moveTo(toLocation!, duration: 0.25))
+        
+        do {
+            let soundPath = NSBundle.mainBundle().pathForResource("cardSlide1", ofType: "wav");
+            
+            self.soundPlayer = try AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: soundPath!));
+            self.soundPlayer.play();
+        } catch {
+            print("No audio for you!");
+        }
         
         // If the deck is empty, reload the deck with cards from waste pile
         if solitaireGame!.deck.numberOfCards() == 0 {
@@ -315,6 +326,15 @@ class CardSprite: SKSpriteNode {
                     
                     tempCard!.runAction(SKAction.moveTo(tempCardLocation, duration: animationDuration));
                 }
+                
+                do {
+                    let soundPath = NSBundle.mainBundle().pathForResource("cardShove1", ofType: "wav");
+                    
+                    self.soundPlayer = try AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: soundPath!));
+                    self.soundPlayer.play();
+                } catch {
+                    print("No audio for you!");
+                }
             }
             
             if newPile == nil {
@@ -325,6 +345,15 @@ class CardSprite: SKSpriteNode {
                 if solitaireGame!.checkMove(card, previousPile: oldPile!, newPile: newPile!) {
                     if(toLocation! != fromLocation!) {
                         movePile();
+                        
+                        do {
+                            let soundPath = NSBundle.mainBundle().pathForResource("cardPlace1", ofType: "wav");
+                            
+                            self.soundPlayer = try AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: soundPath!));
+                            self.soundPlayer.play();
+                        } catch {
+                            print("No audio for you!");
+                        }
                         
                         let isFoundation = solitaireScene!.foundationsContainPoint(toLocation!);
                         if(self.card.getRank() == .King && isFoundation) {
@@ -596,7 +625,7 @@ class SolitaireScene: SKScene {
     
     // adds the reload deck sprite to scene only when the deck is empty
     func addReloadOption() {
-        reloadSprite = GameViewControllerButton(defaultButtonImage: "button", buttonAction: reloadDeck)
+        reloadSprite = GameViewControllerButton(defaultButtonImage: "CardPlaceholder", buttonAction: reloadDeck)
         reloadSprite!.size = cardSize
         reloadSprite!.position = deckLocation
         

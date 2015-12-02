@@ -8,6 +8,7 @@
 
 import Foundation
 import SpriteKit
+import AVFoundation
 
 class RummyCardSprite: SKSpriteNode {
     
@@ -98,6 +99,18 @@ class RummyScene: SKScene {
     var scoreboardNodes: [SKNode] = []
     
     var buttonsOnScreen = [GameViewControllerButton]()
+    
+    var touchedUpSoundEffect = AVAudioPlayer()
+    let touchedUpSoundEffectPath = NSBundle.mainBundle().pathForResource("cardPlace1", ofType: "wav")
+    
+    var touchedDownSoundEffect = AVAudioPlayer()
+    let touchedDownSoundEffectPath = NSBundle.mainBundle().pathForResource("cardSlide1", ofType: "wav")
+    
+    var shuffleSoundEffect = AVAudioPlayer()
+    let shuffleSoundEffectPath = NSBundle.mainBundle().pathForResource("cardShuffle1", ofType: "wav")
+    
+    var moveSoundEffect = AVAudioPlayer()
+    let moveSoundEffectPath = NSBundle.mainBundle().pathForResource("cardShove1", ofType: "wav")
     
     init(gameScene : GameSceneViewController, game: Rummy, size: CGSize) {
         
@@ -463,6 +476,7 @@ class RummyScene: SKScene {
         setUserInteractionEnabledDeck(true)
         setUserInteractionEnabledWastePile(true)
         cardSpriteDiscarded.runAction(SKAction.moveTo(wastePileLocation, duration: 0.5))
+        playMovedCardSoundEffect()
         moveDidEndTurn()
     }
     
@@ -507,6 +521,7 @@ class RummyScene: SKScene {
                 if !cardSpritesMeld[cardIndex].faceUp {
                     cardSpritesMeld[cardIndex].flipCardOver()
                 }
+                playMovedCardSoundEffect()
                 checkAndAddValidButtonOptions()
             }
         } else {
@@ -555,6 +570,7 @@ class RummyScene: SKScene {
                 if !sprite.faceUp {
                     sprite.flipCardOver()
                 }
+                playMovedCardSoundEffect()
                 checkAndAddValidButtonOptions()
             }
             
@@ -876,19 +892,62 @@ class RummyScene: SKScene {
     
     func touchesEndedClosure(cardSprite: RummyCardSprite) {
         print("Ended")
+        
         if isCardOnTopOfDeck(cardSprite) || isCardOnTopOfWastePile(cardSprite) {
             cardWasDrawn(cardSprite)
+            playMovedCardSoundEffect()
         } // Card must already have been drawn
         else {
             if self.RummyGame.selectedCards.contains(cardSprite.card) {
                 cardSprite.runAction(SKAction.moveBy(CGVector(dx: 0, dy: -50), duration: 0.5))
                 self.RummyGame.selectedCards.removeCard(cardSprite.card)
+                playTouchedDownCardSoundEffect()
             } else {
                 cardSprite.runAction(SKAction.moveBy(CGVector(dx: 0, dy: 50), duration: 0.5))
                 self.RummyGame.addSelectedCard(cardSprite.card)
+                playTouchedUpCardSoundEffect()
             }
         }
+        
         checkAndAddValidButtonOptions()
+    }
+    
+    func playTouchedUpCardSoundEffect() {
+        do {
+            try touchedUpSoundEffect = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: touchedUpSoundEffectPath!))
+            touchedUpSoundEffect.play()
+        } catch {
+            print("Something bad happened.")
+        }
+    }
+    
+    
+    func playTouchedDownCardSoundEffect() {
+        do {
+            try touchedDownSoundEffect = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: touchedDownSoundEffectPath!))
+            touchedDownSoundEffect.play()
+        } catch {
+            print("Something bad happened.")
+        }
+    }
+    
+    func playShuffleCardSoundEffect() {
+        do {
+            try shuffleSoundEffect = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: shuffleSoundEffectPath!))
+            shuffleSoundEffect.play()
+        } catch {
+            print("Something bad happened.")
+        }
+    }
+    
+    
+    func playMovedCardSoundEffect() {
+        do {
+            try moveSoundEffect = AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: moveSoundEffectPath!))
+            moveSoundEffect.play()
+        } catch {
+            print("Something bad happened.")
+        }
     }
     
     // MARK: DEBUG

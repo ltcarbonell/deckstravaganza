@@ -476,7 +476,7 @@ class SolitaireScene: SKScene {
     }
     
     override func didMoveToView(view: SKView) {
-        backgroundColor = UIColor.greenColor()
+        createBackground()
         
         if(newGame) {
             self.deal()
@@ -496,6 +496,16 @@ class SolitaireScene: SKScene {
 //        }
 //        
 //        SolitaireGameDelegate.gameDidEnd(SolitaireGame)
+    }
+    
+    func createBackground() {
+        let backgroundTexture = SKTexture(imageNamed: "poker-table-felt")
+        let background = SKSpriteNode(texture: backgroundTexture)
+        background.size.height = self.frame.height
+        background.size.width = self.frame.width
+        background.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame))
+        background.zPosition = -10
+        self.addChild(background)
     }
     
     func deal() {

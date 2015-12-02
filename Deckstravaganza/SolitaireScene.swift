@@ -417,6 +417,20 @@ class SolitaireScene: SKScene {
     
     var newGame: Bool = true;
     
+    var placeholderNodes = [
+        SKSpriteNode(texture: SKTexture(imageNamed: "CardPlaceholder")),
+        SKSpriteNode(texture: SKTexture(imageNamed: "CardPlaceholder")),
+        SKSpriteNode(texture: SKTexture(imageNamed: "CardPlaceholder")),
+        SKSpriteNode(texture: SKTexture(imageNamed: "CardPlaceholder")),
+        SKSpriteNode(texture: SKTexture(imageNamed: "CardPlaceholder")),
+        SKSpriteNode(texture: SKTexture(imageNamed: "CardPlaceholder")),
+        SKSpriteNode(texture: SKTexture(imageNamed: "CardPlaceholder")),
+        SKSpriteNode(texture: SKTexture(imageNamed: "CardPlaceholder")),
+        SKSpriteNode(texture: SKTexture(imageNamed: "CardPlaceholder")),
+        SKSpriteNode(texture: SKTexture(imageNamed: "CardPlaceholder")),
+        SKSpriteNode(texture: SKTexture(imageNamed: "CardPlaceholder"))
+    ];
+    
     init(gameScene : GameSceneViewController, game: Solitaire, gameDelegate: SolitaireDelegate, size: CGSize) {
         newGame = true;
         
@@ -442,12 +456,18 @@ class SolitaireScene: SKScene {
             let xPos = self.scene!.frame.minX + ((cardConstants.FOUNDATION_LEFT_OFFSET + CGFloat(i)) * cardSize.width) + (cardConstants.PILE_X_OFFSET * CGFloat(i));
             
             foundationLocations[i] = CGPoint(x: xPos, y: topRowYPos);
+            placeholderNodes[i].position = foundationLocations[i];
+            placeholderNodes[i].size = cardSize;
+            self.addChild(placeholderNodes[i]);
         }
         
         for i in 0..<7 {
             let xPos = self.scene!.frame.minX + ((cardConstants.TABLEU_LEFT_OFFSET + CGFloat(i)) * cardSize.width) + (cardConstants.PILE_X_OFFSET * CGFloat(i));
             
             tableuLocations[i] = CGPoint(x: xPos, y: bottomRowYPos);
+            placeholderNodes[i + 4].position = tableuLocations[i];
+            placeholderNodes[i + 4].size = cardSize;
+            self.addChild(placeholderNodes[i + 4]);
         }
     }
 

@@ -9,7 +9,16 @@
 import UIKit
 
 class GenericSliderView: UISlider, GenericFormElements {
+    let textWidth: CGFloat = 50;
+    let textHeight: CGFloat = 50;
+    
+    let max: Float;
+    let min: Float;
     let stepSize: Float;
+    
+    var actualValue: Int;
+    
+    let valueLabel = UILabel();
     
     init(data: [String]) {
         let min = Float(data[0]);
@@ -20,7 +29,11 @@ class GenericSliderView: UISlider, GenericFormElements {
             fatalError("3 and only 3 float values must be passed to the GenericSliderView");
         }
         
-        stepSize = tempStepSize!;
+        self.stepSize = tempStepSize!;
+        self.max = max!;
+        self.min = min!;
+        
+        actualValue = 0;
         
         super.init(frame: CGRect());
         
@@ -41,11 +54,12 @@ class GenericSliderView: UISlider, GenericFormElements {
     }
     
     func updateSliderValue(sender: UISlider) {
-        sender.value = sender.value * stepSize;
+        actualValue = Int((super.value + min) * stepSize);
+        valueLabel.text = String(actualValue);
     }
     
     func getResults() -> String {
-        return String(super.value);
+        return String((super.value + min) * stepSize);
     }
     
     /*

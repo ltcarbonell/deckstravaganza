@@ -61,11 +61,6 @@ class Rummy: CardGame {
     
     init(selectedOptions: [AdjustableSetting]?) {
         self.selectedOptions = selectedOptions
-        if selectedOptions != nil {
-            for option in selectedOptions! {
-                print(option.settingName, option.options)
-            }
-        }
         
         self.turn = 0
         self.round = 0

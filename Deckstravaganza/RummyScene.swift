@@ -143,16 +143,22 @@ class RummyScene: SKScene {
     
     override func didMoveToView(view: SKView) {
         backgroundColor = UIColor.blueColor()
-        startRound()
+        if self.RummyGame.deck.numberOfCards() == 52{
+            print(self.RummyGame.round,self.RummyGame.roundScores)
+            addDealButton()
+        } else {
+            print(self.RummyGame.round,self.RummyGame.roundScores)
+        }
     }
     
     
     // MARK: Function that add buttons to the scene
     func startRound() {
         self.shuffle()
+        self.deal()
         
         // Must first deal the cards, use a GameViewButton to deal
-        addDealButton()
+        //addDealButton()
         
         for player in RummyGame.players {
             setUserInteractionEnabledPlayerHand(false, player: player)
@@ -160,16 +166,16 @@ class RummyScene: SKScene {
     }
     
     func addDealButton() {
-        let dealButton = GameViewControllerButton(defaultButtonImage: "start", buttonAction: deal)
+        let dealButton = GameViewControllerButton(defaultButtonImage: "start_game_image", buttonAction: startRound)
         dealButton.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame))
-        dealButton.size = CGSize(width: 100, height: 200)
+        dealButton.size = CGSize(width: 300, height: 200)
         self.addChild(dealButton)
         
     }
     
     func addMeldButton() {
         let meldButton = GameViewControllerButton(defaultButtonImage: "MeldButtonImg", buttonAction: meld)
-        meldButton.size = CGSize(width: 100, height: 200)
+        meldButton.size = CGSize(width: 100, height: 75)
         meldButton.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame))
         meldButton.zPosition = 100
         self.addChild(meldButton)
@@ -179,7 +185,7 @@ class RummyScene: SKScene {
     
     func addDiscardButton() {
         let discardButton = GameViewControllerButton(defaultButtonImage: "DiscardButtonImg", buttonAction: discard)
-        discardButton.size = CGSize(width: 100, height: 200)
+        discardButton.size = CGSize(width: 100, height: 75)
         discardButton.position = CGPoint(x: CGRectGetMidX(self.frame) + discardButton.size.width, y: CGRectGetMidY(self.frame))
         discardButton.zPosition = 100
         self.addChild(discardButton)
@@ -188,7 +194,7 @@ class RummyScene: SKScene {
     
     func addLayOffButton() {
         let layOffButton = GameViewControllerButton(defaultButtonImage: "LayOffButtonImg", buttonAction: layOff)
-        layOffButton.size = CGSize(width: 100, height: 200)
+        layOffButton.size = CGSize(width: 100, height: 75)
         layOffButton.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame) + layOffButton.size.height)
         layOffButton.zPosition = 100
         self.addChild(layOffButton)
@@ -204,7 +210,7 @@ class RummyScene: SKScene {
     
     func addScoreBoard() {
         let scoreboardBackground = SKSpriteNode(imageNamed: "felt_board")
-        scoreboardBackground.size = CGSize(width: self.frame.width/1.2, height: self.frame.height/1.2)
+        scoreboardBackground.size = CGSize(width: self.frame.width/1.4, height: self.frame.height/1.4)
         scoreboardBackground.position = CGPoint(x: self.frame.midX, y: self.frame.midY)
         scoreboardBackground.zPosition = 999
         self.scoreboardNodes.append(scoreboardBackground)
@@ -225,7 +231,7 @@ class RummyScene: SKScene {
         }
         
         let roundTitleNode = SKLabelNode(text: "Round")
-        roundTitleNode.fontName = ""
+        roundTitleNode.fontName = "PT Sans"
         roundTitleNode.fontColor = UIColor.whiteColor()
         roundTitleNode.position.x = columns[0]
         roundTitleNode.position.y = rows[0]
@@ -234,7 +240,7 @@ class RummyScene: SKScene {
         self.addChild(roundTitleNode)
         
         let totalScoreTitleNode = SKLabelNode(text: "Total")
-        totalScoreTitleNode.fontName = ""
+        totalScoreTitleNode.fontName = "PT Sans"
         totalScoreTitleNode.fontColor = UIColor.whiteColor()
         totalScoreTitleNode.position.x = columns[0]
         totalScoreTitleNode.position.y = rows[9]
@@ -244,7 +250,7 @@ class RummyScene: SKScene {
         
         for player in self.RummyGame.players {
             let playerNameNode = SKLabelNode(text: player.userName)
-            playerNameNode.fontName = ""
+            playerNameNode.fontName = "PT Sans"
             playerNameNode.position.x = columns[player.playerNumber+1]
             playerNameNode.position.y = rows[0]
             playerNameNode.zPosition = 1000
@@ -252,7 +258,7 @@ class RummyScene: SKScene {
             self.addChild(playerNameNode)
             
             let totalScoreNode = SKLabelNode(text: String(player.score))
-            totalScoreNode.fontName = ""
+            totalScoreNode.fontName = "PT Sans"
             totalScoreNode.position.x = columns[player.playerNumber+1]
             totalScoreNode.position.y = rows[9]
             totalScoreNode.zPosition = 1000
@@ -262,7 +268,7 @@ class RummyScene: SKScene {
         
         for roundIndex in 0..<self.RummyGame.roundScores.count {
             let roundIndexNode = SKLabelNode(text: String(roundIndex+1))
-            roundIndexNode.fontName = ""
+            roundIndexNode.fontName = "PT Sans"
             roundIndexNode.position.x = columns[0]
             roundIndexNode.position.y = rows[roundIndex+1]
             roundIndexNode.zPosition = 1000
@@ -272,7 +278,7 @@ class RummyScene: SKScene {
             for player in self.RummyGame.players {
                 print(self.RummyGame.roundScores)
                 let roundScore = SKLabelNode(text: String(self.RummyGame.roundScores[roundIndex][player.playerNumber]))
-                roundScore.fontName = ""
+                roundScore.fontName = "PT Sans"
                 roundScore.position.x = columns[player.playerNumber+1]
                 roundScore.position.y = rows[roundIndex+1]
                 roundScore.zPosition = 1000
@@ -280,6 +286,14 @@ class RummyScene: SKScene {
                 self.addChild(roundScore)
             }
         }
+        
+        let startRoundNode = GameViewControllerButton(defaultButtonImage: "start_round_image", buttonAction: startRound)
+        startRoundNode.position.x = scoreboardTable.midX
+        startRoundNode.position.y = rows[10]
+        startRoundNode.size = CGSize(width: scoreboardTable.width/3, height: scoreboardTable.width/5)
+        startRoundNode.zPosition = 1000
+        self.scoreboardNodes.append(startRoundNode)
+        self.addChild(startRoundNode)
         
     }
     
@@ -651,7 +665,7 @@ class RummyScene: SKScene {
     }
     
     func didPlayInvalidMove() {
-        let message = SKLabelNode(fontNamed: "San Francisco")
+        let message = SKLabelNode(fontNamed: "PT Sans")
         message.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame))
         message.fontSize = 60
         message.fontColor = UIColor.redColor()
@@ -693,7 +707,7 @@ class RummyScene: SKScene {
                     if handSprite.faceUp {
                         handSprite.flipCardOver()
                     }
-                    let cardCount = SKLabelNode(fontNamed: "San Francisco")
+                    let cardCount = SKLabelNode(fontNamed: "PT Sans")
                     cardCount.position = countLocations[handIndex]
                     cardCount.fontSize = 30
                     cardCount.fontColor = UIColor.blackColor()
@@ -749,10 +763,8 @@ class RummyScene: SKScene {
             turnDidEndRound()
         } else {
             self.RummyGame.turnDidStart()
+            runAllComputerTurns()
         }
-        
-        runAllComputerTurns()
-        
     }
     
     func turnDidEndRound() {
@@ -779,7 +791,6 @@ class RummyScene: SKScene {
         }
         self.removeAllChildren()
         addScoreBoard()
-        startRound()
     }
     
     func roundDidEndGame() {

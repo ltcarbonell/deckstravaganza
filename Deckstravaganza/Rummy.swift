@@ -123,6 +123,8 @@ class Rummy: CardGame {
     
     // MARK: Methods for setting up the game
     
+    
+    
     func setPlayers(numberOfPlayers: Int) {
         let fakeNames = ["Jess", "Bill", "Mark", "Pam", "Mike"]
         print("Setting \(numberOfPlayers) players");
@@ -353,34 +355,37 @@ class Rummy: CardGame {
 
     // MARK: Methods for checking and changing game status
     func checkRoundEnded() -> Bool{
-        return playersHands[currentPlayerNumber].isEmpty()
+        for playerHand in playersHands {
+            if playerHand.isEmpty() {
+                return true
+            }
+        }
+        return false
     }
     
     func checkGameEnded() -> Bool {
-        return players[currentPlayerNumber].score >= targetScore
+        for player in players {
+            if player.score >= targetScore {
+                return true
+            }
+        }
+        return false
     }
-    
-//    func gameDidEnd() {
-//        print("Player \(currentPlayerNumber) won.");
-//    }
     
     func turnDidStart() {
         print("Turn started");
         currentPlayerNumber = ++turn%players.count
     }
     
-//    func roundDidEnd() {
-//        increaseScore()
-//        if checkGameEnded() {
-//            gameDidEnd()
-//        } else {
-//            currentPlayerNumber = ++turn%players.count
-//            for player in players {
-//                print(player.playerNumber, player.score)
-//            }
-//        }
-//        print("Round ended");
-//    }
+    func resetGame() {
+        self.turn = 0
+        self.round = 0
+        self.roundScores = []
+        
+        for playerIndex in 0..<self.players.count {
+            players[playerIndex].score = 0
+        }
+    }
     
     func increaseScore() {
         var scoreAdded = 0
@@ -410,14 +415,4 @@ class Rummy: CardGame {
         players[currentPlayerNumber].score += scoreAdded
         print("Score increased by \(scoreAdded)");
     }
-    
-//    func turnDidEnd() {
-//        print("TURN NUMBER", turn)
-//        if checkRoundEnded() {
-//            roundDidEnd()
-//        } else {
-//            roundDidStart()
-//        }
-        
-//    }
 }

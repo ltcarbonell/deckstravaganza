@@ -88,8 +88,9 @@ class RummyScene: SKScene {
     var countLocations = [CGPoint(x: 0, y: 0)]
     var meldLocation = CGPoint(x: 0,y: 0)
     
-    var isWinner = false
-    var isPlayerTurn = false
+    //var isWinner = false
+    //var isPlayerTurn = false
+    var isDealButtonOnScreen = false
     
     var cardCountNodeArray: [SKLabelNode] = []
     var scoreboardNodes: [SKNode] = []
@@ -143,7 +144,7 @@ class RummyScene: SKScene {
     
     override func didMoveToView(view: SKView) {
         backgroundColor = UIColor.blueColor()
-        if self.RummyGame.deck.numberOfCards() == 52{
+        if self.RummyGame.deck.numberOfCards() == 52 && !isDealButtonOnScreen {
             print(self.RummyGame.round,self.RummyGame.roundScores)
             addDealButton()
         } else {
@@ -153,7 +154,22 @@ class RummyScene: SKScene {
     
     
     // MARK: Function that add buttons to the scene
+    func startGame() {
+        self.removeChildrenInArray(scoreboardNodes)
+        self.RummyGame.resetGame()
+        
+        self.shuffle()
+        self.deal()
+        
+        for player in self.RummyGame.players {
+            setUserInteractionEnabledPlayerHand(false, player: player)
+        }
+        
+    }
+    
     func startRound() {
+        self.removeChildrenInArray(scoreboardNodes)
+        
         self.shuffle()
         self.deal()
         
@@ -163,11 +179,11 @@ class RummyScene: SKScene {
     }
     
     func addDealButton() {
-        let dealButton = GameViewControllerButton(defaultButtonImage: "start_game_image", buttonAction: startRound)
+        let dealButton = GameViewControllerButton(defaultButtonImage: "start_game_image", buttonAction: startGame)
         dealButton.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame))
         dealButton.size = CGSize(width: 300, height: 200)
         self.addChild(dealButton)
-        
+        isDealButtonOnScreen = true
     }
     
     func addMeldButton() {
@@ -205,7 +221,16 @@ class RummyScene: SKScene {
         self.addChild(reloadButton)
     }
     
-    func addScoreBoard() {
+    func addScoreBoard(isWinner: Bool) {
+        var winningScore: Int = 0
+        if isWinner {
+            for player in self.RummyGame.players {
+                if player.score >= self.RummyGame.targetScore {
+                    winningScore = player.score
+                }
+            }
+        }
+        
         let scoreboardBackground = SKSpriteNode(imageNamed: "felt_board")
         scoreboardBackground.size = CGSize(width: self.frame.width/1.4, height: self.frame.height/1.4)
         scoreboardBackground.position = CGPoint(x: self.frame.midX, y: self.frame.midY)
@@ -261,6 +286,11 @@ class RummyScene: SKScene {
             totalScoreNode.zPosition = 1000
             self.scoreboardNodes.append(totalScoreNode)
             self.addChild(totalScoreNode)
+            
+            if isWinner && player.score == winningScore {
+                playerNameNode.fontColor = UIColor.greenColor()
+                totalScoreNode.fontColor = UIColor.greenColor()
+            }
         }
         
         for roundIndex in 0..<self.RummyGame.roundScores.count {
@@ -281,16 +311,28 @@ class RummyScene: SKScene {
                 roundScore.zPosition = 1000
                 self.scoreboardNodes.append(roundScore)
                 self.addChild(roundScore)
+                
+                if isWinner && player.score == winningScore {
+                    roundScore.fontColor = UIColor.greenColor()
+                }
             }
         }
         
-        let startRoundNode = GameViewControllerButton(defaultButtonImage: "start_round_image", buttonAction: startRound)
-        startRoundNode.position.x = scoreboardTable.midX
-        startRoundNode.position.y = rows[10]
-        startRoundNode.size = CGSize(width: scoreboardTable.width/3, height: scoreboardTable.width/5)
-        startRoundNode.zPosition = 1000
-        self.scoreboardNodes.append(startRoundNode)
-        self.addChild(startRoundNode)
+        if isWinner {
+            let startRoundNode = GameViewControllerButton(defaultButtonImage: "play_again_game_image", buttonAction: startGame)
+            startRoundNode.position.x = scoreboardTable.midX
+            startRoundNode.position.y = rows[10]
+            startRoundNode.size = CGSize(width: scoreboardTable.width/3, height: scoreboardTable.width/5)
+            startRoundNode.zPosition = 1000
+            self.addChild(startRoundNode)
+        } else {
+            let startRoundNode = GameViewControllerButton(defaultButtonImage: "start_round_image", buttonAction: startRound)
+            startRoundNode.position.x = scoreboardTable.midX
+            startRoundNode.position.y = rows[10]
+            startRoundNode.size = CGSize(width: scoreboardTable.width/3, height: scoreboardTable.width/5)
+            startRoundNode.zPosition = 1000
+            self.addChild(startRoundNode)
+        }
         
     }
     
@@ -597,7 +639,15 @@ class RummyScene: SKScene {
         let discardCard = self.RummyGame.playersHands[computer.player.playerNumber].cardAt(computer.getDiscardCardIndex(drawnCardSprite.card))!
         self.RummyGame.addSelectedCard(discardCard)
         self.aiDiscard()
-        self.runAction(SKAction.waitForDuration(1.5), completion: reorganizeWastePileCards)
+        if discardCard.isEqualTo(drawnCardSprite.card, ignoreSuit: false) {
+            let moveToHand = SKAction.moveTo(handLocations[computer.player.playerNumber], duration: 0.5)
+            let moveToWaste = SKAction.moveTo(wastePileLocation, duration: 0.5)
+            drawnCardSprite.runAction(SKAction.sequence([SKAction.waitForDuration(0.5) , moveToHand, moveToWaste]))
+            self.runAction(SKAction.waitForDuration(1.5), completion: reorganizeWastePileCards)
+        } else {
+            self.runAction(SKAction.waitForDuration(1.5), completion: reorganizeWastePileCards)
+        }
+        
         
         if self.RummyGame.checkRoundEnded() {
             turnDidEndRound()
@@ -774,11 +824,20 @@ class RummyScene: SKScene {
             for player in self.RummyGame.players {
                 print(player.playerNumber, player.score)
             }
+            self.RummyGame.turn = 0
+            self.RummyGame.deck.newDeck()
+            self.RummyGame.wastePile.removeAllCards()
+            self.RummyGame.melds.removeAll()
+            for playerHand in self.RummyGame.playersHands {
+                playerHand.removeAllCards()
+            }
+            self.removeAllChildren()
+            addScoreBoard(false)
         }
-        
         print("Round ended");
-        
-        
+    }
+    
+    func roundDidEndGame() {
         self.RummyGame.turn = 0
         self.RummyGame.deck.newDeck()
         self.RummyGame.wastePile.removeAllCards()
@@ -787,11 +846,7 @@ class RummyScene: SKScene {
             playerHand.removeAllCards()
         }
         self.removeAllChildren()
-        addScoreBoard()
-    }
-    
-    func roundDidEndGame() {
-        print("Player \(self.RummyGame.currentPlayerNumber) won.");
+        addScoreBoard(true)
     }
     
     

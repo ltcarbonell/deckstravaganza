@@ -157,9 +157,6 @@ class RummyScene: SKScene {
         self.shuffle()
         self.deal()
         
-        // Must first deal the cards, use a GameViewButton to deal
-        //addDealButton()
-        
         for player in RummyGame.players {
             setUserInteractionEnabledPlayerHand(false, player: player)
         }

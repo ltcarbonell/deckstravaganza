@@ -33,13 +33,21 @@ class GenericSliderView: UISlider, GenericFormElements {
         self.max = max!;
         self.min = min!;
         
-        actualValue = 0;
+        actualValue = Int(max!)/2;
         
         super.init(frame: CGRect());
         
         super.minimumValue = 0;
-        super.maximumValue = max!;
-        self.value = max!/2
+        super.maximumValue = (max!-min!)/stepSize;
+        self.value = (max!-min!)/(2*stepSize)
+        
+        valueLabel.text = String(actualValue);
+        valueLabel.frame = CGRect(x: 0, y: 0, width: 50, height: 50);
+        
+        let defaultFrame = UISlider().frame;
+        valueLabel.center = CGPoint(x: defaultFrame.width + (textWidth / 2), y: 15);
+        
+        self.addSubview(valueLabel);
         
         super.continuous = true;
         super.addTarget(self, action: "updateSliderValue:", forControlEvents: UIControlEvents.ValueChanged);

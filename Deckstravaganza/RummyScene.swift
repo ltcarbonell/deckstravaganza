@@ -242,7 +242,7 @@ class RummyScene: SKScene {
     }
     
     func addReloadButton() {
-        let reloadButton = GameViewControllerButton(defaultButtonImage: "ReloadButton", buttonAction: reload)
+        let reloadButton = GameViewControllerButton(defaultButtonImage: "CardPlaceholder", buttonAction: reload)
         reloadButton.size = cardSize
         reloadButton.position = deckLocation
         self.addChild(reloadButton)

@@ -101,6 +101,7 @@ class CardSprite: SKSpriteNode {
         self.zPosition = CGFloat(solitaireScene!.SolitaireGame.wastePile.numberOfCards())
         
         solitaireScene!.SolitaireGame.moveTopCard(oldPile!, toPile: newPile!)
+        solitaireScene!.wastePileNodes.append(self)
         self.runAction(SKAction.moveTo(toLocation!, duration: 0.25))
         
         do {
@@ -393,6 +394,7 @@ class SolitaireScene: SKScene {
     // Card variables
     var cardSize = CGSize(width: 0, height: 0)
     var cardSprites:[CardSprite] = []
+    var wastePileNodes: [CardSprite] = []
 
     // Locations for the various piles in scene
     var deckLocation = CGPoint(x: 0, y: 0)
@@ -664,11 +666,7 @@ class SolitaireScene: SKScene {
     
     // moves the card sprites from the waste pile back into the deck pile
     func reloadDeck() {
-        let cardNodes = nodesAtPoint(wastePileLocation) as! [CardSprite]
-        
-        reloadSprite?.removeFromParent()
-        
-        for node in cardNodes {
+        for node in wastePileNodes {
             node.removeFromParent()
         }
         

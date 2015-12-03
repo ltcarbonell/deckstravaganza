@@ -73,18 +73,18 @@ class Rummy: CardGame {
         
         if selectedOptions != nil {
             // Check if multiplayer
-            if (selectedOptions![0].options.first! == "true") {
+//            if (selectedOptions![0].options.first! == "true") {
                 // do gamecenter stuff
-            }
-            if selectedOptions![1].options.first! == "Easy" {
+//            }
+            if selectedOptions![0].options.first! == "Easy" {
                 self.difficulty = .Easy
             } else {
                 self.difficulty = .Hard
             }
         
-            let floatScore = Float(selectedOptions![2].options.first!)
+            let floatScore = Float(selectedOptions![1].options.first!)
             self.targetScore = Int(floatScore!)
-            self.setPlayers(Int(selectedOptions![3].options.first!)!)
+            self.setPlayers(Int(selectedOptions![2].options.first!)!)
         } else {
             self.targetScore = 500
             self.difficulty = .Easy
@@ -92,12 +92,12 @@ class Rummy: CardGame {
         }
         
         self.adjustableSettings = [
-            AdjustableSetting(
-                settingName: "Multiplayer",
-                formType: FormType.Switch,
-                dataType: DataType.Bool,
-                options: ["on","off"]
-            ),
+//            AdjustableSetting(
+//                settingName: "Multiplayer",
+//                formType: FormType.Switch,
+//                dataType: DataType.Bool,
+//                options: ["on","off"]
+//            ),
             AdjustableSetting(
                 settingName: "Difficulty Level",
                 formType: FormType.DropDown,

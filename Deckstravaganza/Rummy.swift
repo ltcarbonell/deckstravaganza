@@ -2,7 +2,7 @@
 //  Rummy.swift
 //  Deckstravaganza
 //
-//  Created by Calvin Moore on 9/28/15.
+//  Created by Luis Carbonell on 9/28/15.
 //  Copyright © 2015 University of Florida. All rights reserved.
 //
 

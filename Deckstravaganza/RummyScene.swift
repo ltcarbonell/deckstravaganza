@@ -2,7 +2,7 @@
 //  RummyScene.swift
 //  Deckstravaganza
 //
-//  Created by LT Carbonell on 10/26/15.
+//  Created by Luis Carbonell on 10/26/15.
 //  Copyright © 2015 University of Florida. All rights reserved.
 //
 
@@ -215,8 +215,8 @@ class RummyScene: SKScene {
     
     func addMeldButton() {
         let meldButton = GameViewControllerButton(defaultButtonImage: "MeldButtonImg", buttonAction: meld)
-        meldButton.size = CGSize(width: 100, height: 75)
-        meldButton.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame))
+        meldButton.size = CGSize(width: 1.5*cardSize.width, height: 1.5*cardSize.height/3)
+        meldButton.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame) - cardSize.height)
         meldButton.zPosition = 100
         self.addChild(meldButton)
         buttonsOnScreen.append(meldButton)
@@ -225,8 +225,8 @@ class RummyScene: SKScene {
     
     func addDiscardButton() {
         let discardButton = GameViewControllerButton(defaultButtonImage: "DiscardButtonImg", buttonAction: discard)
-        discardButton.size = CGSize(width: 100, height: 75)
-        discardButton.position = CGPoint(x: CGRectGetMidX(self.frame) + discardButton.size.width, y: CGRectGetMidY(self.frame))
+        discardButton.size = CGSize(width: 1.5*cardSize.width, height: 1.5*cardSize.height/3)
+        discardButton.position = CGPoint(x: CGRectGetMidX(self.frame) + 1.1*discardButton.size.width, y: CGRectGetMidY(self.frame) - cardSize.height)
         discardButton.zPosition = 100
         self.addChild(discardButton)
         buttonsOnScreen.append(discardButton)
@@ -234,8 +234,8 @@ class RummyScene: SKScene {
     
     func addLayOffButton() {
         let layOffButton = GameViewControllerButton(defaultButtonImage: "LayOffButtonImg", buttonAction: layOff)
-        layOffButton.size = CGSize(width: 100, height: 75)
-        layOffButton.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame) + layOffButton.size.height)
+        layOffButton.size = CGSize(width: 1.5*cardSize.width, height: 1.5*cardSize.height/3)
+        layOffButton.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame) - cardSize.height)
         layOffButton.zPosition = 100
         self.addChild(layOffButton)
         buttonsOnScreen.append(layOffButton)
@@ -275,8 +275,8 @@ class RummyScene: SKScene {
             columns.append(scoreboardTable.minX + (1 + CGFloat(index))*scoreboardTable.width/(CGFloat(numberOfPlayers)+2))
         }
         var rows = [CGFloat]()
-        for index in 0...10 {
-            rows.append(scoreboardTable.maxY - (1 + CGFloat(index))*scoreboardTable.height/CGFloat(11))
+        for index in 0...self.RummyGame.roundScores.count+2 {
+            rows.append(scoreboardTable.maxY - (0.5 + CGFloat(index))*scoreboardTable.height/CGFloat(self.RummyGame.roundScores.count+2))
         }
         
         let roundTitleNode = SKLabelNode(text: "Round")
@@ -292,7 +292,7 @@ class RummyScene: SKScene {
         totalScoreTitleNode.fontName = "PT Sans"
         totalScoreTitleNode.fontColor = UIColor.whiteColor()
         totalScoreTitleNode.position.x = columns[0]
-        totalScoreTitleNode.position.y = rows[9]
+        totalScoreTitleNode.position.y = rows[self.RummyGame.roundScores.count + 1]
         totalScoreTitleNode.zPosition = 1000
         self.scoreboardNodes.append(totalScoreTitleNode)
         self.addChild(totalScoreTitleNode)
@@ -309,7 +309,7 @@ class RummyScene: SKScene {
             let totalScoreNode = SKLabelNode(text: String(player.score))
             totalScoreNode.fontName = "PT Sans"
             totalScoreNode.position.x = columns[player.playerNumber+1]
-            totalScoreNode.position.y = rows[9]
+            totalScoreNode.position.y = rows[self.RummyGame.roundScores.count + 1]
             totalScoreNode.zPosition = 1000
             self.scoreboardNodes.append(totalScoreNode)
             self.addChild(totalScoreNode)
@@ -346,17 +346,17 @@ class RummyScene: SKScene {
         }
         
         if isWinner {
-            let startRoundNode = GameViewControllerButton(defaultButtonImage: "play_again_game_image", buttonAction: startGame)
-            startRoundNode.position.x = scoreboardTable.midX
-            startRoundNode.position.y = rows[10]
-            startRoundNode.size = CGSize(width: scoreboardTable.width/3, height: scoreboardTable.width/5)
-            startRoundNode.zPosition = 1000
-            self.addChild(startRoundNode)
+            let startGameNode = GameViewControllerButton(defaultButtonImage: "play_again_game_image", buttonAction: startGame)
+            startGameNode.size = CGSize(width: scoreboardTable.width/3, height: scoreboardTable.width/5)
+            startGameNode.position.x = scoreboardTable.midX
+            startGameNode.position.y = rows[self.RummyGame.roundScores.count + 2] + 0.5*startGameNode.size.height
+            startGameNode.zPosition = 1000
+            self.addChild(startGameNode)
         } else {
             let startRoundNode = GameViewControllerButton(defaultButtonImage: "start_round_image", buttonAction: startRound)
-            startRoundNode.position.x = scoreboardTable.midX
-            startRoundNode.position.y = rows[10]
             startRoundNode.size = CGSize(width: scoreboardTable.width/3, height: scoreboardTable.width/5)
+            startRoundNode.position.x = scoreboardTable.midX
+            startRoundNode.position.y = rows[self.RummyGame.roundScores.count + 2] + 0.5*startRoundNode.size.height
             startRoundNode.zPosition = 1000
             self.addChild(startRoundNode)
         }

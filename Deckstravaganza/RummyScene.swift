@@ -429,7 +429,7 @@ class RummyScene: SKScene {
         
         setUserInteractionEnabledDeck(false)
         setUserInteractionEnabledWastePile(false)
-        setUserInteractionEnabledPlayerHand(true, player: self.RummyGame.players[self.RummyGame.currentPlayerNumber])
+        setUserInteractionEnabledPlayerHand(true, player: self.RummyGame.players.first!)
     }
     
     func aiCardWasDrawn(cardSprite: RummyCardSprite) {
@@ -446,7 +446,7 @@ class RummyScene: SKScene {
         
         setUserInteractionEnabledDeck(false)
         setUserInteractionEnabledWastePile(false)
-        setUserInteractionEnabledPlayerHand(true, player: self.RummyGame.players[self.RummyGame.currentPlayerNumber])
+        setUserInteractionEnabledPlayerHand(true, player: self.RummyGame.players.first!)
     }
     
     func moveAIDrawnCard(cardSprite: RummyCardSprite) {
@@ -621,15 +621,17 @@ class RummyScene: SKScene {
             setUserInteractionEnabledPlayerHand(false, player: player)
         }
         setUserInteractionEnabledMelds(false)
+        setUserInteractionEnabledDeck(true)
+        setUserInteractionEnabledWastePile(true)
         
         let userNumber = self.RummyGame.players.first!.playerNumber
-        while userNumber != self.RummyGame.currentPlayerNumber {
+        while (userNumber != self.RummyGame.currentPlayerNumber  && !self.RummyGame.isRoundOver) {
             print(self.RummyGame.currentPlayerNumber)
             let computerPlayer = self.RummyGame.computerPlayers[self.RummyGame.currentPlayerNumber - 1]
             AITurn(computerPlayer)
         }
-        setUserInteractionEnabledDeck(true)
-        setUserInteractionEnabledWastePile(true)
+        
+        
     }
     
     func AITurn(computer: RummyAI) {
@@ -847,11 +849,11 @@ class RummyScene: SKScene {
         if self.RummyGame.checkGameEnded() {
             roundDidEndGame()
         } else {
+            self.RummyGame.turn = 0
             self.RummyGame.currentPlayerNumber = self.RummyGame.turn%self.RummyGame.players.count
             for player in self.RummyGame.players {
                 print(player.playerNumber, player.score)
             }
-            self.RummyGame.turn = 0
             self.RummyGame.deck.newDeck()
             self.RummyGame.wastePile.removeAllCards()
             self.RummyGame.melds.removeAll()

@@ -42,6 +42,9 @@ class Rummy: CardGame {
     var turn: Int
     var round: Int
     
+    var isRoundOver: Bool
+    var isGameOver: Bool
+    
     var adjustableSettings = [AdjustableSetting]();
     
     let smallGameHand = 10;
@@ -64,6 +67,9 @@ class Rummy: CardGame {
         
         self.turn = 0
         self.round = 0
+        
+        self.isRoundOver = false
+        self.isGameOver = false
         
         if selectedOptions != nil {
             // Check if multiplayer
@@ -357,6 +363,7 @@ class Rummy: CardGame {
     func checkRoundEnded() -> Bool{
         for playerHand in playersHands {
             if playerHand.isEmpty() {
+                isRoundOver = true
                 return true
             }
         }
@@ -366,6 +373,7 @@ class Rummy: CardGame {
     func checkGameEnded() -> Bool {
         for player in players {
             if player.score >= targetScore {
+                isGameOver = true
                 return true
             }
         }
@@ -375,12 +383,16 @@ class Rummy: CardGame {
     func turnDidStart() {
         print("Turn started");
         currentPlayerNumber = ++turn%players.count
+        isRoundOver = false
     }
     
     func resetGame() {
         self.turn = 0
         self.round = 0
         self.roundScores = []
+        
+        self.isRoundOver = false
+        self.isGameOver = false
         
         for playerIndex in 0..<self.players.count {
             players[playerIndex].score = 0

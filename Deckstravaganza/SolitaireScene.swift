@@ -205,8 +205,13 @@ class CardSprite: SKSpriteNode {
     * Increase this card's z-index so it is above all other cards and save the fromLocation.
     */
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        fromLocation = solitaireScene!.snapToCGPoint(self.position);
-        let touchedPile = solitaireScene!.CGPointToPile(fromLocation!);
+        var touchedPile : StackPile?
+        
+        if solitaireScene != nil {
+            fromLocation = solitaireScene!.snapToCGPoint(self.position);
+            touchedPile = solitaireScene!.CGPointToPile(fromLocation!);
+        }
+        
         
         if(touchedPile != nil) {
             if(!faceUp) {
@@ -250,18 +255,21 @@ class CardSprite: SKSpriteNode {
             let touchedNode = nodeAtPoint(location)
             touchedNode.position = location
             
-            let touchedPile = solitaireScene!.CGPointToPile(fromLocation!)
-            if touchedPile != nil {
-                let aboveCards = getAboveCards(touchedPile!)
-                
-                for index in 0..<aboveCards.count {
-                    let tempCard = nodeFromCard(aboveCards[index]);
-                    let tempCardYOffset = CGFloat(-(cardConstants.CARD_CASCADE_OFFSET * index)) - (0.5 * solitaireScene!.cardSize.height) + cardConstants.MOVING_Y_ADJUSTMENT;
+            if solitaireScene != nil {
+                let touchedPile = solitaireScene!.CGPointToPile(fromLocation!)
+                if touchedPile != nil {
+                    let aboveCards = getAboveCards(touchedPile!)
                     
-                    tempCard.position.y = location.y + tempCardYOffset;
-                    tempCard.position.x = location.x
+                    for index in 0..<aboveCards.count {
+                        let tempCard = nodeFromCard(aboveCards[index]);
+                        let tempCardYOffset = CGFloat(-(cardConstants.CARD_CASCADE_OFFSET * index)) - (0.5 * solitaireScene!.cardSize.height) + cardConstants.MOVING_Y_ADJUSTMENT;
+                        
+                        tempCard.position.y = location.y + tempCardYOffset;
+                        tempCard.position.x = location.x
+                    }
                 }
             }
+            
         }
     }
     
@@ -270,14 +278,18 @@ class CardSprite: SKSpriteNode {
     * Otherwise, card all cards in the moved stack to the new stack.
     */
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        let touchedPile = solitaireScene!.CGPointToPile(fromLocation!);
         
-        // test for where the card was touched
-        toLocation = solitaireScene!.snapToCGPoint(position)
+        var touchedPile: StackPile?
+        if solitaireScene != nil {
+            touchedPile = solitaireScene!.CGPointToPile(fromLocation!);
+            // test for where the card was touched
+            toLocation = solitaireScene!.snapToCGPoint(position)
+            
+            // find where the card is going to and where it is coming from
+            newPile = solitaireScene!.CGPointToPile(toLocation!)
+            oldPile = solitaireScene!.CGPointToPile(fromLocation!)
+        }
         
-        // find where the card is going to and where it is coming from
-        newPile = solitaireScene!.CGPointToPile(toLocation!)
-        oldPile = solitaireScene!.CGPointToPile(fromLocation!)
         
         if(touchedHidden) {
             if(flipHidden) {
@@ -297,44 +309,46 @@ class CardSprite: SKSpriteNode {
             // Closure for handling moving a card back to oldPile
             let moveCardsBack = {
                 () -> Void in
-                
-                let cardsAbove = self.getAboveCards(touchedPile!);
-                let cardBelow = self.oldPile?.cardAt(self.oldPile!.numberOfCards() - cardsAbove.count - 1);
-                var cardBelowNode : CardSprite? = nil;
-                
-                if(cardBelow != nil) {
-                    cardBelowNode = self.nodeFromCard(cardBelow!);
-                }
-                
-                for(var index = 0; index < cardsAbove.count; index++) {
-                    let tempCardName = "\(cardsAbove[index].getRank())\(cardsAbove[index].getSuit())";
-                    let tempCard = self.solitaireScene!.childNodeWithName(tempCardName);
-                    let tempCardYPosition : CGFloat;
-                    let tempCardZPosition : CGFloat;
+                if touchedPile != nil {
+                    let cardsAbove = self.getAboveCards(touchedPile!);
+                    let cardBelow = self.oldPile?.cardAt(self.oldPile!.numberOfCards() - cardsAbove.count - 1);
+                    var cardBelowNode : CardSprite? = nil;
                     
-                    if(cardBelowNode != nil) {
-                        tempCardYPosition = cardBelowNode!.position.y - ((CGFloat(index) + 1) * CGFloat(self.cardConstants.CARD_CASCADE_OFFSET));
-                        tempCardZPosition = cardBelowNode!.zPosition + CGFloat(index) + 1;
-                    } else {
-                        tempCardYPosition = self.fromLocation!.y - (CGFloat(index) * CGFloat(self.cardConstants.CARD_CASCADE_OFFSET));
-                        tempCardZPosition = 0;
+                    if(cardBelow != nil) {
+                        cardBelowNode = self.nodeFromCard(cardBelow!);
                     }
                     
-                    let tempCardLocation = CGPoint(x: self.fromLocation!.x, y: tempCardYPosition);
+                    for(var index = 0; index < cardsAbove.count; index++) {
+                        let tempCardName = "\(cardsAbove[index].getRank())\(cardsAbove[index].getSuit())";
+                        let tempCard = self.solitaireScene!.childNodeWithName(tempCardName);
+                        let tempCardYPosition : CGFloat;
+                        let tempCardZPosition : CGFloat;
+                        
+                        if(cardBelowNode != nil) {
+                            tempCardYPosition = cardBelowNode!.position.y - ((CGFloat(index) + 1) * CGFloat(self.cardConstants.CARD_CASCADE_OFFSET));
+                            tempCardZPosition = cardBelowNode!.zPosition + CGFloat(index) + 1;
+                        } else {
+                            tempCardYPosition = self.fromLocation!.y - (CGFloat(index) * CGFloat(self.cardConstants.CARD_CASCADE_OFFSET));
+                            tempCardZPosition = 0;
+                        }
+                        
+                        let tempCardLocation = CGPoint(x: self.fromLocation!.x, y: tempCardYPosition);
+                        
+                        tempCard!.zPosition = tempCardZPosition;
+                        
+                        tempCard!.runAction(SKAction.moveTo(tempCardLocation, duration: animationDuration));
+                    }
                     
-                    tempCard!.zPosition = tempCardZPosition;
-                    
-                    tempCard!.runAction(SKAction.moveTo(tempCardLocation, duration: animationDuration));
+                    do {
+                        let soundPath = NSBundle.mainBundle().pathForResource("cardShove1", ofType: "wav");
+                        
+                        self.soundPlayer = try AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: soundPath!));
+                        self.soundPlayer.play();
+                    } catch {
+                        print("No audio for you!");
+                    }
                 }
                 
-                do {
-                    let soundPath = NSBundle.mainBundle().pathForResource("cardShove1", ofType: "wav");
-                    
-                    self.soundPlayer = try AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: soundPath!));
-                    self.soundPlayer.play();
-                } catch {
-                    print("No audio for you!");
-                }
             }
             
             if newPile == nil {

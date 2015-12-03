@@ -31,7 +31,7 @@ class RummyCardSprite: SKSpriteNode {
         self.card = card
         
         self.frontTexture = SKTexture(image: card.getCardFace(Deck.DeckFronts.Default)!)
-        self.backTexture = SKTexture(image: card.getCardBack(Deck.DeckBacks.Default)!)
+        self.backTexture = SKTexture(image: card.getCardBack(Deck.DeckBacks.PatternBlue)!)
         
         self.touchesBeganClosure = touchesBeganClosure
         self.touchesMovedClosure = touchesMovedClosure
@@ -81,7 +81,7 @@ class RummyScene: SKScene {
     let GameScene: GameSceneViewController
     let RummyGame: Rummy
     
-    let SCALE_FACTOR: CGFloat = 0.75
+    let SCALE_FACTOR: CGFloat = 0.7
     
     var cardSize = CGSize(width: 0, height: 0)
     
@@ -120,14 +120,14 @@ class RummyScene: SKScene {
         super.init(size: size)
         
         // initializes the various CGPoints and CGSizes used by gamescene
-        self.cardSize = CGSize(width: self.scene!.size.width/11, height: self.scene!.size.height/5)
+        self.cardSize = CGSize(width: self.scene!.size.width/9, height: self.scene!.size.height/4.5)
         
         // Sets the location for where the deck and waste pile are located in the frame
-        self.deckLocation = CGPoint(x: self.scene!.frame.minX + 2*cardSize.width, y: self.scene!.frame.midY)
-        self.wastePileLocation = CGPoint(x: self.scene!.frame.minX + 2.1*cardSize.width + cardSize.width , y: self.scene!.frame.midY)
+        self.deckLocation = CGPoint(x: self.scene!.frame.minX + 1.5*cardSize.width, y: self.scene!.frame.midY)
+        self.wastePileLocation = CGPoint(x: self.scene!.frame.minX + 1.5*cardSize.width + 1.2*cardSize.width , y: self.scene!.frame.midY)
         
         // Sets the location for where the melds should be location
-        self.meldLocation = CGPoint(x: self.scene!.frame.midX - cardSize.width, y: self.scene!.frame.maxY - 1.75*cardSize.height)
+        self.meldLocation = CGPoint(x: self.scene!.frame.midX - 0.85*cardSize.width, y: self.scene!.frame.maxY - 1.75*cardSize.height)
         
         // Sets the locations of where the players' hands begin
         switch RummyGame.playersHands.count {
@@ -513,7 +513,7 @@ class RummyScene: SKScene {
             for cardIndex in 0..<cardCount {
                 let gridX = (self.RummyGame.melds.count - 1)%3
                 let gridY = (self.RummyGame.melds.count - 1)/3
-                let newX = meldLocation.x + (CGFloat(gridX) * 2*self.cardSize.width + CGFloat(cardIndex)/CGFloat(cardCount)*SCALE_FACTOR*cardSize.width)
+                let newX = meldLocation.x + (CGFloat(gridX) * 1.75*self.cardSize.width + CGFloat(cardIndex)/CGFloat(cardCount)*SCALE_FACTOR*cardSize.width)
                 let newY = meldLocation.y - 6*(CGFloat(gridY)*self.cardSize.height)/5
                 let newMeldLocation = CGPoint(x: newX, y: newY)
                 cardSpritesMeld[cardIndex].zPosition = CGFloat(cardIndex)
@@ -565,7 +565,7 @@ class RummyScene: SKScene {
             for sprite in cardSpritesLayOff {
                 let gridX = (meldIndex)%3
                 let gridY = (meldIndex)/3
-                let newMeldLocation = CGPoint(x: meldLocation.x + (CGFloat(gridX) * 2*self.cardSize.width) , y: meldLocation.y - (CGFloat(gridY) * 2*self.cardSize.height))
+                let newMeldLocation = CGPoint(x: meldLocation.x + (CGFloat(gridX) * 1.75*self.cardSize.width) , y: meldLocation.y - (CGFloat(gridY) * 2*self.cardSize.height))
                 sprite.runAction(SKAction.group([SKAction.moveTo(newMeldLocation, duration: 0.5), SKAction.scaleBy(SCALE_FACTOR, duration: 0.5)]))
                 if !sprite.faceUp {
                     sprite.flipCardOver()
@@ -615,7 +615,6 @@ class RummyScene: SKScene {
     
     func runAllComputerTurns() {
         print("Running computer turns...")
-        printCardsForDebug()
         setUserInteractionEnabledDeck(false)
         setUserInteractionEnabledWastePile(false)
         for player in self.RummyGame.players {
@@ -635,6 +634,7 @@ class RummyScene: SKScene {
     
     func AITurn(computer: RummyAI) {
         print("Taking computer turn", computer.player.playerNumber)
+        printCardsForDebug()
         
         var drawnCardSprite: RummyCardSprite
         
@@ -681,6 +681,9 @@ class RummyScene: SKScene {
         } else {
             self.RummyGame.turnDidStart()
         }
+        
+        print("Finished computer turn", computer.player.playerNumber)
+        printCardsForDebug()
         
     }
     
@@ -803,7 +806,7 @@ class RummyScene: SKScene {
             for cardIndex in 0..<numberOfCardsInMeld {
                 let gridX = (meldIndex)%3
                 let gridY = (meldIndex)/3
-                let newX = meldLocation.x + (CGFloat(gridX) * 2*self.cardSize.width + CGFloat(cardIndex)/CGFloat(numberOfCardsInMeld)*cardSize.width)
+                let newX = meldLocation.x + (CGFloat(gridX) * 1.75*self.cardSize.width + CGFloat(cardIndex)/CGFloat(numberOfCardsInMeld)*cardSize.width)
                 let newY = meldLocation.y - 6*(CGFloat(gridY)*self.cardSize.height)/5
                 let newMeldLocation = CGPoint(x: newX, y: newY)
                 if !cardSpritesMeld[cardIndex].faceUp {

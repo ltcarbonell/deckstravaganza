@@ -122,41 +122,7 @@ public class GCHelper: NSObject, GKMatchmakerViewControllerDelegate, GKGameCente
         presentingViewController.presentViewController(mmvc, animated: true, completion: nil)
     }
     
-    /**
-    Reports progress on an achievement to GameKit.
-    
-    :param: identifier A string that matches the identifier string used to create an achievement in iTunes Connect.
-    :param: percent A percentage value (0 - 100) stating how far the user has progressed on the achievement.
-    */
-    public func reportAchievementIdentifier(identifier: String, percent: Double) {
-        let achievement = GKAchievement(identifier: identifier)
-        
-        achievement.percentComplete = percent
-        achievement.showsCompletionBanner = true
-        GKAchievement.reportAchievements([achievement]) { (error) -> Void in
-            if error != nil {
-                print("Error in reporting achievements: \(error)")
-            }
-        }
-    }
-    
-    /**
-    Reports a high score eligible for placement on a leaderboard to GameKit.
-    
-    :param: identifier A string that matches the identifier string used to create a leaderboard in iTunes Connect.
-    :param: score The score earned by the user.
-    */
-    public func reportLeaderboardIdentifier(identifier: String, score: Int) {
-        let scoreObject = GKScore(leaderboardIdentifier: identifier)
-        scoreObject.value = Int64(score)
-        GKScore.reportScores([scoreObject]) { (error) -> Void in
-            if error != nil {
-                print("Error in reporting leaderboard scores: \(error)")
-            }
-        }
-    }
-    
-    /**
+       /**
     Presents the game center view controller provided by GameKit.
     
     :param: viewController The view controller to present GameKit's view controller from.

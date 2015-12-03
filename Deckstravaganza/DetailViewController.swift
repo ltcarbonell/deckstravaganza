@@ -10,6 +10,43 @@ import UIKit
 import SpriteKit
 import GameKit
 
+enum GameState : Int {
+    case kGameStateWaitingForMatch = 0
+    case kGameStateWaitingForStart
+    case kGameStateActive
+    case kGameStateDone
+    case kGameStateWaitingForRandomNumber
+}
+
+enum MessageType : Int {
+    case kMessageTypeGameBegin
+    case kMessageTypeAction
+    case kMessageTypeGameOver
+    case kMessageTypeRandomNumber
+}
+
+struct Message{
+    var messageType: MessageType
+}
+
+struct MessageRandomNumber{
+    var message: Message
+    var randomNumber: Int
+}
+
+struct MessageGameBegin{
+    var message: Message
+}
+
+struct MessageGameAction{
+    var message: Message
+}
+
+struct MessageGameOver{
+    var message: Message
+    var player1Won: Bool
+}
+
 let FIELD_START_FROM_TOP: CGFloat = 50;
 let FIELD_TOP_MARGIN: CGFloat = 10;
 let FIELD_HEIGHT: CGFloat = 40;
@@ -53,14 +90,68 @@ class DetailViewController: UIViewController, GCHelperDelegate {
         buttonOption.removeFromSuperview();
     }
     
+    
+/////////////////////////////////////// BEGIN MULTIPLAYER ///////////////////////////////////////////////////////
+    
+    var _gameState: GameState = .kGameStateWaitingForMatch
+    var _ourRandomNumber: Int = random()
+    var _isPlayer1: Bool = false
+    var _receivedAllRandomNumbers: Bool = false
+    var orderOfPlayers: NSMutableArray = []
+    var  playerIdKey = "PlayerId"
+    var randomNumberKey = "randomNumber"
+    
     /// Method called when a match has been initiated.
     func matchStarted(){
-        performSegueWithIdentifier("menuToGameSegue", sender: nil);
+        orderOfPlayers.addObject([playerIdKey: GKLocalPlayer.localPlayer().playerID!, randomNumberKey: _ourRandomNumber])
         
+        // performSegueWithIdentifier("menuToGameSegue", sender: nil);
+        print("Match has started successfully")
+        
+        if _receivedAllRandomNumbers {
+            _gameState = .kGameStateWaitingForStart
+        }
+        else {
+            _gameState = .kGameStateWaitingForRandomNumber
+        }
+        self.sendRandomNumber()
+        print("sent random number", _ourRandomNumber)
+        self.tryStartGame()
     }
     
     /// Method called when the device received data about the match from another device in the match.
-    func match(match: GKMatch, didReceiveData: NSData, fromPlayer: String){
+    func match(match: GKMatch, didReceiveData data: NSData, fromPlayer playerID: String){
+        
+        let message = UnsafePointer<Message>(data.bytes).memory
+        if message.messageType == MessageType.kMessageTypeRandomNumber {
+            let messageRandomNumber = UnsafePointer<MessageRandomNumber>(data.bytes).memory
+            print("recieved random number ", messageRandomNumber.randomNumber)
+            var tie: Bool = false
+            if (messageRandomNumber.randomNumber == _ourRandomNumber) {
+                print("tie")
+                tie = true
+                self._ourRandomNumber = random()
+                self.sendRandomNumber()
+            }
+            else {
+                let dictionary: [NSObject : AnyObject]  = [playerIdKey : playerID, randomNumberKey: messageRandomNumber.randomNumber]
+                // dictionary[playerID] = messageRandomNumber.randomNumber
+                
+                self.processReceivedRandomNumber(dictionary)
+                
+            }
+            if _receivedAllRandomNumbers {
+              //  self._isPlayer1 = self.isLocalPlayerPlayer1()
+            }
+            if !tie && _receivedAllRandomNumbers {
+                //5
+                if _gameState == .kGameStateWaitingForRandomNumber {
+                    self._gameState = .kGameStateWaitingForStart
+                }
+                self.tryStartGame()
+            }
+            
+        }
         
     }
     
@@ -69,10 +160,80 @@ class DetailViewController: UIViewController, GCHelperDelegate {
         
     }
     
+    func sendRandomNumber(){
+        var message1 = MessageRandomNumber(message: Message(messageType: .kMessageTypeRandomNumber), randomNumber: _ourRandomNumber)
+        let data = NSData(bytes: &message1, length: sizeof(MessageRandomNumber))
+        //  let data = str.dataUsingEncoding(NSUTF8StringEncoding)
+        self.sendData(data)
+    }
+    
+    func sendGameBegin() {
+        var message2 = MessageGameBegin(message: Message(messageType: .kMessageTypeGameBegin))
+        let data = NSData(bytes: &message2, length: sizeof(MessageGameBegin))
+        self.sendData(data)
+    }
+    
+    func tryStartGame(){
+        if _isPlayer1 && _gameState == .kGameStateWaitingForStart {
+            self._gameState = .kGameStateActive
+            self.sendGameBegin()
+        }
+        
+    }
+    
+    func processReceivedRandomNumber(randomNumberDetails: [NSObject : AnyObject]) {
+        //1
+        if orderOfPlayers.containsObject(randomNumberDetails) {
+            orderOfPlayers.removeObjectAtIndex(orderOfPlayers.indexOfObject(randomNumberDetails))
+        }
+        //2
+        orderOfPlayers.addObject(randomNumberDetails)
+        //3
+        let sortByRandomNumber: NSSortDescriptor = NSSortDescriptor(key: randomNumberKey, ascending: false)
+        let sortDescriptors: [NSSortDescriptor] = [sortByRandomNumber]
+        orderOfPlayers.sortUsingDescriptors(sortDescriptors)
+        //4
+        // if self.allRandomNumbersAreReceived() {
+        self._receivedAllRandomNumbers = true
+        //  }
+        
+    }
+    
+    //  func allRandomNumbersAreReceived() -> Bool{
+    //       var receivedRandomNumbers: [AnyObject] = NSMutableArray() as [AnyObject]
+    //       for dict: [NSObject: AnyObject] in orderOfPlayers {
+    //       receivedRandomNumbers.addObject(dict[randomNumberKey])
+    //   }
+    //       var arrayOfUniqueRandomNumbers: [AnyObject] = NSSet.setWithArray(receivedRandomNumbers).allObjects()
+    //   if arrayOfUniqueRandomNumbers.count == GCHelper.sharedInstance.match.playerIDs.count + 1 {
+    //       return true
+    //  }
+    
+    //      return false
+    //  }
     
     
+ //   func isLocalPlayerPlayer1() -> Bool {
+        
+ //       let dictionary: [NSObject : String] = orderOfPlayers[0]
+ //       if (dictionary[playerIdKey] == GKLocalPlayer.localPlayer().playerID) {
+ //           print("I'm player 1")
+ //           return true
+  //      }
+  //      return false
+        
+ //   }
     
+    func sendData(data: NSData){
+        do{
+            try GCHelper.sharedInstance.match.sendDataToAllPlayers(data, withDataMode: .Reliable)
+        }
+        catch{
+            print("An unknown error has occured")
+        }
+    }
     
+///////////////////////////////////////// END MULTIPLAYER /////////////////////////////////////////////////////////////////////////////////////
     
     func setupMenuUI() {
         gameOptions = nil;

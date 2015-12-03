@@ -349,14 +349,14 @@ class RummyScene: SKScene {
             let startGameNode = GameViewControllerButton(defaultButtonImage: "play_again_game_image", buttonAction: startGame)
             startGameNode.size = CGSize(width: scoreboardTable.width/3, height: scoreboardTable.width/5)
             startGameNode.position.x = scoreboardTable.midX
-            startGameNode.position.y = rows[self.RummyGame.roundScores.count + 2] + 0.5*startGameNode.size.height
+            startGameNode.position.y = scoreboardTable.minX - 0.25*startGameNode.size.height
             startGameNode.zPosition = 1000
             self.addChild(startGameNode)
         } else {
             let startRoundNode = GameViewControllerButton(defaultButtonImage: "start_round_image", buttonAction: startRound)
             startRoundNode.size = CGSize(width: scoreboardTable.width/3, height: scoreboardTable.width/5)
             startRoundNode.position.x = scoreboardTable.midX
-            startRoundNode.position.y = rows[self.RummyGame.roundScores.count + 2] + 0.5*startRoundNode.size.height
+            startRoundNode.position.y = scoreboardTable.minX - 0.25*startRoundNode.size.height
             startRoundNode.zPosition = 1000
             self.addChild(startRoundNode)
         }

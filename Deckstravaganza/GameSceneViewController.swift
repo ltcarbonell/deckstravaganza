@@ -22,9 +22,9 @@ class GameSceneViewController: UIViewController, UINavigationBarDelegate {
 
         // Do any additional setup after loading the view.
         spriteView = SKView(frame: self.view.frame);
-        spriteView.showsDrawCount = true
-        spriteView.showsNodeCount = true
-        spriteView.showsFPS = true
+        spriteView.showsDrawCount = false
+        spriteView.showsNodeCount = false
+        spriteView.showsFPS = false
         
         self.view.addSubview(spriteView);
     }

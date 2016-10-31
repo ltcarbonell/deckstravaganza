@@ -59,7 +59,7 @@ class DetailViewController: UIViewController, GCHelperDelegate {
     var gameOptions: [AdjustableSetting]? = nil;
     var newGame: Bool = true;
     
-    var menuDescription = UILabel(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.width, 30))
+    var menuDescription = UILabel(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 30))
     var formFields: [GameFormElement] = [];
     
     var buttonOption = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 20));
@@ -71,7 +71,7 @@ class DetailViewController: UIViewController, GCHelperDelegate {
         setupMenuUI();
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         self.view.setNeedsDisplay();
         self.view.setNeedsLayout();
     }
@@ -94,7 +94,7 @@ class DetailViewController: UIViewController, GCHelperDelegate {
 /////////////////////////////////////// BEGIN MULTIPLAYER ///////////////////////////////////////////////////////
     
     var _gameState: GameState = .kGameStateWaitingForMatch
-    var _ourRandomNumber: Int = random()
+    var _ourRandomNumber: Int = Int(arc4random())
     var _isPlayer1: Bool = false
     var _receivedAllRandomNumbers: Bool = false
     var orderOfPlayers: NSMutableArray = []
@@ -103,7 +103,7 @@ class DetailViewController: UIViewController, GCHelperDelegate {
     
     /// Method called when a match has been initiated.
     func matchStarted(){
-        orderOfPlayers.addObject([playerIdKey: GKLocalPlayer.localPlayer().playerID!, randomNumberKey: _ourRandomNumber])
+        orderOfPlayers.add([playerIdKey: GKLocalPlayer.localPlayer().playerID!, randomNumberKey: _ourRandomNumber])
         
         // performSegueWithIdentifier("menuToGameSegue", sender: nil);
         print("Match has started successfully")
@@ -120,21 +120,21 @@ class DetailViewController: UIViewController, GCHelperDelegate {
     }
     
     /// Method called when the device received data about the match from another device in the match.
-    func match(match: GKMatch, didReceiveData data: NSData, fromPlayer playerID: String){
+    func match(_ match: GKMatch, didReceiveData data: Data, fromPlayer playerID: String){
         
-        let message = UnsafePointer<Message>(data.bytes).memory
+        let message = (data as NSData).bytes.bindMemory(to: Message.self, capacity: data.count).pointee
         if message.messageType == MessageType.kMessageTypeRandomNumber {
-            let messageRandomNumber = UnsafePointer<MessageRandomNumber>(data.bytes).memory
+            let messageRandomNumber = (data as NSData).bytes.bindMemory(to: MessageRandomNumber.self, capacity: data.count).pointee
             print("recieved random number ", messageRandomNumber.randomNumber)
             var tie: Bool = false
             if (messageRandomNumber.randomNumber == _ourRandomNumber) {
                 print("tie")
                 tie = true
-                self._ourRandomNumber = random()
+                self._ourRandomNumber = Int(arc4random())
                 self.sendRandomNumber()
             }
             else {
-                let dictionary: [NSObject : AnyObject]  = [playerIdKey : playerID, randomNumberKey: messageRandomNumber.randomNumber]
+                let dictionary: [AnyHashable: Any]  = [playerIdKey : playerID, randomNumberKey: messageRandomNumber.randomNumber]
                 // dictionary[playerID] = messageRandomNumber.randomNumber
                 
                 self.processReceivedRandomNumber(dictionary)
@@ -162,15 +162,15 @@ class DetailViewController: UIViewController, GCHelperDelegate {
     
     func sendRandomNumber(){
         var message1 = MessageRandomNumber(message: Message(messageType: .kMessageTypeRandomNumber), randomNumber: _ourRandomNumber)
-        let data = NSData(bytes: &message1, length: sizeof(MessageRandomNumber))
+//        let data = Data(bytes: UnsafePointer<UInt8>(&message1), count: sizeof(MessageRandomNumber))
         //  let data = str.dataUsingEncoding(NSUTF8StringEncoding)
-        self.sendData(data)
+//        self.sendData(data)
     }
     
     func sendGameBegin() {
         var message2 = MessageGameBegin(message: Message(messageType: .kMessageTypeGameBegin))
-        let data = NSData(bytes: &message2, length: sizeof(MessageGameBegin))
-        self.sendData(data)
+//        let data = Data(bytes: UnsafePointer<UInt8>(&message2), count: sizeof(MessageGameBegin))
+//        self.sendData(data)
     }
     
     func tryStartGame(){
@@ -181,17 +181,17 @@ class DetailViewController: UIViewController, GCHelperDelegate {
         
     }
     
-    func processReceivedRandomNumber(randomNumberDetails: [NSObject : AnyObject]) {
+    func processReceivedRandomNumber(_ randomNumberDetails: [AnyHashable: Any]) {
         //1
-        if orderOfPlayers.containsObject(randomNumberDetails) {
-            orderOfPlayers.removeObjectAtIndex(orderOfPlayers.indexOfObject(randomNumberDetails))
+        if orderOfPlayers.contains(randomNumberDetails) {
+            orderOfPlayers.removeObject(at: orderOfPlayers.index(of: randomNumberDetails))
         }
         //2
-        orderOfPlayers.addObject(randomNumberDetails)
+        orderOfPlayers.add(randomNumberDetails)
         //3
         let sortByRandomNumber: NSSortDescriptor = NSSortDescriptor(key: randomNumberKey, ascending: false)
         let sortDescriptors: [NSSortDescriptor] = [sortByRandomNumber]
-        orderOfPlayers.sortUsingDescriptors(sortDescriptors)
+        orderOfPlayers.sort(using: sortDescriptors)
         //4
         // if self.allRandomNumbersAreReceived() {
         self._receivedAllRandomNumbers = true
@@ -224,9 +224,9 @@ class DetailViewController: UIViewController, GCHelperDelegate {
         
  //   }
     
-    func sendData(data: NSData){
+    func sendData(_ data: Data){
         do{
-            try GCHelper.sharedInstance.match.sendDataToAllPlayers(data, withDataMode: .Reliable)
+            try GCHelper.sharedInstance.match.sendData(toAllPlayers: data, with: .reliable)
         }
         catch{
             print("An unknown error has occured")
@@ -238,31 +238,31 @@ class DetailViewController: UIViewController, GCHelperDelegate {
     func setupMenuUI() {
         gameOptions = nil;
         menuDescription.text = selectedMenuOption.description;
-        menuDescription.font = UIFont.systemFontOfSize(25, weight: UIFontWeightBold);
-        menuDescription.textAlignment = .Center;
+        menuDescription.font = UIFont.systemFont(ofSize: 25, weight: UIFontWeightBold);
+        menuDescription.textAlignment = .center;
         
         if(splitViewController != nil) {
-            menuDescription.center = CGPoint(x: (UIScreen.mainScreen().bounds.width - splitViewController!.primaryColumnWidth) / 2, y: titleMargin);
+            menuDescription.center = CGPoint(x: (UIScreen.main.bounds.width - splitViewController!.primaryColumnWidth) / 2, y: titleMargin);
         } else {
-            menuDescription.center = CGPoint(x: CGRectGetMidX(UIScreen.mainScreen().bounds), y: titleMargin);
+            menuDescription.center = CGPoint(x: UIScreen.main.bounds.midX, y: titleMargin);
         }
         
         self.view.addSubview(menuDescription);
         
         if(selectedMenuOption.viewGameOptions && selectedMenuOption.gameType != nil) {
             switch(selectedMenuOption.gameType!) {
-            case .Solitaire:
+            case .solitaire:
                 gameOptions = Solitaire(selectedOptions: nil).getGameOptions();
-            case .Rummy:
+            case .rummy:
                 gameOptions = Rummy(selectedOptions: nil).getGameOptions();
             }
         }
         
         let elementFrame : CGRect;
         if(splitViewController != nil) {
-            elementFrame = CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width - splitViewController!.primaryColumnWidth, height: FIELD_HEIGHT);
+            elementFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - splitViewController!.primaryColumnWidth, height: FIELD_HEIGHT);
         } else {
-            elementFrame = CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: FIELD_HEIGHT);
+            elementFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: FIELD_HEIGHT);
         }
         
         var numberFields = 0;
@@ -273,72 +273,72 @@ class DetailViewController: UIViewController, GCHelperDelegate {
                 elementLabel.text = gameOption.settingName;
                 
                 switch(gameOption.formType) {
-                case .Cards:
+                case .cards:
                     element = GameFormElement(frame: CGRect(), settingName: "", formLabel: nil, formField: UIView());
                     break;
-                case .DropDown:
+                case .dropDown:
                     let elementField = GenericPickerView(data: gameOption.options);
                     elementField.dataSource = elementField;
                     elementField.delegate = elementField;
                     
                     element = GameFormElement(frame: elementFrame, settingName: gameOption.settingName, formLabel: elementLabel, formField: elementField);
-                case .Slider:
+                case .slider:
                     let elementField = GenericSliderView(data: gameOption.options);
                     
                     element = GameFormElement(frame: elementFrame, settingName: gameOption.settingName, formLabel: elementLabel, formField: elementField);
-                case .Switch:
+                case .switch:
                     let elementField = GenericSwitchView();
                     
                     /* All switches are assumed to be for multiplayer settings. */
-                    elementField.addTarget(self, action: "updateMultiplayer:", forControlEvents: UIControlEvents.AllTouchEvents);
+                    elementField.addTarget(self, action: #selector(DetailViewController.updateMultiplayer(_:)), for: UIControlEvents.allTouchEvents);
                     
                     element = GameFormElement(frame: elementFrame, settingName: gameOption.settingName, formLabel: elementLabel, formField: elementField);
                 }
                 
-                element.center = CGPoint(x: CGRectGetMidX(elementFrame), y: FIELD_START_FROM_TOP + FIELD_TOP_MARGIN + (CGFloat(numberFields) * FIELD_HEIGHT) + TITLE_SIZE);
+                element.center = CGPoint(x: elementFrame.midX, y: FIELD_START_FROM_TOP + FIELD_TOP_MARGIN + (CGFloat(numberFields) * FIELD_HEIGHT) + TITLE_SIZE);
                 
                 formFields.append(element);
                 
                 self.view.addSubview(formFields.last!);
                 
-                numberFields++;
+                numberFields += 1;
             }
         }
         
         buttonOption.frame = buttonFrame;
-        buttonOption.center = CGPoint(x: CGRectGetMidX(elementFrame), y: FIELD_START_FROM_TOP + FIELD_TOP_MARGIN + (CGFloat(numberFields) * FIELD_HEIGHT) + TITLE_SIZE);
+        buttonOption.center = CGPoint(x: elementFrame.midX, y: FIELD_START_FROM_TOP + FIELD_TOP_MARGIN + (CGFloat(numberFields) * FIELD_HEIGHT) + TITLE_SIZE);
         buttonOption.alpha = 0.8;
-        buttonOption.backgroundColor = UIColor.clearColor();
-        buttonOption.setTitleColor(UIColor(red: 0, green: 122.0/255.0, blue: 1.0, alpha: 1.0), forState: .Normal);
-        buttonOption.setTitleColor(UIColor(red: 0, green: 122.0/255.0, blue: 1.0, alpha: 0.5), forState: .Highlighted);
-        buttonOption.userInteractionEnabled = true;
+        buttonOption.backgroundColor = UIColor.clear;
+        buttonOption.setTitleColor(UIColor(red: 0, green: 122.0/255.0, blue: 1.0, alpha: 1.0), for: UIControlState());
+        buttonOption.setTitleColor(UIColor(red: 0, green: 122.0/255.0, blue: 1.0, alpha: 0.5), for: .highlighted);
+        buttonOption.isUserInteractionEnabled = true;
         
         if(selectedMenuOption.name == "Continue") {
-            buttonOption.setTitle("Continue", forState: .Normal);
+            buttonOption.setTitle("Continue", for: UIControlState());
             
             newGame = false;
             
             if(gameScene == nil) {
                 // Continue should be disabled.
-                buttonOption.userInteractionEnabled = false;
-                buttonOption.setTitleColor(UIColor.lightGrayColor(), forState: .Normal);
+                buttonOption.isUserInteractionEnabled = false;
+                buttonOption.setTitleColor(UIColor.lightGray, for: UIControlState());
             }
         } else {
-            buttonOption.setTitle("Play", forState: .Normal);
+            buttonOption.setTitle("Play", for: UIControlState());
 
             newGame = true;
         }
         
         self.view.addSubview(buttonOption);
         
-        buttonOption.hidden = false;
+        buttonOption.isHidden = false;
         buttonOption.setNeedsDisplay();
         buttonOption.setNeedsLayout();
         
-        buttonOption.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside);
+        buttonOption.addTarget(self, action: #selector(DetailViewController.buttonPressed(_:)), for: .touchUpInside);
     }
     
-    func buttonPressed(sender: UIButton?) {
+    func buttonPressed(_ sender: UIButton?) {
         if(sender != nil) {
             if(sender!.titleLabel?.text == "Continue") {
                 if(gameScene == nil) {
@@ -347,11 +347,11 @@ class DetailViewController: UIViewController, GCHelperDelegate {
             }
         }
         
-        performSegueWithIdentifier("menuToGameSegue", sender: sender);
+        performSegue(withIdentifier: "menuToGameSegue", sender: sender);
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let gameViewController = (segue.destinationViewController as? GameSceneViewController) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let gameViewController = (segue.destination as? GameSceneViewController) {
             gameViewController.gameType = selectedMenuOption.gameType;
             gameViewController.newGame = self.newGame;
             gameViewController.selectedMenuOption = self.selectedMenuOption;
@@ -360,15 +360,15 @@ class DetailViewController: UIViewController, GCHelperDelegate {
             
             if(sender != nil && selectedOptions != nil) {
                 if((sender! as! UIButton).titleLabel?.text != "Continue") {
-                    for(var index = selectedOptions!.count - 1; index >= 0; index--) {
+                    for index in (0 ..< selectedOptions!.count).reversed() {
                         switch(selectedOptions![index].formType) {
-                        case .Cards:
+                        case .cards:
                             break;
-                        case .DropDown:
+                        case .dropDown:
                             selectedOptions![index].options = [(formFields[index].formField as! GenericPickerView).getResults()];
-                        case .Slider:
+                        case .slider:
                             selectedOptions![index].options = [(formFields[index].formField as! GenericSliderView).getResults()];
-                        case .Switch:
+                        case .switch:
                             selectedOptions![index].options = [(formFields[index].formField as! GenericSwitchView).getResults()];
                         }
                     }
@@ -383,9 +383,9 @@ class DetailViewController: UIViewController, GCHelperDelegate {
         }
     }
     
-    func updateMultiplayer(sender: UISwitch?) {
+    func updateMultiplayer(_ sender: UISwitch?) {
         if(sender != nil) {
-            if(sender!.on) {
+            if(sender!.isOn) {
                 // Start multiplayer.
         GCHelper.sharedInstance.findMatchWithMinPlayers(2, maxPlayers: 4, viewController: self, delegate: self)
                 
@@ -411,7 +411,7 @@ class DetailViewController: UIViewController, GCHelperDelegate {
 
 
 extension DetailViewController: MenuSelectionDelegate {
-    func menuSelected(newMenu: Menu) {
+    func menuSelected(_ newMenu: Menu) {
         selectedMenuOption = newMenu;
     }   
 } 

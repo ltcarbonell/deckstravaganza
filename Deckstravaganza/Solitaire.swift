@@ -22,16 +22,16 @@ class Solitaire: CardGame {
     var adjustableSettings = [
         AdjustableSetting(
             settingName: "Card Type",
-            formType: FormType.Cards,
-            dataType: DataType.Image,
+            formType: FormType.cards,
+            dataType: DataType.image,
             options: []
         )
     ];
     
     // Difficulty levels possibly in solitaire
     enum Difficulty : Int {
-        case Easy = 1
-        case Hard = 3
+        case easy = 1
+        case hard = 3
     }
     
     // Properties of Solitaire
@@ -59,7 +59,7 @@ class Solitaire: CardGame {
     
     // initializer
     init(selectedOptions: [AdjustableSetting]?) {
-        self.diff = .Easy
+        self.diff = .easy
         self.selectedOptions = selectedOptions
         // deals the cards out for the first and only time
         // calls from Solitaire delagate
@@ -113,24 +113,24 @@ class Solitaire: CardGame {
             // take a turn
             //turn()
             gameDelegate.roundDidEnd(self)
-            gameDelegate.numberOfRounds++
+            gameDelegate.numberOfRounds += 1
             gameDelegate.increaseScore(self)
         }
         gameDelegate.gameDidEnd(self)
     }
     
-    func setPlayers(numberOfPlayers: Int) {
+    func setPlayers(_ numberOfPlayers: Int) {
         self.players = [Player(userName: "Player 1", score: 0, playerNumber: 1, isComputer: false)]  // only one player... hence Solitaire
     }
     
     // Moves the top card of a pile and moves it to the new pile
-    func moveTopCard(fromPile: StackPile, toPile: StackPile) {
+    func moveTopCard(_ fromPile: StackPile, toPile: StackPile) {
         toPile.push(fromPile.pull()!)
     }
     
     // Moves multiple cards from a pile to a new pile
     // uses a temporary pile to help moves them
-    func moveGroupedCards(numberOfCardsToMove: Int, fromPile: StackPile, toPile: StackPile) {
+    func moveGroupedCards(_ numberOfCardsToMove: Int, fromPile: StackPile, toPile: StackPile) {
         let tempPile = StackPile()
         for _ in 0..<numberOfCardsToMove {
             tempPile.push(fromPile.pull()!)
@@ -139,12 +139,12 @@ class Solitaire: CardGame {
         
     }
     
-    func checkMove(card: Card, previousPile: StackPile, newPile: StackPile) -> Bool {
+    func checkMove(_ card: Card, previousPile: StackPile, newPile: StackPile) -> Bool {
         // if coming from wastePile and going to tableu, has to be one less and opposite color as tableu.top or king and empty space
         if previousPile.name == wastePile.name && newPile.name == tableus[0].name {
             // if the tableu it is going to is empty, it must be a king of any suit
             if newPile.isEmpty() {
-                if card.getRank() == .King {
+                if card.getRank() == .king {
                 return true
                 } else {
                     return false
@@ -162,7 +162,7 @@ class Solitaire: CardGame {
         else if previousPile.name == wastePile.name && newPile.name == foundations[0].name {
             // checks if foundation is empty, if so it must be an ace that goes to the foundation
             if newPile.isEmpty() {
-                if card.getRank() == .Ace {
+                if card.getRank() == .ace {
                     return true
                 } else {
                     return false
@@ -179,7 +179,7 @@ class Solitaire: CardGame {
         else if previousPile.name == tableus[0].name && newPile.name == foundations[0].name {
             // checks if foundation is empty, if so it must be an ace that goes to the foundation
             if newPile.isEmpty() {
-                if card.getRank() == .Ace {
+                if card.getRank() == .ace {
                     return true
                 } else {
                     return false
@@ -196,7 +196,7 @@ class Solitaire: CardGame {
         else if foundations[0].name == previousPile.name && tableus[0].name == newPile.name {
             // if the tableu it is going to is empty, it must be a king of any suit
             if newPile.isEmpty() {
-                if card.getRank() == .King {
+                if card.getRank() == .king {
                     return true
                 } else {
                     return false
@@ -213,7 +213,7 @@ class Solitaire: CardGame {
         else if tableus[0].name == previousPile.name && tableus[0].name == newPile.name {
             // HAVE TO BE ABLE TO MOVE MULTIPLE CARDS AT ONE TIME
             if newPile.isEmpty() {
-                if card.getRank() == .King {
+                if card.getRank() == .king {
                     return true
                 } else {
                     return false
@@ -238,11 +238,13 @@ class Solitaire: CardGame {
         print("Waste: \(self.wastePile.numberOfCards())")
         var Count = 0
         for tableu in self.tableus {
-            print("Tableu\(Count++): \(tableu.numberOfCards())")
+            print("Tableu\(Count): \(tableu.numberOfCards())")
+            Count += 1
         }
         var count = 0
         for foundation in self.foundations {
-            print("Foundation\(count++): \(foundation.numberOfCards())")
+            print("Foundation\(count): \(foundation.numberOfCards())")
+            count += 1
         }
     }
 }
@@ -251,7 +253,7 @@ class SolitaireDelegate: CardGameDelegate {
     var numberOfRounds = 0
     typealias cardGameType = Solitaire
     
-    func deal(Game: Solitaire) {
+    func deal(_ Game: Solitaire) {
         var newCard: Card
         // calls a brand new, newly shuffled deck
         Game.deck.newDeck()
@@ -267,8 +269,8 @@ class SolitaireDelegate: CardGameDelegate {
         }
         
         // places the cards into the tableus 1->7
-        for var i = 0; i < 7; i++ {
-            for var j = 0; j < i+1; j++ {
+        for i in 0 ..< 7 {
+            for j in 0 ..< i+1 {
                 newCard = Game.deck.pull()!
                 Game.tableus[i].push(newCard)
             }
@@ -277,14 +279,14 @@ class SolitaireDelegate: CardGameDelegate {
     
     
     // these are used to keep track of the status of the game
-    func gameDidStart(Game: Solitaire) {
+    func gameDidStart(_ Game: Solitaire) {
         numberOfRounds = 0
     }
     
-    func gameDidEnd(Game: Solitaire) {
+    func gameDidEnd(_ Game: Solitaire) {
         
     }
-    func isWinner(Game: Solitaire) -> Bool {
+    func isWinner(_ Game: Solitaire) -> Bool {
         //        if Game.foundations[0].numberOfCards() == 13 && Game.foundations[1].numberOfCards() == 13  && Game.foundations[2].numberOfCards() == 13 && Game.foundations[3].numberOfCards() == 13 {
         //            return true
         //        } else {
@@ -298,16 +300,16 @@ class SolitaireDelegate: CardGameDelegate {
     }
     
     // used to keep track of the rounds which are when all players take their turn
-    func roundDidStart(Game: Solitaire) {
+    func roundDidStart(_ Game: Solitaire) {
     }
     
     //
-    func roundDidEnd(Game: Solitaire) {
+    func roundDidEnd(_ Game: Solitaire) {
     }
     
     // keeps score for the player
-    func increaseScore(Game: Solitaire) {
-        Game.players[0].score++
+    func increaseScore(_ Game: Solitaire) {
+        Game.players[0].score += 1
     }
     
 }

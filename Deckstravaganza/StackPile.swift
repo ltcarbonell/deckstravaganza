@@ -14,7 +14,7 @@ class StackPile: Pile {
     * card is defined as the card that has its back facing away from
     * all the other cards.
     */
-    private let topAtFirstCard : Bool;
+    fileprivate let topAtFirstCard : Bool;
     
     override init() {
         topAtFirstCard = false;
@@ -35,7 +35,7 @@ class StackPile: Pile {
         
         if(topAtFirstCard) {
             while(!oldPile.isEmpty()) {
-                pile.insert(oldPile.pull()!, atIndex: 0);
+                pile.insert(oldPile.pull()!, at: 0);
             }
         } else {
             while(!oldPile.isEmpty()) {
@@ -49,9 +49,9 @@ class StackPile: Pile {
     *
     * @param newCard : Card - the card to insert at the top of the stack
     */
-    func push(newCard : Card) {
+    func push(_ newCard : Card) {
         if(topAtFirstCard) {
-            pile.insert(newCard, atIndex: 0);
+            pile.insert(newCard, at: 0);
         } else {
             pile.append(newCard);
         }
@@ -64,7 +64,7 @@ class StackPile: Pile {
     */
     func pull() -> Card? {
         if(topAtFirstCard) {
-            return pile.removeAtIndex(0);
+            return pile.remove(at: 0);
         } else {
             return pile.popLast();
         }
@@ -94,8 +94,9 @@ class StackPile: Pile {
     *
     * @param newPile : Pile - the pile to add to this pile
     */
-    func addToStackFromFirstCardOf(newPile : Pile) {
-        for(var index = 0, cardCount = newPile.numberOfCards(); index < cardCount; index++) {
+    func addToStackFromFirstCardOf(_ newPile : Pile) {
+        let cardCount = newPile.numberOfCards()
+        for index in 0 ..< cardCount {
             self.push(newPile.cardAt(index)!);
         }
         
@@ -109,8 +110,9 @@ class StackPile: Pile {
     *
     * @param newPile : Pile - the pile to add to this pile
     */
-    func addToStackFromLastCardOf(newPile : Pile) {
-        for(var index = 0, cardCount = newPile.numberOfCards(); index < cardCount; index++) {
+    func addToStackFromLastCardOf(_ newPile : Pile) {
+        let cardCount = newPile.numberOfCards()
+        for index in 0 ..< cardCount {
             self.push(newPile.cardAt(cardCount - 1 - index)!);
         }
         

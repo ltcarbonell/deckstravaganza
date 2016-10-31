@@ -14,47 +14,47 @@ class GameViewControllerButton: SKSpriteNode {
     var defaultButton: SKSpriteNode;
     var action: () -> Void
     
-    init(defaultButtonImage: String, buttonAction: () -> Void) {
+    init(defaultButtonImage: String, buttonAction: @escaping () -> Void) {
         defaultButton = SKSpriteNode(imageNamed: defaultButtonImage)
         action = buttonAction
         
         let imageTexture = SKTexture(imageNamed: defaultButtonImage)
-        super.init(texture: imageTexture, color: UIColor.blackColor(), size: imageTexture.size())
+        super.init(texture: imageTexture, color: UIColor.black, size: imageTexture.size())
         
-        userInteractionEnabled = true
+        isUserInteractionEnabled = true
     }
     
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        defaultButton.hidden = true
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        defaultButton.isHidden = true
     }
     
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         for touch in touches {
-            let location: CGPoint = touch.locationInNode(self)
+            let location: CGPoint = touch.location(in: self)
             
-            if defaultButton.containsPoint(location) {
-                defaultButton.hidden = true
+            if defaultButton.contains(location) {
+                defaultButton.isHidden = true
             } else {
-                defaultButton.hidden = false
+                defaultButton.isHidden = false
             }
         }
         
     }
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
-            let location: CGPoint = touch.locationInNode(self)
+            let location: CGPoint = touch.location(in: self)
             
-            if defaultButton.containsPoint(location) {
+            if defaultButton.contains(location) {
                 action()
             }
             
-            defaultButton.hidden = false
+            defaultButton.isHidden = false
             self.removeFromParent()
         }
         

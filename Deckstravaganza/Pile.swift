@@ -41,7 +41,7 @@ class Pile {
      * @param card : Card - the index of the card to return in the pile
      * @return Card? - the card at index
      */
-    func removeCard(card : Card) -> Card? {
+    func removeCard(_ card : Card) -> Card? {
         var index = -1
         for cardIndex in 0..<pile.count {
             if card.isEqualTo(pile[cardIndex], ignoreSuit:  false) {
@@ -62,7 +62,7 @@ class Pile {
     * @param index : Int - the index of the card to return in the pile
     * @return Card? - the card at index
     */
-    func cardAt(index : Int) -> Card? {
+    func cardAt(_ index : Int) -> Card? {
         if(index >= 0 && index < pile.count) {
             return pile[index];
         } else {
@@ -76,9 +76,9 @@ class Pile {
      * @param index : Int - the index of the card to return in the pile
      * @return Card? - the card at index
      */
-    func removeCardAt(index : Int) -> Card? {
+    func removeCardAt(_ index : Int) -> Card? {
         if(index >= 0 && index < pile.count) {
-            return pile.removeAtIndex(index);
+            return pile.remove(at: index);
         } else {
             return nil;
         }
@@ -90,9 +90,9 @@ class Pile {
      * @param index : Int - the index of the card to insert in the pile
      * @param Card - the card at index
      */
-    func insertCardAt(card: Card, index : Int) {
+    func insertCardAt(_ card: Card, index : Int) {
         if(index >= 0 && index < pile.count) {
-            return pile.insert(card, atIndex: index);
+            return pile.insert(card, at: index);
         } else {
             return pile.append(card);
         }
@@ -103,7 +103,7 @@ class Pile {
      *
      * @param card : Card - the card to be inserted into the pile
      */
-    func appendCard(card : Card) {
+    func appendCard(_ card : Card) {
         pile.append(card);
     }
     
@@ -115,7 +115,7 @@ class Pile {
      * @ return Bool
      */
      
-    func contains(card: Card) -> Bool {
+    func contains(_ card: Card) -> Bool {
         for searchCard in pile {
             if card.isEqualTo(searchCard, ignoreSuit: false) {
                 return true
@@ -154,8 +154,8 @@ class Pile {
      *
      * @param card: acesLow: Bool - True if Aces should be considered low.
      */
-    func sortByRank(acesLow: Bool) {
-        pile.sortInPlace { (card1: Card, card2: Card) -> Bool in
+    func sortByRank(_ acesLow: Bool) {
+        pile.sort { (card1: Card, card2: Card) -> Bool in
             return card1.isHigherThan(card2, acesLow: acesLow)
         }
     }
@@ -167,7 +167,7 @@ class Pile {
      * @return Bool
      */
     func sortBySuit() {
-        pile.sortInPlace { (card1: Card, card2: Card) -> Bool in
+        pile.sort { (card1: Card, card2: Card) -> Bool in
             return card1.getSuit().hashValue < card2.getSuit().hashValue
         }
     }

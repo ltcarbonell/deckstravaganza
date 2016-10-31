@@ -49,8 +49,8 @@ class GenericSliderView: UISlider, GenericFormElements {
         
         self.addSubview(valueLabel);
         
-        super.continuous = true;
-        super.addTarget(self, action: "updateSliderValue:", forControlEvents: UIControlEvents.ValueChanged);
+        super.isContinuous = true;
+        super.addTarget(self, action: #selector(GenericSliderView.updateSliderValue(_:)), for: UIControlEvents.valueChanged);
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -61,7 +61,7 @@ class GenericSliderView: UISlider, GenericFormElements {
         return UISlider().frame;
     }
     
-    func updateSliderValue(sender: UISlider) {
+    func updateSliderValue(_ sender: UISlider) {
         actualValue = Int((super.value + min) * stepSize);
         valueLabel.text = String(actualValue);
     }

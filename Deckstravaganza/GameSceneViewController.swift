@@ -34,23 +34,23 @@ class GameSceneViewController: UIViewController, UINavigationBarDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         if(gameType == nil && newGame) {
-            performSegueWithIdentifier("gameToMenu", sender: nil);
+            performSegue(withIdentifier: "gameToMenu", sender: nil);
             return;
         } else if(gameScene == nil && !newGame) {
-            performSegueWithIdentifier("gameToMenu", sender: nil);
+            performSegue(withIdentifier: "gameToMenu", sender: nil);
             return;
         }
         
         if(newGame) {
             switch(gameType!) {
-            case .Solitaire:
+            case .solitaire:
                 let game = Solitaire(selectedOptions: selectedOptions);
-                gameScene = SolitaireScene(gameScene: self, game: game, gameDelegate: SolitaireDelegate(), size: CGSizeMake(768, 1024));
-            case .Rummy:
+                gameScene = SolitaireScene(gameScene: self, game: game, gameDelegate: SolitaireDelegate(), size: CGSize(width: 768, height: 1024));
+            case .rummy:
                 let game = Rummy(selectedOptions: selectedOptions);
-                gameScene = RummyScene(gameScene: self, game: game, size: CGSizeMake(768, 1024));
+                gameScene = RummyScene(gameScene: self, game: game, size: CGSize(width: 768, height: 1024));
             }
         }
         
@@ -59,18 +59,18 @@ class GameSceneViewController: UIViewController, UINavigationBarDelegate {
         // Create navigation bar.
         let navigationBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 30));
         navigationBar.delegate = self;
-        navigationBar.backgroundColor = UIColor.whiteColor();
+        navigationBar.backgroundColor = UIColor.white;
         navigationBar.alpha = 0.7;
         
         // Create the navigation item
         let barItem = UINavigationItem();
         
         // Create navigation bar items
-        let backButton = UIBarButtonItem(title: "Menu", style: .Plain, target: self, action: "backToMenu:");
-        let newGameButton = UIBarButtonItem(title: "New Game", style: .Plain, target: self, action: "startNewGame:");
+        let backButton = UIBarButtonItem(title: "Menu", style: .plain, target: self, action: #selector(GameSceneViewController.backToMenu(_:)));
+        let newGameButton = UIBarButtonItem(title: "New Game", style: .plain, target: self, action: #selector(GameSceneViewController.startNewGame(_:)));
         
-        backButton.setBackButtonTitlePositionAdjustment(UIOffset(horizontal: 0, vertical: 15), forBarMetrics: UIBarMetrics.Default);
-        newGameButton.setBackButtonTitlePositionAdjustment(UIOffset(horizontal: 0, vertical: 10), forBarMetrics: UIBarMetrics.Default);
+        backButton.setBackButtonTitlePositionAdjustment(UIOffset(horizontal: 0, vertical: 15), for: UIBarMetrics.default);
+        newGameButton.setBackButtonTitlePositionAdjustment(UIOffset(horizontal: 0, vertical: 10), for: UIBarMetrics.default);
         
         barItem.leftBarButtonItem = backButton;
         barItem.rightBarButtonItem = newGameButton;
@@ -84,32 +84,32 @@ class GameSceneViewController: UIViewController, UINavigationBarDelegate {
         self.view.addSubview(navigationBar);
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if(segue.destinationViewController is DetailViewController) {
-            (segue.destinationViewController as! DetailViewController).selectedMenuOption = selectedMenuOption;
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.destination is DetailViewController) {
+            (segue.destination as! DetailViewController).selectedMenuOption = selectedMenuOption;
         }
     }
     
-    func backToMenu(sender: UIBarButtonItem) {
+    func backToMenu(_ sender: UIBarButtonItem) {
         if(self.navigationController != nil) {
-            self.navigationController!.popToRootViewControllerAnimated(true);
+            self.navigationController!.popToRootViewController(animated: true);
         } else if let menuSplitViewController = self.splitViewController as? MenuSplitViewController {
             menuSplitViewController.toggleMasterView();
         }
     }
     
-    func startNewGame(sender: UIBarButtonItem?) {
+    func startNewGame(_ sender: UIBarButtonItem?) {
         gameScene!.removeEverything();
         spriteView.presentScene(nil);
         gameScene = nil;
         
         switch(gameType!) {
-        case .Solitaire:
+        case .solitaire:
             let game = Solitaire(selectedOptions: selectedOptions);
-            gameScene = SolitaireScene(gameScene: self, game: game, gameDelegate: SolitaireDelegate(), size: CGSizeMake(768, 1024));
-        case .Rummy:
+            gameScene = SolitaireScene(gameScene: self, game: game, gameDelegate: SolitaireDelegate(), size: CGSize(width: 768, height: 1024));
+        case .rummy:
             let game = Rummy(selectedOptions: selectedOptions);
-            gameScene = RummyScene(gameScene: self, game: game, size: CGSizeMake(768, 1024));
+            gameScene = RummyScene(gameScene: self, game: game, size: CGSize(width: 768, height: 1024));
         }
     
         spriteView.presentScene(gameScene);

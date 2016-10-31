@@ -11,52 +11,52 @@ import UIKit
 class Card {
     // Enumeration of legal card suits.
     enum CardSuit : Int {
-        case Clubs =    1;
-        case Diamonds = 2;
-        case Hearts =   3;
-        case Spades =   4;
+        case clubs =    1;
+        case diamonds = 2;
+        case hearts =   3;
+        case spades =   4;
         
         static let numberOfSuits = 4;
     }
     
     // Enumeration of legal card ranks and rank value.
     enum CardRank : Int {
-        case Ace =    1;
-        case Two =    2;
-        case Three =  3;
-        case Four =   4;
-        case Five =   5;
-        case Six =    6;
-        case Seven =  7;
-        case Eight =  8;
-        case Nine =   9;
-        case Ten =    10;
-        case Jack =   11;
-        case Queen =  12;
-        case King =   13;
+        case ace =    1;
+        case two =    2;
+        case three =  3;
+        case four =   4;
+        case five =   5;
+        case six =    6;
+        case seven =  7;
+        case eight =  8;
+        case nine =   9;
+        case ten =    10;
+        case jack =   11;
+        case queen =  12;
+        case king =   13;
         
-        case Joker =  14;
+        case joker =  14;
         
         static let numberOfRanks = 13;
     }
     
     // Enumeration of legal card colors.
     enum CardColor : Int {
-        case Red =      1;
-        case Black =    2;
+        case red =      1;
+        case black =    2;
     }
     
     // All card properties are immutable and private.
-    private let suit : CardSuit;
-    private let rank : CardRank;
+    fileprivate let suit : CardSuit;
+    fileprivate let rank : CardRank;
     
     // The color of the card is determined by the suit.
-    private var color : CardColor {
+    fileprivate var color : CardColor {
         get {
-            if(self.suit == .Clubs || self.suit == .Spades) {
-                return CardColor.Black;
+            if(self.suit == .clubs || self.suit == .spades) {
+                return CardColor.black;
             } else {
-                return CardColor.Red;
+                return CardColor.red;
             }
         }
     }
@@ -99,7 +99,7 @@ class Card {
     * @param card : Card - The card with which to compare this card.
     * @return Bool - true if both cards have the same rank
     */
-    func hasSameRankAs(card : Card) -> Bool {
+    func hasSameRankAs(_ card : Card) -> Bool {
         return (self.rank == card.getRank());
     }
     
@@ -109,7 +109,7 @@ class Card {
     * @param card : Card - The card with which to compare this card.
     * @return Bool - true if both cards have the same suit
     */
-    func hasSameSuitAs(card : Card) -> Bool {
+    func hasSameSuitAs(_ card : Card) -> Bool {
         return (self.suit == card.getSuit());
     }
     
@@ -119,7 +119,7 @@ class Card {
     * @param card : Card - The card with which to compare this card.
     * @return Bool - true if both cards have the same color
     */
-    func hasSameColorAs(card : Card) -> Bool {
+    func hasSameColorAs(_ card : Card) -> Bool {
         return (self.color == card.getColor());
     }
     
@@ -129,7 +129,7 @@ class Card {
     * @param card : Card - The card with which to compare this card.
     * @return Bool - true if this card has the opposite color of the specified card
     */
-    func hasOppositeColorThan(card : Card) -> Bool {
+    func hasOppositeColorThan(_ card : Card) -> Bool {
         return (self.color != card.getColor());
     }
     
@@ -140,13 +140,13 @@ class Card {
     * @param acesLow : Bool - True if Aces should be considered low.
     * @return Bool - true if this card has a higher rank than the specified card
     */
-    func isHigherThan(card : Card, acesLow : Bool) -> Bool {
-        if(acesLow || (!acesLow && self.rank != .Ace && card.getRank() != .Ace)) {
+    func isHigherThan(_ card : Card, acesLow : Bool) -> Bool {
+        if(acesLow || (!acesLow && self.rank != .ace && card.getRank() != .ace)) {
             return (self.rank.rawValue < card.getRank().rawValue);
         } else {
-            if(self.rank == .Ace && card.getRank() != .Ace) {
+            if(self.rank == .ace && card.getRank() != .ace) {
                 return true;
-            } else if(self.rank != .Ace && card.getRank() == .Ace) {
+            } else if(self.rank != .ace && card.getRank() == .ace) {
                 return false;
             } else {
                 return false;
@@ -161,13 +161,13 @@ class Card {
     * @param acesLow : Bool - True if Aces should be considered low.
     * @return Bool - true if this card has a lower rank than the specified card
     */
-    func isLowerThan(card : Card, acesLow : Bool) -> Bool {
-        if(acesLow || (!acesLow && self.rank != .Ace && card.getRank() != .Ace)) {
+    func isLowerThan(_ card : Card, acesLow : Bool) -> Bool {
+        if(acesLow || (!acesLow && self.rank != .ace && card.getRank() != .ace)) {
             return (self.rank.rawValue > card.getRank().rawValue);
         } else {
-            if(self.rank == .Ace && card.getRank() != .Ace) {
+            if(self.rank == .ace && card.getRank() != .ace) {
                 return false;
-            } else if(self.rank != .Ace && card.getRank() == .Ace) {
+            } else if(self.rank != .ace && card.getRank() == .ace) {
                 return true;
             } else {
                 return false;
@@ -185,7 +185,7 @@ class Card {
     * @param ignoreSuit : Bool (default true) - True if suit should not be considered; false otherwise.
     * @return Bool - true if this card is equal to the specified card
     */
-    func isEqualTo(card : Card, ignoreSuit : Bool = true) -> Bool {
+    func isEqualTo(_ card : Card, ignoreSuit : Bool = true) -> Bool {
         if(ignoreSuit) {
             return (self.rank == card.getRank());
         } else {
@@ -199,38 +199,38 @@ class Card {
     * @param deckChoice : DeckFronts - the deck front being used by this deck to which this card belongs
     * @return UIImage? - the face of this card if found
     */
-    func getCardFace(deckChoice : Deck.DeckFronts) -> UIImage? {
+    func getCardFace(_ deckChoice : Deck.DeckFronts) -> UIImage? {
         let cardRank : String;
         let cardSuit : String;
         var cardOption : Deck.DeckFronts = deckChoice;
         
         switch(self.suit) {
-            case .Clubs:
+            case .clubs:
                 cardSuit = "clubs";
-            case .Diamonds:
+            case .diamonds:
                 cardSuit = "diamonds";
-            case .Hearts:
+            case .hearts:
                 cardSuit = "hearts";
-            case .Spades:
+            case .spades:
                 cardSuit = "spades";
         }
         
         switch(self.rank) {
-            case .Ace:
+            case .ace:
                 cardRank = "ace";
-            case .Jack:
+            case .jack:
                 cardRank = "jack";
-            case .Queen:
+            case .queen:
                 cardRank = "queen";
-            case .King:
+            case .king:
                 cardRank = "king";
             default:
                 cardRank = String(self.rank.rawValue);
         }
         
         // The only difference between Deck1 and Deck2 are the Kings, Queens, and Jacks.
-        if(self.rank.rawValue <= CardRank.Ten.rawValue && cardOption == Deck.DeckFronts.Deck3 && !(self.rank
-            == .Ace && self.suit == .Spades)) {
+        if(self.rank.rawValue <= CardRank.ten.rawValue && cardOption == Deck.DeckFronts.Deck3 && !(self.rank
+            == .ace && self.suit == .spades)) {
             cardOption = Deck.DeckFronts.Deck2;
         }
         
@@ -244,7 +244,7 @@ class Card {
     * @param deckChoice : DeckBacks - the deck back being used by the deck to which this card belongs
     * @return UIImage? - the back of this card if found
     */
-    func getCardBack(deckChoice : Deck.DeckBacks) -> UIImage? {
+    func getCardBack(_ deckChoice : Deck.DeckBacks) -> UIImage? {
         let imageName = "back_" + deckChoice.rawValue;
         
         return UIImage(named: imageName);

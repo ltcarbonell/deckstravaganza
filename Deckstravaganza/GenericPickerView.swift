@@ -25,19 +25,19 @@ class GenericPickerView: UIPickerView, UIPickerViewDataSource, UIPickerViewDeleg
         return UIPickerView().frame;
     }
     
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1;
     }
     
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return data.count;
     }
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return data[row];
     }
     
     func getResults() -> String {
-        return String(data[super.selectedRowInComponent(0)]);
+        return String(data[super.selectedRow(inComponent: 0)]);
     }
 }

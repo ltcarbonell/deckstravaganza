@@ -9,7 +9,7 @@
 import UIKit
 
 protocol MenuSelectionDelegate: class {
-    func menuSelected(newMenu: Menu)
+    func menuSelected(_ newMenu: Menu)
 }
 
 class MasterViewController: UITableViewController {
@@ -18,8 +18,8 @@ class MasterViewController: UITableViewController {
         [Menu(name: "Continue", description: "Continue Playing Last Game")],
         [
             Menu(name: "New Game", description: "New Game", clickable: false),
-            Menu(name: "\tSolitaire", description: "New Solitaire Game", level: 2, viewGameOptions: true, gameType: .Solitaire),
-            Menu(name: "\tRummy", description: "New Rummy Game", level: 2, viewGameOptions: true, gameType: .Rummy)
+            Menu(name: "\tSolitaire", description: "New Solitaire Game", level: 2, viewGameOptions: true, gameType: .solitaire),
+            Menu(name: "\tRummy", description: "New Rummy Game", level: 2, viewGameOptions: true, gameType: .rummy)
         ]
     ];
 
@@ -40,11 +40,11 @@ class MasterViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return menus.count;
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let menuItems = menus[section].count;
         
         if(menus[section].first!.clickable) {
@@ -54,7 +54,7 @@ class MasterViewController: UITableViewController {
         }
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if(!menus[section].first!.clickable) {
             return menus[section].first!.name;
         }
@@ -62,8 +62,8 @@ class MasterViewController: UITableViewController {
         return nil;
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
 
         // Configure the cell...
         if(!menus[indexPath.section].first!.clickable) {
@@ -84,7 +84,7 @@ class MasterViewController: UITableViewController {
     }
     
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedMenu: Menu;
         if(self.menus[indexPath.section].first!.clickable) {
             selectedMenu = self.menus[indexPath.section][indexPath.row];

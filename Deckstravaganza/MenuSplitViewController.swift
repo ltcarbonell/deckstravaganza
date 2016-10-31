@@ -15,7 +15,7 @@ class MenuSplitViewController: UISplitViewController, UISplitViewControllerDeleg
         super.viewDidLoad()
         
         self.delegate = self;
-        self.preferredDisplayMode = UISplitViewControllerDisplayMode.AllVisible;
+        self.preferredDisplayMode = UISplitViewControllerDisplayMode.allVisible;
         
         authenticateLocalPlayer()
         // Do any additional setup after loading the view.
@@ -26,14 +26,14 @@ class MenuSplitViewController: UISplitViewController, UISplitViewControllerDeleg
         // Dispose of any resources that can be recreated.
     }
     
-    func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController, ontoPrimaryViewController primaryViewController: UIViewController) -> Bool {
+    func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
         // Return YES to prevent UIKit from applying its default behavior
         return true
     }
     
     func toggleMasterView() {
-        let barButtonItem = self.displayModeButtonItem();
-        UIApplication.sharedApplication().sendAction(barButtonItem.action, to: barButtonItem.target, from: nil, forEvent: nil);
+        let barButtonItem = self.displayModeButtonItem;
+        UIApplication.shared.sendAction(barButtonItem.action!, to: barButtonItem.target, from: nil, for: nil);
 //        self.navigationController.
     }
     
@@ -41,9 +41,9 @@ class MenuSplitViewController: UISplitViewController, UISplitViewControllerDeleg
         let localPlayer = GKLocalPlayer.localPlayer()
         localPlayer.authenticateHandler = {(viewController, error) -> Void in
             if (viewController != nil) {
-                self.presentViewController(viewController!, animated: true, completion: nil)
+                self.present(viewController!, animated: true, completion: nil)
             }else{
-                print((GKLocalPlayer().authenticated))
+                print((GKLocalPlayer().isAuthenticated))
             }
         }
     }

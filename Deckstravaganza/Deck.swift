@@ -81,7 +81,7 @@ class Deck: StackPile {
     * @param deckFront : DeckFronts (default nil) - the new DeckFronts style to use.  If nil, the current style remains.
     * @param deckBack : DeckBacks (default nil) - the new DeckBacks style to use.  If nil, the current style remains.
     */
-    func changeDeck(deckFront : DeckFronts? = nil, deckBack : DeckBacks? = nil) {
+    func changeDeck(_ deckFront : DeckFronts? = nil, deckBack : DeckBacks? = nil) {
         if(deckFront != nil) {
             frontType = deckFront!;
         }
@@ -97,57 +97,57 @@ class Deck: StackPile {
     func newDeck() {
         self.pile.removeAll();
         
-        for(var suitCounter = 0; suitCounter < Card.CardSuit.numberOfSuits; suitCounter++) {
-            for(var valueCounter = 0; valueCounter < Card.CardRank.numberOfRanks; valueCounter++) {
+        for suitCounter in 0 ..< Card.CardSuit.numberOfSuits  {
+            for valueCounter in 0 ..< Card.CardRank.numberOfRanks  {
                 var suit : Card.CardSuit;
                 var value : Card.CardRank;
                 
                 switch(suitCounter) {
                 case 0:
-                    suit = .Hearts;
+                    suit = .hearts;
                 case 1:
-                    suit = .Diamonds;
+                    suit = .diamonds;
                 case 2:
-                    suit = .Clubs;
+                    suit = .clubs;
                 case 3:
-                    suit = .Spades;
+                    suit = .spades;
                 default:
-                    suit = .Hearts;
+                    suit = .hearts;
                 }
                 
                 switch(valueCounter) {
                 case 0:
                     //Ace
-                    value = .Ace;
+                    value = .ace;
                 case 1:
-                    value = .Two;
+                    value = .two;
                 case 2:
-                    value = .Three;
+                    value = .three;
                 case 3:
-                    value = .Four;
+                    value = .four;
                 case 4:
-                    value = .Five;
+                    value = .five;
                 case 5:
-                    value = .Six;
+                    value = .six;
                 case 6:
-                    value = .Seven;
+                    value = .seven;
                 case 7:
-                    value = .Eight;
+                    value = .eight;
                 case 8:
-                    value = .Nine;
+                    value = .nine;
                 case 9:
-                    value = .Ten;
+                    value = .ten;
                 case 10:
                     //Jack
-                    value = .Jack;
+                    value = .jack;
                 case 11:
                     //Queen
-                    value = .Queen;
+                    value = .queen;
                 case 12:
                     //King
-                    value = .King;
+                    value = .king;
                 default:
-                    value = .Joker;
+                    value = .joker;
                 }
                 
                 self.pile.append(Card(suit: suit, rank: value));

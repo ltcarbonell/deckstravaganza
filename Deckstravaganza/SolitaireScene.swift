@@ -75,9 +75,9 @@ class CardSprite: SKSpriteNode {
         
         self.faceUp = false
         
-        super.init(texture: backTexture, color: UIColor.blackColor(), size: backTexture.size())
+        super.init(texture: backTexture, color: UIColor.black, size: backTexture.size())
         
-        self.userInteractionEnabled = true
+        self.isUserInteractionEnabled = true
         self.name = "\(card.getRank())\(card.getSuit())"
     }
     
@@ -86,7 +86,7 @@ class CardSprite: SKSpriteNode {
         if(!faceUp) {
             self.texture = self.frontTexture
             self.faceUp = true
-            self.userInteractionEnabled = true
+            self.isUserInteractionEnabled = true
         }
     }
     
@@ -101,12 +101,12 @@ class CardSprite: SKSpriteNode {
         self.zPosition = CGFloat(solitaireScene!.SolitaireGame.wastePile.numberOfCards())
         
         solitaireScene!.SolitaireGame.moveTopCard(oldPile!, toPile: newPile!)
-        self.runAction(SKAction.moveTo(toLocation!, duration: 0.25))
+        self.run(SKAction.move(to: toLocation!, duration: 0.25))
         
         do {
-            let soundPath = NSBundle.mainBundle().pathForResource("cardSlide1", ofType: "wav");
+            let soundPath = Bundle.main.path(forResource: "cardSlide1", ofType: "wav");
             
-            self.soundPlayer = try AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: soundPath!));
+            self.soundPlayer = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: soundPath!));
             self.soundPlayer.play();
         } catch {
             print("No audio for you!");
@@ -151,13 +151,14 @@ class CardSprite: SKSpriteNode {
             let cardPosition : CGPoint;
             
             if(baseYPosition != solitaireScene!.topRowYPos) {
-                cardPosition = CGPoint(x: toLocation!.x, y: (CGFloat(baseYPosition) - yPositionDeltas[--count]));
+                count -= 1
+                cardPosition = CGPoint(x: toLocation!.x, y: (CGFloat(baseYPosition) - yPositionDeltas[count]));
             } else {
                 cardPosition = CGPoint(x: toLocation!.x, y: baseYPosition);
             }
             
             cardNode.zPosition = CGFloat(newPile!.numberOfCards());
-            cardNode.runAction(SKAction.moveTo(cardPosition, duration: cardConstants.POSITION_CORRECTLY_TIME));
+            cardNode.run(SKAction.move(to: cardPosition, duration: cardConstants.POSITION_CORRECTLY_TIME));
             
             newPile!.push(tempCard);
         }
@@ -165,16 +166,16 @@ class CardSprite: SKSpriteNode {
         solitaireScene!.flipTopCards();
     }
     
-    func nodeFromCard(card: Card) -> CardSprite {
+    func nodeFromCard(_ card: Card) -> CardSprite {
         let cardName = "\(card.getRank())\(card.getSuit())";
         
-        return self.solitaireScene!.childNodeWithName(cardName) as! CardSprite;
+        return self.solitaireScene!.childNode(withName: cardName) as! CardSprite;
     }
     
     /**
     * Returns all face up cards in the stack starting with the top card facing toward the user.
     */
-    func getAboveCards(pile: StackPile) -> [Card] {
+    func getAboveCards(_ pile: StackPile) -> [Card] {
         var cards:[Card] = [self.card]
         
         // If this is the waste pile, just return the top card.
@@ -204,7 +205,7 @@ class CardSprite: SKSpriteNode {
     /**
     * Increase this card's z-index so it is above all other cards and save the fromLocation.
     */
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         var touchedPile : StackPile?
         
         if solitaireScene != nil {
@@ -247,12 +248,12 @@ class CardSprite: SKSpriteNode {
     /**
     * Move the card being dragged and any cards above it with the user's finger.
     */
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first!;
         
         if (faceUp && !ignoreTouch) {
-            let location = touch.locationInNode(scene!) // make sure this is scene, not self
-            let touchedNode = nodeAtPoint(location)
+            let location = touch.location(in: scene!) // make sure this is scene, not self
+            let touchedNode = atPoint(location)
             touchedNode.position = location
             
             if solitaireScene != nil {
@@ -277,7 +278,7 @@ class CardSprite: SKSpriteNode {
     * Determine if the move is valid.  If it wasn't move the cards back to the original stack.
     * Otherwise, card all cards in the moved stack to the new stack.
     */
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         var touchedPile: StackPile?
         if solitaireScene != nil {
@@ -318,9 +319,9 @@ class CardSprite: SKSpriteNode {
                         cardBelowNode = self.nodeFromCard(cardBelow!);
                     }
                     
-                    for(var index = 0; index < cardsAbove.count; index++) {
+                    for index in 0 ..< cardsAbove.count {
                         let tempCardName = "\(cardsAbove[index].getRank())\(cardsAbove[index].getSuit())";
-                        let tempCard = self.solitaireScene!.childNodeWithName(tempCardName);
+                        let tempCard = self.solitaireScene!.childNode(withName: tempCardName);
                         let tempCardYPosition : CGFloat;
                         let tempCardZPosition : CGFloat;
                         
@@ -336,13 +337,13 @@ class CardSprite: SKSpriteNode {
                         
                         tempCard!.zPosition = tempCardZPosition;
                         
-                        tempCard!.runAction(SKAction.moveTo(tempCardLocation, duration: animationDuration));
+                        tempCard!.run(SKAction.move(to: tempCardLocation, duration: animationDuration));
                     }
                     
                     do {
-                        let soundPath = NSBundle.mainBundle().pathForResource("cardShove1", ofType: "wav");
+                        let soundPath = Bundle.main.path(forResource: "cardShove1", ofType: "wav");
                         
-                        self.soundPlayer = try AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: soundPath!));
+                        self.soundPlayer = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: soundPath!));
                         self.soundPlayer.play();
                     } catch {
                         print("No audio for you!");
@@ -361,16 +362,16 @@ class CardSprite: SKSpriteNode {
                         movePile();
                         
                         do {
-                            let soundPath = NSBundle.mainBundle().pathForResource("cardPlace1", ofType: "wav");
+                            let soundPath = Bundle.main.path(forResource: "cardPlace1", ofType: "wav");
                             
-                            self.soundPlayer = try AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: soundPath!));
+                            self.soundPlayer = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: soundPath!));
                             self.soundPlayer.play();
                         } catch {
                             print("No audio for you!");
                         }
                         
                         let isFoundation = solitaireScene!.foundationsContainPoint(toLocation!);
-                        if(self.card.getRank() == .King && isFoundation) {
+                        if(self.card.getRank() == .king && isFoundation) {
                             // Check if the game is over.
                             let foundationCardCount = solitaireGame!.foundation1.count() + solitaireGame!.foundation2.count() + solitaireGame!.foundation3.count() + solitaireGame!.foundation3.count();
                             
@@ -412,8 +413,8 @@ class SolitaireScene: SKScene {
     // Locations for the various piles in scene
     var deckLocation = CGPoint(x: 0, y: 0)
     var wastePileLocation = CGPoint(x: 0, y: 0)
-    var foundationLocations = [CGPoint](count: 4, repeatedValue: CGPoint(x: 0, y: 0))
-    var tableuLocations = [CGPoint](count: 7, repeatedValue: CGPoint(x: 0, y: 0))
+    var foundationLocations = [CGPoint](repeating: CGPoint(x: 0, y: 0), count: 4)
+    var tableuLocations = [CGPoint](repeating: CGPoint(x: 0, y: 0), count: 7)
     
     // End of Game variables
     var reloadSprite: GameViewControllerButton?
@@ -467,7 +468,7 @@ class SolitaireScene: SKScene {
         self.deckLocation = CGPoint(x: deckXPos, y: topRowYPos)
         self.wastePileLocation = CGPoint(x: wasteXPos, y: topRowYPos)
         
-        for var i = 0; i < foundationLocations.count; i++ {
+        for i in 0 ..< foundationLocations.count {
             let xPos = self.scene!.frame.minX + ((cardConstants.FOUNDATION_LEFT_OFFSET + CGFloat(i)) * cardSize.width) + (cardConstants.PILE_X_OFFSET * CGFloat(i));
             
             foundationLocations[i] = CGPoint(x: xPos, y: topRowYPos);
@@ -490,7 +491,7 @@ class SolitaireScene: SKScene {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func didMoveToView(view: SKView) {
+    override func didMove(to view: SKView) {
         createBackground()
         
         if(newGame) {
@@ -518,7 +519,7 @@ class SolitaireScene: SKScene {
         let background = SKSpriteNode(texture: backgroundTexture)
         background.size.height = self.frame.height
         background.size.width = self.frame.width
-        background.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame))
+        background.position = CGPoint(x: self.frame.midX, y: self.frame.midY)
         background.zPosition = -10
         background.name = "background"
         self.addChild(background)
@@ -530,8 +531,8 @@ class SolitaireScene: SKScene {
         SolitaireGameDelegate.deal(self.SolitaireGame);
         
         // staggers the piles in the tableus so parts of all cards are visible
-        for var i = 0; i < tableuLocations.count; i++ {
-            for var j = 0; j <= i; j++ {
+        for i in 0 ..< tableuLocations.count {
+            for j in 0 ... i {
                 let newTableuCardSprite = CardSprite(gameScene: self, card: self.SolitaireGame.tableus[i].cardAt(j)!)
                 
                 //tableuLocations[i].y = tableuLocations[i].y + cardOffset(j)
@@ -544,29 +545,29 @@ class SolitaireScene: SKScene {
                 cardSprites.append(newTableuCardSprite)
                 self.addChild(newTableuCardSprite)
                 
-                dealtCount++
+                dealtCount += 1
             }
         }
         
         // places the rest of the cards in the deck pile
         var count = 0
         while dealtCount < 52 {
-            let newDeckCardSprite = CardSprite(gameScene: self, card: self.SolitaireGame.deck.cardAt(count++)!);
-            
+            let newDeckCardSprite = CardSprite(gameScene: self, card: self.SolitaireGame.deck.cardAt(count)!);
+            count += 1
             newDeckCardSprite.size = cardSize
             newDeckCardSprite.position = deckLocation
             
             cardSprites.append(newDeckCardSprite)
             self.addChild(newDeckCardSprite)
             
-            dealtCount++
+            dealtCount += 1
         }
         
         flipTopCards()
     }
     
     // used to offset the cards in piles
-    func cardOffset(index: Int) -> CGFloat {
+    func cardOffset(_ index: Int) -> CGFloat {
         let cardOffset = CGFloat(-cardConstants.CARD_CASCADE_OFFSET);
         
         return CGFloat(index) * cardOffset;
@@ -574,36 +575,36 @@ class SolitaireScene: SKScene {
     
     // takes in a CGPoint and returns the CGPoint of the pile at that locations
     // returns nil if no pile
-    func snapToCGPoint(oldPoint: CGPoint) -> CGPoint {
-        let deckArea = CGRectMake(deckLocation.x - cardSize.width/2, deckLocation.y - cardSize.height/2, cardSize.width, cardSize.height)
-        let wasteArea = CGRectMake(wastePileLocation.x - cardSize.width/2, wastePileLocation.y - cardSize.height/2, cardSize.width, cardSize.height)
+    func snapToCGPoint(_ oldPoint: CGPoint) -> CGPoint {
+        let deckArea = CGRect(x: deckLocation.x - cardSize.width/2, y: deckLocation.y - cardSize.height/2, width: cardSize.width, height: cardSize.height)
+        let wasteArea = CGRect(x: wastePileLocation.x - cardSize.width/2, y: wastePileLocation.y - cardSize.height/2, width: cardSize.width, height: cardSize.height)
         
         var foundationsArea = [CGRect]()
         for location in foundationLocations {
-            foundationsArea.append(CGRectMake(location.x - cardSize.width/2, location.y - cardSize.height/2, cardSize.width, cardSize.height))
+            foundationsArea.append(CGRect(x: location.x - cardSize.width/2, y: location.y - cardSize.height/2, width: cardSize.width, height: cardSize.height))
         }
         
         var tableusArea = [CGRect]()
-        for(var index = 0; index < tableuLocations.count; index++) {
+        for index in 0 ..< tableuLocations.count {
             let cardsInTableu = SolitaireGame.tableus[index].numberOfCards();
             let tableuHeight = CGFloat(cardsInTableu * cardConstants.CARD_CASCADE_OFFSET) + cardSize.height;
             
-            tableusArea.append(CGRectMake(tableuLocations[index].x - (cardSize.width / 2), tableuLocations[index].y - (tableuHeight / 2), cardSize.width, tableuHeight));
+            tableusArea.append(CGRect(x: tableuLocations[index].x - (cardSize.width / 2), y: tableuLocations[index].y - (tableuHeight / 2), width: cardSize.width, height: tableuHeight));
         }
         
-        if CGRectContainsPoint(deckArea, oldPoint) {
+        if deckArea.contains(oldPoint) {
             return deckLocation
-        } else if CGRectContainsPoint(wasteArea, oldPoint) {
+        } else if wasteArea.contains(oldPoint) {
             return wastePileLocation
         } else {
-            for var i = 0; i < foundationsArea.count; i++ {
-                if CGRectContainsPoint(foundationsArea[i], oldPoint) {
+            for i in 0 ..< foundationsArea.count {
+                if foundationsArea[i].contains(oldPoint) {
                     return foundationLocations[i]
                 }
             }
             
-            for var j = 0; j < tableusArea.count; j++ {
-                if CGRectContainsPoint(tableusArea[j], oldPoint) {
+            for j in 0 ..< tableusArea.count {
+                if tableusArea[j].contains(oldPoint) {
                     return tableuLocations[j]
                 }
             }
@@ -615,7 +616,7 @@ class SolitaireScene: SKScene {
     // Takes in a CGPoint and returns the StackPile at that location
     // Uses snapToCGPoint to ensure the CGPoints are correct
     // Returns nil if no stackpile at point
-    func CGPointToPile(point: CGPoint) -> StackPile? {
+    func CGPointToPile(_ point: CGPoint) -> StackPile? {
         let stackLocation = snapToCGPoint(point)
         
         if stackLocation == wastePileLocation {
@@ -623,13 +624,13 @@ class SolitaireScene: SKScene {
         } else if stackLocation == deckLocation {
             return SolitaireGame.deck
         } else {
-            for var i = 0; i < foundationLocations.count; i++ {
+            for i in 0 ..< foundationLocations.count {
                 if stackLocation == foundationLocations[i] {
                     return SolitaireGame.foundations[i]
                 }
             }
             
-            for var j = 0; j < tableuLocations.count; j++ {
+            for j in 0 ..< tableuLocations.count {
                 if stackLocation == tableuLocations[j] {
                     return SolitaireGame.tableus[j]
                 }
@@ -641,8 +642,8 @@ class SolitaireScene: SKScene {
     }
     
     // Check if the specified point is in a foundation pile.
-    func foundationsContainPoint(point: CGPoint) -> Bool {
-        for(var index = 0; index < foundationLocations.count; index++) {
+    func foundationsContainPoint(_ point: CGPoint) -> Bool {
+        for index in 0 ..< foundationLocations.count {
             if(point == foundationLocations[index]) {
                 return true;
             }
@@ -654,11 +655,11 @@ class SolitaireScene: SKScene {
     // flips over all the top cards of the tableus to be face up
     // called after a move has completed
     func flipTopCards() {
-        for var i = 0; i < tableuLocations.count; i++ {
+        for i in 0 ..< tableuLocations.count {
             let topCard = self.SolitaireGame.tableus[i].topCard()
             
             if (topCard != nil) {
-                let topCardSprite = nodeAtPoint(tableuLocations[i]) as? CardSprite
+                let topCardSprite = atPoint(tableuLocations[i]) as? CardSprite
                 
                 if(topCardSprite != nil) {
                     if !topCardSprite!.faceUp {
@@ -680,7 +681,7 @@ class SolitaireScene: SKScene {
     
     // moves the card sprites from the waste pile back into the deck pile
     func reloadDeck() {
-        let cardNodes = nodesAtPoint(wastePileLocation)
+        let cardNodes = nodes(at: wastePileLocation)
         
         reloadSprite?.removeFromParent()
         
@@ -706,30 +707,30 @@ class SolitaireScene: SKScene {
     
     func endGame() {
         // Make the cards fly off the screen.
-        let moveDownAction = SKAction.moveByX(-cardSize.width, y: UIScreen.mainScreen().bounds.height, duration: 0.5);
-        let bounceUpAction = SKAction.moveByX(-cardSize.width / 2, y: -(UIScreen.mainScreen().bounds.height * 0.3), duration: 0.25);
-        let bounceDownAction = SKAction.moveByX(-cardSize.width / 0.3, y: UIScreen.mainScreen().bounds.height, duration: 0.25 / 0.3);
+        let moveDownAction = SKAction.moveBy(x: -cardSize.width, y: UIScreen.main.bounds.height, duration: 0.5);
+        let bounceUpAction = SKAction.moveBy(x: -cardSize.width / 2, y: -(UIScreen.main.bounds.height * 0.3), duration: 0.25);
+        let bounceDownAction = SKAction.moveBy(x: -cardSize.width / 0.3, y: UIScreen.main.bounds.height, duration: 0.25 / 0.3);
         
         var waitTime = 0.0;
         for cardSprite in cardSprites {
-            let waitAction = SKAction.waitForDuration(waitTime);
+            let waitAction = SKAction.wait(forDuration: waitTime);
             waitTime += 0.4;
             
             let actions = SKAction.sequence([waitAction, moveDownAction, bounceUpAction, bounceDownAction]);
-            cardSprite.runAction(actions);
+            cardSprite.run(actions);
         }
         
         self.endMessageBackground = SKSpriteNode(texture: endMessageBackgroundTexture);
         self.endMessageBackground!.size = CGSize(width: self.frame.width / 2, height: self.frame.height / 2);
-        self.endMessageBackground!.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame));
+        self.endMessageBackground!.position = CGPoint(x: self.frame.midX, y: self.frame.midY);
         self.endMessageBackground!.zPosition = 99999;
         
-        self.endMessage.fontColor = UIColor.redColor();
+        self.endMessage.fontColor = UIColor.red;
         self.endMessage.fontName = "ChalkboardSE-Light";
         self.endMessage.position = CGPoint(x: 0, y: (self.endMessageBackground!.frame.height / 2) - 100);
         self.endMessage.zPosition = 100000;
         
-        self.endButton.fontColor = UIColor.redColor();
+        self.endButton.fontColor = UIColor.red;
         self.endButton.fontName = "ChalkboardSE-Light";
         self.endButton.position = CGPoint(x: 0, y: -(self.endMessageBackground!.frame.height / 2) + 100);
         self.endButton.zPosition = 100000;
@@ -741,14 +742,14 @@ class SolitaireScene: SKScene {
         gameOver = true;
     }
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if(gameOver) {
-            if(self.endButton.containsPoint(touches.first!.locationInNode(self.endMessageBackground!))) {
+            if(self.endButton.contains(touches.first!.location(in: self.endMessageBackground!))) {
                 gameScene!.removeEverything();
                 self.view!.presentScene(nil);
                 gameScene = nil;
                 
-                gameScene = SolitaireScene(gameScene: self.GameScene, game: Solitaire(selectedOptions: SolitaireGame.selectedOptions), gameDelegate: SolitaireDelegate(), size: CGSizeMake(768, 1024));
+                gameScene = SolitaireScene(gameScene: self.GameScene, game: Solitaire(selectedOptions: SolitaireGame.selectedOptions), gameDelegate: SolitaireDelegate(), size: CGSize(width: 768, height: 1024));
                 
                 spriteView.presentScene(gameScene);
             }

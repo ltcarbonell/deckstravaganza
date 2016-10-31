@@ -19,8 +19,8 @@ class RummyAI {
     var discardedCards = Pile()
     var currentHand = Pile()
     
-    var countedRanks = [Int](count: 13, repeatedValue: 0)
-    var countedSuits = [Int](count: 4, repeatedValue: 0)
+    var countedRanks = [Int](repeating: 0, count: 13)
+    var countedSuits = [Int](repeating: 0, count: 4)
     
     init(difficulty: Difficulty, game: Rummy, player: Player) {
         self.difficulty = difficulty
@@ -30,8 +30,8 @@ class RummyAI {
     }
     
     func countHands() {
-        self.countedRanks = [Int](count: 13, repeatedValue: 0)
-        self.countedSuits = [Int](count: 4, repeatedValue: 0)
+        self.countedRanks = [Int](repeating: 0, count: 13)
+        self.countedSuits = [Int](repeating: 0, count: 4)
         for cardIndex in 0..<self.game.playersHands[player.playerNumber].numberOfCards() {
             self.countedRanks[self.game.playersHands[player.playerNumber].cardAt(cardIndex)!.getRank().rawValue-1] += 1
             self.countedSuits[self.game.playersHands[player.playerNumber].cardAt(cardIndex)!.getSuit().rawValue-1] += 1
@@ -42,14 +42,14 @@ class RummyAI {
     func shouldDrawCardFromWaste() -> Bool {
         let wasteTop = self.game.wastePile.topCard()!
         
-        if difficulty == .Easy {
-            if wasteTop.getColor() == Card.CardColor.Red {
+        if difficulty == .easy {
+            if wasteTop.getColor() == Card.CardColor.red {
                     return true
             } else {
                 return false
             }
         }
-        else if difficulty == .Hard {
+        else if difficulty == .hard {
             if self.countedRanks[wasteTop.getRank().rawValue-1] >= 2 ||  self.countedSuits[wasteTop.getSuit().rawValue-1] >= 4 {
                 return true
             }
@@ -116,7 +116,7 @@ class RummyAI {
         return false
     }
     
-    func getDiscardCardIndex(drawnCard: Card) -> Int {
+    func getDiscardCardIndex(_ drawnCard: Card) -> Int {
         let numberOfCardsInHand = self.game.playersHands[player.playerNumber].numberOfCards()
         let distribution = GKRandomDistribution(lowestValue: 0, highestValue: numberOfCardsInHand-1)
         let checkedFirst = distribution.nextInt()
@@ -124,16 +124,16 @@ class RummyAI {
         
         var discardedIndex = checkedFirst
         
-        if difficulty == .Hard {
+        if difficulty == .hard {
             for _ in 0..<numberOfCardsInHand {
                 let cardBeingChecked = self.game.playersHands[player.playerNumber].cardAt(discardedIndex)
                 if self.countedRanks[cardBeingChecked!.getRank().rawValue-1] < 2 &&  self.countedSuits[cardBeingChecked!.getSuit().rawValue-1] < 4 && !cardBeingChecked!.isEqualTo(drawnCard, ignoreSuit: false) {
                     return discardedIndex
                 } else {
                     if goRight {
-                        discardedIndex++
+                        discardedIndex += 1
                     } else {
-                        discardedIndex--
+                        discardedIndex -= 1
                     }
                     if discardedIndex == numberOfCardsInHand {
                         discardedIndex = 0

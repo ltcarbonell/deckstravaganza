@@ -14,7 +14,7 @@ class GenericSwitchView: UISwitch, GenericFormElements {
     }
     
     func getResults() -> String {
-        return String(super.on);
+        return String(super.isOn);
     }
     
     /*

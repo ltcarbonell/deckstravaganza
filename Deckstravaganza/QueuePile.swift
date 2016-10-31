@@ -32,7 +32,7 @@ class QueuePile: Pile {
             if(frontAtFirstCard) {
                 pile.append(oldPile.dequeue()!);
             } else {
-                pile.insert(oldPile.dequeue()!, atIndex: 0);
+                pile.insert(oldPile.dequeue()!, at: 0);
             }
         }
     }
@@ -42,11 +42,11 @@ class QueuePile: Pile {
     *
     * @param newCard : Card - card to add to the pile.
     */
-    func enqueue(newCard : Card) {
+    func enqueue(_ newCard : Card) {
         if(frontAtFirstCard) {
             pile.append(newCard);
         } else {
-            pile.insert(newCard, atIndex: 0);
+            pile.insert(newCard, at: 0);
         }
     }
     
@@ -57,7 +57,7 @@ class QueuePile: Pile {
     */
     func dequeue() -> Card? {
         if(frontAtFirstCard) {
-            return pile.removeAtIndex(0);
+            return pile.remove(at: 0);
         } else {
             return pile.popLast();
         }
@@ -87,8 +87,9 @@ class QueuePile: Pile {
     *
     * @param newPile : Pile - the pile to add to this pile
     */
-    func addToQueueFromFirstCardOf(newPile : Pile) {
-        for(var index = 0, cardCount = newPile.numberOfCards(); index < cardCount; index++) {
+    func addToQueueFromFirstCardOf(_ newPile : Pile) {
+        let cardCount = newPile.numberOfCards()
+        for index in 0 ..< cardCount {
             self.enqueue(newPile.cardAt(index)!);
         }
         
@@ -102,8 +103,9 @@ class QueuePile: Pile {
     *
     * @param newPile : Pile - the pile to add to this pile
     */
-    func addToQueueFromLastCardOf(newPile : Pile) {
-        for(var index = 0, cardCount = newPile.numberOfCards(); index < cardCount; index++) {
+    func addToQueueFromLastCardOf(_ newPile : Pile) {
+        let cardCount = newPile.numberOfCards()
+        for index in 0 ..< cardCount {
             self.enqueue(newPile.cardAt(cardCount - 1 - index)!);
         }
         

@@ -9,15 +9,15 @@
 import UIKit
 
 enum MeldType : Int {
-    case Group = 1
-    case Run = 2
+    case group = 1
+    case run = 2
     
     static let numberOfRummyTypes = 2
 }
 
 enum Difficulty : Int {
-    case Easy = 1
-    case Hard = 2
+    case easy = 1
+    case hard = 2
 }
 
 struct RummyMeld {
@@ -77,9 +77,9 @@ class Rummy: CardGame {
                 // do gamecenter stuff
 //            }
             if selectedOptions![0].options.first! == "Easy" {
-                self.difficulty = .Easy
+                self.difficulty = .easy
             } else {
-                self.difficulty = .Hard
+                self.difficulty = .hard
             }
         
             let floatScore = Float(selectedOptions![1].options.first!)
@@ -87,7 +87,7 @@ class Rummy: CardGame {
             self.setPlayers(Int(selectedOptions![2].options.first!)!)
         } else {
             self.targetScore = 500
-            self.difficulty = .Easy
+            self.difficulty = .easy
             self.setPlayers(2)
         }
         
@@ -100,26 +100,26 @@ class Rummy: CardGame {
 //            ),
             AdjustableSetting(
                 settingName: "Difficulty Level",
-                formType: FormType.DropDown,
-                dataType: DataType.String,
+                formType: FormType.dropDown,
+                dataType: DataType.string,
                 options: ["Easy", "Hard"]
             ),
             AdjustableSetting(
                 settingName: "Score",
-                formType: FormType.Slider,
-                dataType: DataType.Int,
+                formType: FormType.slider,
+                dataType: DataType.int,
                 options: ["0","1000","10"]
             ),
             AdjustableSetting(
                 settingName: "Number of players",
-                formType: FormType.DropDown,
-                dataType: DataType.Int,
+                formType: FormType.dropDown,
+                dataType: DataType.int,
                 options: ["2","3","4","5","6"]
             ),
             AdjustableSetting(
                 settingName: "Card Type",
-                formType: FormType.Cards,
-                dataType: DataType.Image,
+                formType: FormType.cards,
+                dataType: DataType.image,
                 options: []
             )
         ]
@@ -131,7 +131,7 @@ class Rummy: CardGame {
     
     
     
-    func setPlayers(numberOfPlayers: Int) {
+    func setPlayers(_ numberOfPlayers: Int) {
         let fakeNames = ["Jess", "Bill", "Mark", "Pam", "Mike"]
         print("Setting \(numberOfPlayers) players");
         self.players.append(Player(userName: "You", score: 0, playerNumber: 0, isComputer: false))
@@ -158,7 +158,7 @@ class Rummy: CardGame {
     func deal() {
         print("Dealt \(self.deck.numberOfCards()) cards");
         if(self.playersHands.count == 0) {
-            for(var playerIndex = 0; playerIndex < self.playersHands.count; playerIndex++) {
+            for _ in 0 ..< self.playersHands.count {
                 self.playersHands.append(Pile());
             }
         }
@@ -176,9 +176,12 @@ class Rummy: CardGame {
             print("Error: Number of players incorrect.");
         }
         
-        for(var cardIndex = 0; cardIndex < handSize; cardIndex++) {
-            for(var playerIndex = 0; playerIndex < self.playersHands.count && !self.deck.isEmpty(); playerIndex++) {
+        for _ in 0 ..< handSize  {
+            for playerIndex in 0 ..< self.playersHands.count {
+                if !self.deck.isEmpty() {
                 self.playersHands[playerIndex].appendCard(self.deck.pull()!);
+
+                }
             }
         }
         
@@ -189,12 +192,12 @@ class Rummy: CardGame {
     
     // MARK: Methods for moving cards in game
     // Adds a card when it is selected to a pile
-    func addSelectedCard(card: Card) {
+    func addSelectedCard(_ card: Card) {
         selectedCards.appendCard(card)
     }
     
     // Removes card from hand and adds it to the waste pile
-    func discard(card: Card) {
+    func discard(_ card: Card) {
         let discardedCard = self.playersHands[currentPlayerNumber].removeCard(card)
         self.wastePile.push(discardedCard!)
         self.selectedCards.removeAllCards()
@@ -208,7 +211,7 @@ class Rummy: CardGame {
         }
         
         if checkForRun() {
-            let newMeld = RummyMeld(meld: Pile(), type: .Run)
+            let newMeld = RummyMeld(meld: Pile(), type: .run)
             for cardIndex in 0..<selectedCards.numberOfCards() {
                 newMeld.meld.appendCard(selectedCards.cardAt(cardIndex)!)
             }
@@ -217,7 +220,7 @@ class Rummy: CardGame {
         }
             
         else if checkForGroup() {
-            let newMeld = RummyMeld(meld: Pile(), type: .Group)
+            let newMeld = RummyMeld(meld: Pile(), type: .group)
             for cardIndex in 0..<selectedCards.numberOfCards() {
                 newMeld.meld.appendCard(selectedCards.cardAt(cardIndex)!)
             }
@@ -228,7 +231,7 @@ class Rummy: CardGame {
     
     // Moves cards in a valid layoff from the players hand into the meld in the array of melds
     // Return the index of the meld it was moved to
-    func layOffSelectedCards(meldIndex: Int, insertIndex: Int){
+    func layOffSelectedCards(_ meldIndex: Int, insertIndex: Int){
         for cardIndex in 0..<self.selectedCards.numberOfCards() {
             self.playersHands[currentPlayerNumber].removeCard(self.selectedCards.cardAt(cardIndex)!)
             self.melds[meldIndex].meld.insertCardAt(self.selectedCards.cardAt(cardIndex)!, index: insertIndex)
@@ -247,11 +250,11 @@ class Rummy: CardGame {
                 // check for first card of a group
                 for meldIndex in 0..<melds.count {
                     // if it is same rank return true
-                    if melds[meldIndex].type == .Group && melds[meldIndex].meld.cardAt(0)!.hasSameRankAs(selectedCards.cardAt(cardIndex)!) {
+                    if melds[meldIndex].type == .group && melds[meldIndex].meld.cardAt(0)!.hasSameRankAs(selectedCards.cardAt(cardIndex)!) {
                         meldIndicies.append(meldIndex)
                     }
                         // Check for run
-                    else if melds[meldIndex].type == .Run {
+                    else if melds[meldIndex].type == .run {
                         // if same suit and 1 - first card rank return true
                         if selectedCards.cardAt(cardIndex)!.getRank().hashValue == melds[meldIndex].meld.cardAt(0)!.getRank().hashValue-1 && melds[meldIndex].meld.cardAt(0)!.hasSameSuitAs(selectedCards.cardAt(cardIndex)!) {
                             meldIndicies.append(meldIndex)
@@ -268,13 +271,13 @@ class Rummy: CardGame {
     
     
     // Draws card from deck and adds it to the users hand
-    func drawFromDeck(card: Card) {
+    func drawFromDeck(_ card: Card) {
         let drawnCard = self.deck.removeCard(card)
         self.playersHands[currentPlayerNumber].insertCardAt(drawnCard!, index: 0)
     }
     
     // Draws waste pile from deck and adds it to the users hand
-    func drawFromWastePile(card: Card) {
+    func drawFromWastePile(_ card: Card) {
         let drawnCard = self.wastePile.removeCard(card)
         self.playersHands[currentPlayerNumber].insertCardAt(drawnCard!, index: 0)
     }
@@ -338,11 +341,11 @@ class Rummy: CardGame {
             print(selectedCard!.getRank(),selectedCard!.getSuit())
             for meld in melds {
                 // if it is same rank return true
-                if meld.type == .Group && meld.meld.cardAt(0)!.hasSameRankAs(selectedCard!) {
+                if meld.type == .group && meld.meld.cardAt(0)!.hasSameRankAs(selectedCard!) {
                     return true
                 }
                     // Check for run
-                else if meld.type == .Run {
+                else if meld.type == .run {
                     // if same suit and 1 - first card rank return true
                     if selectedCard!.getRank().hashValue == meld.meld.cardAt(0)!.getRank().hashValue-1 && meld.meld.cardAt(0)!.hasSameSuitAs(selectedCard!) {
                         return true
@@ -381,8 +384,9 @@ class Rummy: CardGame {
     }
     
     func turnDidStart() {
-        print("Turn started");
-        currentPlayerNumber = ++turn%players.count
+        print("Turn started")
+        turn += 1
+        currentPlayerNumber = turn%players.count
         isRoundOver = false
     }
     

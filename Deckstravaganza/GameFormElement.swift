@@ -27,7 +27,7 @@ class GameFormElement: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setUpLayout() {
+    fileprivate func setUpLayout() {
         let fieldXPosition: CGFloat;
         var defaultFrame: CGRect;
         
@@ -48,18 +48,18 @@ class GameFormElement: UIView {
         formField.frame = defaultFrame;
         
         if(formLabel != nil) {
-            formLabel!.center = CGPoint(x: 0, y: CGRectGetMidY(self.frame));
+            formLabel!.center = CGPoint(x: 0, y: self.frame.midY);
             formLabel!.frame = CGRect(x: 0, y: 0, width: self.frame.width / 2, height: self.frame.height);
-            formLabel!.textAlignment = .Center;
+            formLabel!.textAlignment = .center;
             
-            fieldXPosition = CGRectGetMidX(self.frame) + self.frame.width / 4;
+            fieldXPosition = self.frame.midX + self.frame.width / 4;
             
             self.addSubview(formLabel!);
         } else {
-            fieldXPosition = CGRectGetMidX(self.frame);
+            fieldXPosition = self.frame.midX;
         }
         
-        formField.center = CGPoint(x: fieldXPosition, y: CGRectGetMidY(self.frame));
+        formField.center = CGPoint(x: fieldXPosition, y: self.frame.midY);
         
         self.addSubview(formField);
     }

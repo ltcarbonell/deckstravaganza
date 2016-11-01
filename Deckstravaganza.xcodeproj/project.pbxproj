@@ -18,11 +18,12 @@
 		229EB7B81BBB78E400ECE5B5 /* SpriteKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 229EB7B71BBB78E400ECE5B5 /* SpriteKit.framework */; };
 		22CD05371BDE6E89004A3031 /* RummyScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CD05361BDE6E89004A3031 /* RummyScene.swift */; };
 		22EFF9751C039CEA0003034C /* RummyAI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EFF9741C039CEA0003034C /* RummyAI.swift */; };
+		D0D5008E1DC8E0DB00B788C4 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0D5008D1DC8E0DB00B788C4 /* Media.xcassets */; };
+		D0D500901DC8E12B00B788C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0D5008F1DC8E12B00B788C4 /* Assets.xcassets */; };
 		D52F99801BDE5F0F008AB55B /* MenuSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52F997F1BDE5F0F008AB55B /* MenuSplitViewController.swift */; };
 		D533E3E11C0CC60D00DF6D88 /* GenericCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D533E3E01C0CC60D00DF6D88 /* GenericCollectionView.swift */; };
 		D54C89791BAD9527007AEB7E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C89781BAD9527007AEB7E /* AppDelegate.swift */; };
 		D54C897E1BAD9527007AEB7E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D54C897C1BAD9527007AEB7E /* Main.storyboard */; };
-		D54C89801BAD9527007AEB7E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D54C897F1BAD9527007AEB7E /* Assets.xcassets */; };
 		D54C89831BAD9527007AEB7E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D54C89811BAD9527007AEB7E /* LaunchScreen.storyboard */; };
 		D54C898E1BAD9527007AEB7E /* DeckstravaganzaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C898D1BAD9527007AEB7E /* DeckstravaganzaTests.swift */; };
 		D54C89991BAD9527007AEB7E /* DeckstravaganzaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C89981BAD9527007AEB7E /* DeckstravaganzaUITests.swift */; };
@@ -75,12 +76,13 @@
 		229EB7B71BBB78E400ECE5B5 /* SpriteKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpriteKit.framework; path = System/Library/Frameworks/SpriteKit.framework; sourceTree = SDKROOT; };
 		22CD05361BDE6E89004A3031 /* RummyScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RummyScene.swift; sourceTree = "<group>"; };
 		22EFF9741C039CEA0003034C /* RummyAI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RummyAI.swift; sourceTree = "<group>"; };
+		D0D5008D1DC8E0DB00B788C4 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		D0D5008F1DC8E12B00B788C4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D52F997F1BDE5F0F008AB55B /* MenuSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuSplitViewController.swift; sourceTree = "<group>"; };
 		D533E3E01C0CC60D00DF6D88 /* GenericCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericCollectionView.swift; sourceTree = "<group>"; };
 		D54C89751BAD9527007AEB7E /* Deckstravaganza.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Deckstravaganza.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D54C89781BAD9527007AEB7E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D54C897D1BAD9527007AEB7E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		D54C897F1BAD9527007AEB7E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D54C89821BAD9527007AEB7E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D54C89841BAD9527007AEB7E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D54C89891BAD9527007AEB7E /* DeckstravaganzaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DeckstravaganzaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -224,7 +226,8 @@
 				2208ABA91C0F647C00DB42BD /* cardShove1.wav */,
 				2208ABAA1C0F647C00DB42BD /* cardSlide1.wav */,
 				2208ABAB1C0F647C00DB42BD /* cardShuffle.wav */,
-				D54C897F1BAD9527007AEB7E /* Assets.xcassets */,
+				D0D5008D1DC8E0DB00B788C4 /* Media.xcassets */,
+				D0D5008F1DC8E12B00B788C4 /* Assets.xcassets */,
 				D54C89811BAD9527007AEB7E /* LaunchScreen.storyboard */,
 				D54C89841BAD9527007AEB7E /* Info.plist */,
 			);
@@ -367,9 +370,10 @@
 				DC5B897C1BC2F2D700F751FB /* GameScene.sks in Resources */,
 				2208ABAF1C0F647C00DB42BD /* cardShuffle.wav in Resources */,
 				D54C89831BAD9527007AEB7E /* LaunchScreen.storyboard in Resources */,
-				D54C89801BAD9527007AEB7E /* Assets.xcassets in Resources */,
 				D54C897E1BAD9527007AEB7E /* Main.storyboard in Resources */,
 				2208ABAD1C0F647C00DB42BD /* cardShove1.wav in Resources */,
+				D0D5008E1DC8E0DB00B788C4 /* Media.xcassets in Resources */,
+				D0D500901DC8E12B00B788C4 /* Assets.xcassets in Resources */,
 				2208ABAC1C0F647C00DB42BD /* cardPlace1.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -564,12 +568,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Deckstravaganza/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = edu.ufl.Deckstravaganza;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ltcarbonell.Deckstravaganza-";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_VERSION = 3.0;
@@ -581,12 +587,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Deckstravaganza/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LINK_WITH_STANDARD_LIBRARIES = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = edu.ufl.Deckstravaganza;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ltcarbonell.Deckstravaganza-";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_VERSION = 3.0;

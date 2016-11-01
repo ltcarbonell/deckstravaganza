@@ -270,7 +270,7 @@ class SolitaireDelegate: CardGameDelegate {
         
         // places the cards into the tableus 1->7
         for i in 0 ..< 7 {
-            for j in 0 ..< i+1 {
+            for _ in 0 ..< i+1 {
                 newCard = Game.deck.pull()!
                 Game.tableus[i].push(newCard)
             }

@@ -161,14 +161,14 @@ class DetailViewController: UIViewController, GCHelperDelegate {
     }
     
     func sendRandomNumber(){
-        var message1 = MessageRandomNumber(message: Message(messageType: .kMessageTypeRandomNumber), randomNumber: _ourRandomNumber)
+        _ = MessageRandomNumber(message: Message(messageType: .kMessageTypeRandomNumber), randomNumber: _ourRandomNumber)
 //        let data = Data(bytes: UnsafePointer<UInt8>(&message1), count: sizeof(MessageRandomNumber))
         //  let data = str.dataUsingEncoding(NSUTF8StringEncoding)
 //        self.sendData(data)
     }
     
     func sendGameBegin() {
-        var message2 = MessageGameBegin(message: Message(messageType: .kMessageTypeGameBegin))
+        _ = MessageGameBegin(message: Message(messageType: .kMessageTypeGameBegin))
 //        let data = Data(bytes: UnsafePointer<UInt8>(&message2), count: sizeof(MessageGameBegin))
 //        self.sendData(data)
     }
